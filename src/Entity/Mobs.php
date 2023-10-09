@@ -79,6 +79,9 @@ class Mobs
     #[ORM\Column(length: 255)]
     private ?string $imageUrl = null;
 
+    #[ORM\Column]
+    private ?int $hp = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -332,6 +335,18 @@ class Mobs
     public function setImageUrl(string $imageUrl): static
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    public function getHp(): ?int
+    {
+        return $this->hp;
+    }
+
+    public function setHp(int $hp): static
+    {
+        $this->hp = $hp;
 
         return $this;
     }
