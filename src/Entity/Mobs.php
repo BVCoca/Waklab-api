@@ -82,6 +82,17 @@ class Mobs
     #[ORM\Column]
     private ?int $hp = null;
 
+    public function __construct() {
+        $this->actionPoints = 0;
+        $this->movementPoints = 0;
+        $this->initiative = 0;
+        $this->tackle = 0;
+        $this->dodge = 0;
+        $this->parry = 0;
+        $this->criticalHit = 0;
+        $this->hp = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
