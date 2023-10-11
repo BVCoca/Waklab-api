@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Family;
 use App\Entity\Mobs;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +32,7 @@ class ScrapWakfu extends Command
     {
         // On vide la base de données car on est des fou
         $output->write(
-            "Start to scraping wakfu\n",
+            "Start to scraping wakfu\n" .
             "=======================\n"
         );
 
@@ -41,8 +42,8 @@ class ScrapWakfu extends Command
         // Nombre de mobs et nombre de pages
         $crawler = $this->client->request('GET', self::MOBS_URL);
 
-        $count_mobs = intval(trim($crawler->filter('.ak-list-info > strong')->innerText()));
-        $count_pages = intval(trim($crawler->filter('.ak-pagination.hidden-xs > nav > ul > li:nth-child(8) > a')->innerText()));
+        $count_mobs = intval($crawler->filter('.ak-list-info > strong')->innerText());
+        $count_pages = intval($crawler->filter('.ak-pagination.hidden-xs > nav > ul > li:nth-child(8) > a')->innerText());
 
         $progressBarPages = new ProgressBar($sectionPages, $count_pages);
         $progressBarMobs = new ProgressBar($sectionMobs, $count_mobs);
@@ -51,6 +52,9 @@ class ScrapWakfu extends Command
         $progressBarPages->start();
 
         $mobs_slugs = [];
+        $families = [];
+
+        $this->scrap_mob_data('/4539-larme-ogrest', $families);
 
         // Récolte des liens pour chaque mob
         for($i = 1; $i <= $count_pages; $i++) {
@@ -72,13 +76,12 @@ class ScrapWakfu extends Command
                 continue;
             }
 
-            $this->entityManager->persist($this->scrap_mob_data($slug_mob));
+            $this->entityManager->persist($this->scrap_mob_data($slug_mob, $families));
+            $this->entityManager->flush();
 
             $progressBarMobs->advance();
             sleep(1);
         }
-
-        $this->entityManager->flush();
 
         $progressBarMobs->finish();
 
@@ -103,11 +106,11 @@ class ScrapWakfu extends Command
      * @param string slug du mob
      * @return array data
      */
-    private function scrap_mob_data(string $slug) : Mobs {
+    private function scrap_mob_data(string $slug, array &$families) : Mobs {
         $mob = new Mobs();
 
         $crawler = $this->client->request('GET', self::MOBS_URL . $slug);
-        $mob->setName(trim(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-'))));
+        $mob->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
         $mob->setImageUrl($crawler->filter(".ak-encyclo-detail-illu.ak-encyclo-detail-illu-monster > img")->attr('data-src'));
 
         // Niveau
@@ -190,6 +193,24 @@ class ScrapWakfu extends Command
 
         // Capturable
         $mob->setIsCapturable(strcmp($crawler->filter(".catchable > strong")->innerText(), 'Non') !== 0);
+
+        // Famille de mob
+        if(!empty($crawler->filter(".ak-encyclo-detail-type > span")->text(''))) {
+            $family_label = $crawler->filter(".ak-encyclo-detail-type > span")->innerText();
+
+             // Si la famille existe déja alors on set juste, sinon on crée la famille
+            if(!isset($families[$family_label]))
+            {
+                $new_family = new Family();
+                $new_family->setName($family_label);
+
+                $this->entityManager->persist($new_family);
+
+                $families[$family_label] = $new_family;
+            }
+
+            $mob->setFamily($families[$family_label]);
+        }
 
         return $mob;
     }
