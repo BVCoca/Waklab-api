@@ -67,6 +67,11 @@ class ScrapWakfu extends Command
 
         // Passage sur chaque mob
         foreach($mobs_slugs as $key => $slug_mob) {
+
+            if(!isset($slug_mob)) {
+                continue;
+            }
+
             $this->entityManager->persist($this->scrap_mob_data($slug_mob));
 
             $progressBarMobs->advance();
@@ -88,7 +93,7 @@ class ScrapWakfu extends Command
      */
     private function scrap_mob_slugs(int $page = 1) : array {
         $crawler = $this->client->request('GET', self::MOBS_URL . "?page=$page");
-        $slugs = $crawler->filter('.ak-linker > a')->each(fn($a) =>  substr($a->attr('href'), strrpos($a->attr('href'), '/')));
+        $slugs = $crawler->filter('.ak-linker > a')->each(fn($a) => !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : null);
 
         return $slugs;
     }
