@@ -21,11 +21,11 @@ class Family
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'family', targetEntity: Mobs::class, orphanRemoval: true)]
-    private Collection $Mob;
+    private Collection $Mobs;
 
     public function __construct()
     {
-        $this->Mob = new ArrayCollection();
+        $this->Mobs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,29 +46,29 @@ class Family
     }
 
     /**
-     * @return Collection<int, Mob>
+     * @return Collection<int, Mobs>
      */
-    public function getMob(): Collection
+    public function getMobs(): Collection
     {
-        return $this->Mob;
+        return $this->Mobs;
     }
 
-    public function addMob(Mobs $mob): static
+    public function addMobs(Mobs $mobs): static
     {
-        if (!$this->Mob->contains($mob)) {
-            $this->Mob->add($mob);
-            $mob->setFamily($this);
+        if (!$this->Mobs->contains($mobs)) {
+            $this->Mobs->add($mobs);
+            $mobs->setFamily($this);
         }
 
         return $this;
     }
 
-    public function removeMob(Mobs $mob): static
+    public function removeMobs(Mobs $mobs): static
     {
-        if ($this->Mob->removeElement($mob)) {
+        if ($this->Mobs->removeElement($mobs)) {
             // set the owning side to null (unless already changed)
-            if ($mob->getFamily() === $this) {
-                $mob->setFamily(null);
+            if ($mobs->getFamily() === $this) {
+                $mobs->setFamily(null);
             }
         }
 
