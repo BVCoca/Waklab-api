@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MobsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
@@ -82,6 +84,9 @@ class Mobs
     #[ORM\Column]
     private ?int $hp = null;
 
+    #[ORM\OneToMany(mappedBy: 'Mob', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    private Collection $resourceDrops;
+
     public function __construct() {
         $this->actionPoints = 0;
         $this->movementPoints = 0;
@@ -91,6 +96,7 @@ class Mobs
         $this->parry = 0;
         $this->criticalHit = 0;
         $this->hp = 0;
+        $this->resourceDrops = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -358,6 +364,36 @@ class Mobs
     public function setHp(int $hp): static
     {
         $this->hp = $hp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResourceDrop>
+     */
+    public function getResourceDrops(): Collection
+    {
+        return $this->resourceDrops;
+    }
+
+    public function addResourceDrop(ResourceDrop $resourceDrop): static
+    {
+        if (!$this->resourceDrops->contains($resourceDrop)) {
+            $this->resourceDrops->add($resourceDrop);
+            $resourceDrop->setMob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResourceDrop(ResourceDrop $resourceDrop): static
+    {
+        if ($this->resourceDrops->removeElement($resourceDrop)) {
+            // set the owning side to null (unless already changed)
+            if ($resourceDrop->getMob() === $this) {
+                $resourceDrop->setMob(null);
+            }
+        }
 
         return $this;
     }
