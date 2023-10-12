@@ -29,6 +29,9 @@ class Resource
     #[ORM\JoinColumn(nullable: false)]
     private ?Rarity $rarity = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $imageUrl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +81,18 @@ class Resource
     public function setRarity(?Rarity $rarity): static
     {
         $this->rarity = $rarity;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }

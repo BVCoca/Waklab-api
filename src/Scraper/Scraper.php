@@ -30,7 +30,10 @@ abstract class Scraper implements ScraperInterface {
         )->execute();
     }
 
-    public function scrap() {
+    /**
+     * Le coeur du scraping, retourne les objets crées
+     */
+    public function scrap(array $scraped_data): array {
         // Nombre de mobs et nombre de pages
         $crawler = $this->client->request('GET', $this->getUrl());
 
@@ -55,9 +58,7 @@ abstract class Scraper implements ScraperInterface {
 
             $progressBarPages->advance();
 
-            // Toutes les 5 requetes
-            if($i % 2 === 0)
-                usleep(500);
+            usleep(500);
         }
 
         $entities_slugs = array_unique($entities_slugs);
@@ -71,6 +72,8 @@ abstract class Scraper implements ScraperInterface {
         $sectionEntities->writeln('Scrap data of all ' . $this->getName());
         $progressBarEntities->start();
 
+        $entities = [];
+
         // Passage sur chaque mob
         foreach($entities_slugs as $key => $slug) {
 
@@ -78,18 +81,19 @@ abstract class Scraper implements ScraperInterface {
                 continue;
             }
 
-            $this->entityManager->persist($this->getEntityData($slug));
+            $entities[$key] = $this->getEntityData($slug, $scraped_data);
+
+            $this->entityManager->persist($entities[$key]);
             $this->entityManager->flush();
 
-            // Toutes les 5 requetes
-            if($key % 2 === 0) {
-                usleep(500);
-            }
+            usleep(500);
 
             $progressBarEntities->advance();
         }
 
         $progressBarEntities->finish();
+
+        return $entities;
     }
 
     protected function getSlugs(Crawler $crawler) : array {

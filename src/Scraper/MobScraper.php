@@ -26,7 +26,7 @@ class MobScraper extends Scraper {
         return 'Mob';
     }
 
-    public function getEntityData(string $slug) {
+    public function getEntityData(string $slug, array $scraped_data) {
         $mob = new Mobs();
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
