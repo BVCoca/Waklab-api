@@ -1,115 +1,35 @@
 <?php
 
-namespace App\Command;
+namespace App\Scraper;
 
 use App\Entity\Family;
 use App\Entity\Mobs;
-use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\BrowserKit\HttpBrowser;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
-// the name of the command is what users type after "php bin/console"
-#[AsCommand(name: 'app:scrap-wakfu')]
-class ScrapWakfu extends Command
-{ 
-    private HttpBrowser $client;
-    private EntityManagerInterface $entityManager;
+class MobScraper extends Scraper {
 
-    CONST MOBS_URL = 'https://www.wakfu.com/fr/mmorpg/encyclopedie/monstres';
+    private $families = []; 
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function getUrl(): string {
+        return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/monstres';
+    }
+
+    public function getEntities() : array
     {
-        parent::__construct();
-        $this->client = new HttpBrowser();
-        $this->entityManager = $entityManager;
+        return [
+            Mobs::class,
+            Family::class
+        ];
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function getName() : string
     {
-        // On vide la base de données car on est des fou
-        $output->write(
-            "Start to scraping wakfu\n" .
-            "=======================\n"
-        );
-
-        $sectionPages = $output->section();
-        $sectionMobs = $output->section();
-
-        // Nombre de mobs et nombre de pages
-        $crawler = $this->client->request('GET', self::MOBS_URL);
-
-        $count_mobs = intval($crawler->filter('.ak-list-info > strong')->innerText());
-        $count_pages = intval($crawler->filter('.ak-pagination.hidden-xs > nav > ul > li:nth-child(8) > a')->innerText());
-
-        $progressBarPages = new ProgressBar($sectionPages, $count_pages);
-        $progressBarMobs = new ProgressBar($sectionMobs, $count_mobs);
-
-        $sectionPages->writeln('Scrap slug of all mobs');
-        $progressBarPages->start();
-
-        $mobs_slugs = [];
-        $families = [];
-
-        $this->scrap_mob_data('/4539-larme-ogrest', $families);
-
-        // Récolte des liens pour chaque mob
-        for($i = 1; $i <= $count_pages; $i++) {
-            array_push($mobs_slugs, ...$this->scrap_mob_slugs($i));
-            $progressBarPages->advance();
-
-            sleep(1);
-        }
-
-        $progressBarPages->finish();
-        $sectionPages->clear();
-        $sectionMobs->writeln('Scrap data of all mobs');
-        $progressBarMobs->start();
-
-        // Passage sur chaque mob
-        foreach($mobs_slugs as $key => $slug_mob) {
-
-            if(!isset($slug_mob)) {
-                continue;
-            }
-
-            $this->entityManager->persist($this->scrap_mob_data($slug_mob, $families));
-            $this->entityManager->flush();
-
-            $progressBarMobs->advance();
-            sleep(1);
-        }
-
-        $progressBarMobs->finish();
-
-        $output->writeln("End of scraping wakfu");
-        return Command::SUCCESS;
+        return 'Mob';
     }
 
-    /**
-     * Scrap du tableau
-     * @param int page
-     * @return array slugs
-     */
-    private function scrap_mob_slugs(int $page = 1) : array {
-        $crawler = $this->client->request('GET', self::MOBS_URL . "?page=$page");
-        $slugs = $crawler->filter('.ak-linker > a')->each(fn($a) => !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : null);
-
-        return $slugs;
-    }
-
-    /**
-     * Scrap d'un mob
-     * @param string slug du mob
-     * @return array data
-     */
-    private function scrap_mob_data(string $slug, array &$families) : Mobs {
+    public function getEntityData(string $slug) {
         $mob = new Mobs();
 
-        $crawler = $this->client->request('GET', self::MOBS_URL . $slug);
+        $crawler = $this->client->request('GET', $this->getUrl() . $slug);
         $mob->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
         $mob->setImageUrl($crawler->filter(".ak-encyclo-detail-illu.ak-encyclo-detail-illu-monster > img")->attr('data-src'));
 
