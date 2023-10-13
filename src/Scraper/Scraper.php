@@ -24,10 +24,18 @@ abstract class Scraper implements ScraperInterface {
      * Truncate la base de données
      */
     public function clear(): void {
-        foreach($this->getEntities() as $entity)
-        $this->entityManager->createQuery(
-            'DELETE FROM ' . $entity . ' e'
-        )->execute();
+
+        // On désactive et réactive les forein key checks
+        $conn = $this->entityManager->getConnection();
+        $conn->executeQuery('SET FOREIGN_KEY_CHECKS=0;');
+
+        foreach($this->getEntities() as $entity) {
+            $this->entityManager->createQuery(
+                'DELETE FROM ' . $entity . ' e'
+            )->execute();
+        }
+
+        $conn->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**
