@@ -16,5 +16,5 @@ interface ScraperInterface {
     public function getName() : string;
 
     // Scrapper de la page
-    public function getEntityData(string $slug, array $scraped_data);
+    public function getEntityData(string $slug, array $scraped_data = []);
 }

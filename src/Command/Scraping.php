@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\Rarity;
 use App\Scraper\MobScraper;
 use App\Scraper\RarityScraper;
 use App\Scraper\ResourceScraper;

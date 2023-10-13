@@ -58,7 +58,7 @@ abstract class Scraper implements ScraperInterface {
 
             $progressBarPages->advance();
 
-            usleep(500);
+            sleep(1);
         }
 
         $entities_slugs = array_unique($entities_slugs);
@@ -86,7 +86,7 @@ abstract class Scraper implements ScraperInterface {
             $this->entityManager->persist($entities[$key]);
             $this->entityManager->flush();
 
-            usleep(500);
+            sleep(1);
 
             $progressBarEntities->advance();
         }

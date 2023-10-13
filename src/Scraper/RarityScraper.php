@@ -74,7 +74,7 @@ class RarityScraper extends Scraper {
     /**
      * Pas utilisée
      */
-    public function getEntityData(string $slug, array $scraped_data) {
+    public function getEntityData(string $slug, array $scraped_data = []) {
        
     }
 }
