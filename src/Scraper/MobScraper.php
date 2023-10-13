@@ -119,17 +119,17 @@ class MobScraper extends Scraper {
             $family_label = $crawler->filter(".ak-encyclo-detail-type > span")->innerText();
 
              // Si la famille existe déja alors on set juste, sinon on crée la famille
-            if(!isset($families[$family_label]))
+            if(!isset($this->families[$family_label]))
             {
                 $new_family = new Family();
                 $new_family->setName($family_label);
 
                 $this->entityManager->persist($new_family);
 
-                $families[$family_label] = $new_family;
+                $this->families[$family_label] = $new_family;
             }
 
-            $mob->setFamily($families[$family_label]);
+            $mob->setFamily($this->families[$family_label]);
         }
 
         return $mob;

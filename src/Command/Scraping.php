@@ -53,7 +53,7 @@ class Scraping extends Command {
         $table
             ->setHeaderTitle("End of scraping wakfu - Summary")
             ->setHeaders(['Nom', 'Nombre'])
-            ->setRows(array_reduce($scrapers, fn($acc, $s) => $acc + $s->getSummary(), []))
+            ->setRows(array_reduce($scrapers, fn($acc, $s) => array_merge($acc,$s->getSummary()), []))
             ->setStyle('box')
             ->setColumnWidths([30, 30]);
 

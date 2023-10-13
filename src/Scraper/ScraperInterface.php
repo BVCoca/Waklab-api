@@ -2,8 +2,6 @@
 
 namespace App\Scraper;
 
-use Doctrine\ORM\Mapping\Entity;
-
 interface ScraperInterface {
 
     // Retourne les entités lié au scraper

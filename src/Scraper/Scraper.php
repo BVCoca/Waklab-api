@@ -76,21 +76,7 @@ abstract class Scraper implements ScraperInterface {
         $sectionPages->writeln('Scrap slug of all ' . $this->getName());
         $progressBarPages->start();
 
-        $entities_slugs = [];
-
-        // Récolte des slugs pour chaque mob
-        for($i = 1; $i <= $count_pages; $i++) {
-
-            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i");
-
-            array_push($entities_slugs, ...$this->getSlugs($crawler));
-
-            $progressBarPages->advance();
-
-            sleep(1);
-        }
-
-        $entities_slugs = array_unique($entities_slugs);
+        $entities_slugs = $this->fetchSlugs($count_pages, $progressBarPages);
 
         $progressBarPages->finish();
         $sectionPages->clear();
@@ -104,15 +90,15 @@ abstract class Scraper implements ScraperInterface {
         $entities = [];
 
         // Passage sur chaque mob
-        foreach($entities_slugs as $key => $slug) {
+        foreach($entities_slugs as $slug) {
 
             if(!isset($slug)) {
                 continue;
             }
 
-            $entities[$key] = $this->getEntityData($slug, $scraped_data);
+            $entities[$slug] = $this->getEntityData($slug, $scraped_data);
 
-            $this->entityManager->persist($entities[$key]);
+            $this->entityManager->persist($entities[$slug]);
             $this->entityManager->flush();
 
             sleep(1);
@@ -127,5 +113,26 @@ abstract class Scraper implements ScraperInterface {
 
     protected function getSlugs(Crawler $crawler) : array {
         return $crawler->filter('.ak-linker > a')->each(fn($a) => !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : null);
+    }
+
+    protected function fetchSlugs(int $pages, ProgressBar $progressBar) : array {
+
+        $entities_slugs = [];
+
+        // Récolte des slugs pour chaque mob
+        for($i = 1; $i <= $pages; $i++) {
+
+            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i");
+
+            array_push($entities_slugs, ...$this->getSlugs($crawler));
+
+            $progressBar->advance();
+
+            sleep(1);
+        }
+
+        $entities_slugs = array_unique($entities_slugs);
+
+        return $entities_slugs;
     }
 }  
