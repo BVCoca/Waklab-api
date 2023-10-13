@@ -39,6 +39,27 @@ abstract class Scraper implements ScraperInterface {
     }
 
     /**
+     * Retourne les données relatives au sommaire
+     */
+    public function getSummary() : array {
+        $summary = [];
+
+        foreach($this->getEntities() as $entity) {
+            $count = $this->entityManager->getRepository($entity)->createQueryBuilder('u')
+                ->select('count(u.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+
+            $summary[] = [
+                $entity,
+                $count
+            ];
+        }
+
+        return $summary;
+    }
+
+    /**
      * Le coeur du scraping, retourne les objets crées
      */
     public function scrap(array $scraped_data): array {

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
 use Doctrine\ORM\EntityManagerInterface;
 
 // the name of the command is what users type after "php bin/console"
@@ -26,11 +27,7 @@ class Scraping extends Command {
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
-        $output->write(
-            "=======================\n" .
-            "Start to scraping wakfu\n" .
-            "=======================\n"
-        );
+        $output->writeln("<info>Start to scraping wakfu</info>");
 
         $scrapers = [
            'rarity' => new RarityScraper($this->entityManager, $output),
@@ -51,11 +48,16 @@ class Scraping extends Command {
             $scraped_data[$key] = $scraper->scrap($scraped_data);
         }
 
-        $output->write(
-            "=====================\n" .
-            "End of scraping wakfu\n" .
-            "=====================\n"
-        );
+        // Bilan du scraping
+        $table = new Table($output);
+        $table
+            ->setHeaderTitle("End of scraping wakfu - Summary")
+            ->setHeaders(['Nom', 'Nombre'])
+            ->setRows(array_reduce($scrapers, fn($acc, $s) => $acc + $s->getSummary(), []))
+            ->setStyle('box')
+            ->setColumnWidths([30, 30]);
+
+        $table->render();
 
         return Command::SUCCESS;
     }
