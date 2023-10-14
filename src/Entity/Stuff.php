@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StuffRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,57 +33,39 @@ class Stuff
     #[ORM\Column(length: 255)]
     private ?string $imageUrl = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $criticalEffect = null;
-
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?rarity $rarity = null;
 
-    #[ORM\Column]
+    #[ORM\ManyToOne(inversedBy: 'stuffs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?TypeStuff $type = null;
+
+    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class)]
+    private Collection $stuffCaracteristics;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $zoneType = null;
+
+    #[ORM\Column(nullable: true)]
     private ?int $costPa = null;
 
-    #[ORM\Column]
-    private ?int $rangeNeeded = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $requiredPo = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $effectType = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $actionPoint = null;
+    private ?int $effectValue = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $movementPoint = null;
+    private ?int $criticalEffectValue = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $wakfuPoint = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $healthPoint = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $attackWater = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $resWater = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $resEarth = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $attackEarth = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $resWind = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $attackWind = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $resFire = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $attackFire = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $inflictedDamage = null;
+    public function __construct()
+    {
+        $this->stuffCaracteristics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -148,18 +132,6 @@ class Stuff
         return $this;
     }
 
-    public function getCriticalEffect(): ?string
-    {
-        return $this->criticalEffect;
-    }
-
-    public function setCriticalEffect(?string $criticalEffect): static
-    {
-        $this->criticalEffect = $criticalEffect;
-
-        return $this;
-    }
-
     public function getRarity(): ?rarity
     {
         return $this->rarity;
@@ -172,182 +144,116 @@ class Stuff
         return $this;
     }
 
+    public function getType(): ?TypeStuff
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeStuff $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StuffCaracteristic>
+     */
+    public function getStuffCaracteristics(): Collection
+    {
+        return $this->stuffCaracteristics;
+    }
+
+    public function addStuffCaracteristic(StuffCaracteristic $stuffCaracteristic): static
+    {
+        if (!$this->stuffCaracteristics->contains($stuffCaracteristic)) {
+            $this->stuffCaracteristics->add($stuffCaracteristic);
+            $stuffCaracteristic->setStuff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStuffCaracteristic(StuffCaracteristic $stuffCaracteristic): static
+    {
+        if ($this->stuffCaracteristics->removeElement($stuffCaracteristic)) {
+            // set the owning side to null (unless already changed)
+            if ($stuffCaracteristic->getStuff() === $this) {
+                $stuffCaracteristic->setStuff(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getZoneType(): ?string
+    {
+        return $this->zoneType;
+    }
+
+    public function setZoneType(?string $zoneType): static
+    {
+        $this->zoneType = $zoneType;
+
+        return $this;
+    }
+
     public function getCostPa(): ?int
     {
         return $this->costPa;
     }
 
-    public function setCostPa(int $costPa): static
+    public function setCostPa(?int $costPa): static
     {
         $this->costPa = $costPa;
 
         return $this;
     }
 
-    public function getRangeNeeded(): ?int
+    public function getRequiredPo(): ?int
     {
-        return $this->rangeNeeded;
+        return $this->requiredPo;
     }
 
-    public function setRangeNeeded(int $rangeNeeded): static
+    public function setRequiredPo(?int $requiredPo): static
     {
-        $this->rangeNeeded = $rangeNeeded;
+        $this->requiredPo = $requiredPo;
 
         return $this;
     }
 
-    public function getActionPoint(): ?int
+    public function getEffectType(): ?string
     {
-        return $this->actionPoint;
+        return $this->effectType;
     }
 
-    public function setActionPoint(?int $actionPoint): static
+    public function setEffectType(?string $effectType): static
     {
-        $this->actionPoint = $actionPoint;
+        $this->effectType = $effectType;
 
         return $this;
     }
 
-    public function getMovementPoint(): ?int
+    public function getEffectValue(): ?int
     {
-        return $this->movementPoint;
+        return $this->effectValue;
     }
 
-    public function setMovementPoint(?int $movementPoint): static
+    public function setEffectValue(?int $effectValue): static
     {
-        $this->movementPoint = $movementPoint;
+        $this->effectValue = $effectValue;
 
         return $this;
     }
 
-    public function getWakfuPoint(): ?int
+    public function getCriticalEffectValue(): ?int
     {
-        return $this->wakfuPoint;
+        return $this->criticalEffectValue;
     }
 
-    public function setWakfuPoint(?int $wakfuPoint): static
+    public function setCriticalEffectValue(?int $criticalEffectValue): static
     {
-        $this->wakfuPoint = $wakfuPoint;
-
-        return $this;
-    }
-
-    public function getHealthPoint(): ?int
-    {
-        return $this->healthPoint;
-    }
-
-    public function setHealthPoint(?int $healthPoint): static
-    {
-        $this->healthPoint = $healthPoint;
-
-        return $this;
-    }
-
-    public function getAttackWater(): ?int
-    {
-        return $this->attackWater;
-    }
-
-    public function setAttackWater(?int $attackWater): static
-    {
-        $this->attackWater = $attackWater;
-
-        return $this;
-    }
-
-    public function getResWater(): ?int
-    {
-        return $this->resWater;
-    }
-
-    public function setResWater(?int $resWater): static
-    {
-        $this->resWater = $resWater;
-
-        return $this;
-    }
-
-    public function getResEarth(): ?int
-    {
-        return $this->resEarth;
-    }
-
-    public function setResEarth(?int $resEarth): static
-    {
-        $this->resEarth = $resEarth;
-
-        return $this;
-    }
-
-    public function getAttackEarth(): ?int
-    {
-        return $this->attackEarth;
-    }
-
-    public function setAttackEarth(?int $attackEarth): static
-    {
-        $this->attackEarth = $attackEarth;
-
-        return $this;
-    }
-
-    public function getResWind(): ?int
-    {
-        return $this->resWind;
-    }
-
-    public function setResWind(?int $resWind): static
-    {
-        $this->resWind = $resWind;
-
-        return $this;
-    }
-
-    public function getAttackWind(): ?int
-    {
-        return $this->attackWind;
-    }
-
-    public function setAttackWind(?int $attackWind): static
-    {
-        $this->attackWind = $attackWind;
-
-        return $this;
-    }
-
-    public function getResFire(): ?int
-    {
-        return $this->resFire;
-    }
-
-    public function setResFire(?int $resFire): static
-    {
-        $this->resFire = $resFire;
-
-        return $this;
-    }
-
-    public function getAttackFire(): ?int
-    {
-        return $this->attackFire;
-    }
-
-    public function setAttackFire(?int $attackFire): static
-    {
-        $this->attackFire = $attackFire;
-
-        return $this;
-    }
-
-    public function getInflictedDamage(): ?int
-    {
-        return $this->inflictedDamage;
-    }
-
-    public function setInflictedDamage(?int $inflictedDamage): static
-    {
-        $this->inflictedDamage = $inflictedDamage;
+        $this->criticalEffectValue = $criticalEffectValue;
 
         return $this;
     }
