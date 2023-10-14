@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\RarityRepository;
+use App\Repository\TypeStuffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RarityRepository::class)]
-#[ApiResource]
-class Rarity
+#[ORM\Entity(repositoryClass: TypeStuffRepository::class)]
+class TypeStuff
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,18 +21,11 @@ class Rarity
     #[ORM\Column(length: 255)]
     private ?string $icon = null;
 
-    #[ORM\Column]
-    private ?int $value = null;
-
-    #[ORM\OneToMany(mappedBy: 'rarity', targetEntity: Resource::class)]
-    private Collection $resources;
-
-    #[ORM\OneToMany(mappedBy: 'rarity', targetEntity: Stuff::class)]
+    #[ORM\OneToMany(mappedBy: 'type', targetEntity: Stuff::class)]
     private Collection $stuffs;
 
     public function __construct()
     {
-        $this->resources = new ArrayCollection();
         $this->stuffs = new ArrayCollection();
     }
 
@@ -67,48 +58,6 @@ class Rarity
         return $this;
     }
 
-    public function getValue(): ?int
-    {
-        return $this->value;
-    }
-
-    public function setValue(int $value): static
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Resource>
-     */
-    public function getResources(): Collection
-    {
-        return $this->resources;
-    }
-
-    public function addResource(Resource $resource): static
-    {
-        if (!$this->resources->contains($resource)) {
-            $this->resources->add($resource);
-            $resource->setRarity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeResource(Resource $resource): static
-    {
-        if ($this->resources->removeElement($resource)) {
-            // set the owning side to null (unless already changed)
-            if ($resource->getRarity() === $this) {
-                $resource->setRarity(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Stuff>
      */
@@ -121,7 +70,7 @@ class Rarity
     {
         if (!$this->stuffs->contains($stuff)) {
             $this->stuffs->add($stuff);
-            $stuff->setRarity($this);
+            $stuff->setType($this);
         }
 
         return $this;
@@ -131,8 +80,8 @@ class Rarity
     {
         if ($this->stuffs->removeElement($stuff)) {
             // set the owning side to null (unless already changed)
-            if ($stuff->getRarity() === $this) {
-                $stuff->setRarity(null);
+            if ($stuff->getType() === $this) {
+                $stuff->setType(null);
             }
         }
 
