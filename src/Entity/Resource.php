@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ResourceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,17 @@ class Resource
     #[ORM\ManyToOne(inversedBy: 'resources')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Rarity $rarity = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $imageUrl = null;
+
+    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    private Collection $resourceDrops;
+
+    public function __construct()
+    {
+        $this->resourceDrops = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -78,6 +91,48 @@ class Resource
     public function setRarity(?Rarity $rarity): static
     {
         $this->rarity = $rarity;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResourceDrop>
+     */
+    public function getResourceDrops(): Collection
+    {
+        return $this->resourceDrops;
+    }
+
+    public function addResourceDrop(ResourceDrop $resourceDrop): static
+    {
+        if (!$this->resourceDrops->contains($resourceDrop)) {
+            $this->resourceDrops->add($resourceDrop);
+            $resourceDrop->setResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResourceDrop(ResourceDrop $resourceDrop): static
+    {
+        if ($this->resourceDrops->removeElement($resourceDrop)) {
+            // set the owning side to null (unless already changed)
+            if ($resourceDrop->getResource() === $this) {
+                $resourceDrop->setResource(null);
+            }
+        }
 
         return $this;
     }
