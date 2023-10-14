@@ -30,9 +30,9 @@ class Scraping extends Command {
         $output->writeln("<info>Start to scraping wakfu</info>");
 
         $scrapers = [
-           'rarity' => new RarityScraper($this->entityManager, $output),
-           'resource' => new ResourceScraper($this->entityManager, $output),
-           'mob' => new MobScraper($this->entityManager, $output)
+            'mob' => new MobScraper($this->entityManager, $output),
+            'rarity' => new RarityScraper($this->entityManager, $output),
+            'resource' => new ResourceScraper($this->entityManager, $output)
         ];
 
         // On nettoie les données

@@ -4,6 +4,7 @@ namespace App\Scraper;
 
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
@@ -96,14 +97,18 @@ abstract class Scraper implements ScraperInterface {
                 continue;
             }
 
-            $entities[$slug] = $this->getEntityData($slug, $scraped_data);
+            try {
+                $entities[$slug] = $this->getEntityData($slug, $scraped_data);
 
-            $this->entityManager->persist($entities[$slug]);
-            $this->entityManager->flush();
+                $this->entityManager->persist($entities[$slug]);
+                $this->entityManager->flush();
 
-            sleep(1);
+                sleep(1);
 
-            $progressBarEntities->advance();
+                $progressBarEntities->advance();
+            } catch (Exception $e) {
+                echo "<error>Erreur sur le scrap de $slug</error>" . PHP_EOL;
+            }
         }
 
         $progressBarEntities->finish();

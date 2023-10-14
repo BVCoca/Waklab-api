@@ -3,6 +3,7 @@
 namespace App\Scraper;
 
 use App\Entity\Resource;
+use App\Entity\ResourceDrop;
 
 class ResourceScraper extends Scraper {
 
@@ -13,7 +14,8 @@ class ResourceScraper extends Scraper {
     public function getEntities() : array
     {
         return [
-            Resource::class
+            Resource::class,
+            ResourceDrop::class
         ];
     }
 
@@ -36,7 +38,9 @@ class ResourceScraper extends Scraper {
         $resource->setLevel($level_match[0]);
 
         // Description
-        $resource->setDescription($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->innerText());
+        if($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->count() > 0) {
+            $resource->setDescription($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->innerText());
+        }
 
         // Rareté
         preg_match('/\d+/i',$crawler->filter("div.ak-object-rarity > span > span")->attr('class'), $rarity_match);
@@ -44,6 +48,26 @@ class ResourceScraper extends Scraper {
         if(isset($scraped_data['rarity'][$rarity_match[0]])) {
             $resource->setRarity($scraped_data['rarity'][$rarity_match[0]]);
         }
+
+        // Drop de mobs
+        $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function($a) use($resource, $scraped_data) {
+            $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
+
+            preg_match('/\d+/i', $a->ancestors()->first()->siblings()->last()->innerText(), $drop_match);
+            $value = intval($drop_match[0]);
+
+            // Si le mob existe on crée la relation
+            if(isset($scraped_data['mob'][$mob_slug])) {
+                $drop = new ResourceDrop();
+
+                $drop->setResource($resource);
+                $drop->setMob($scraped_data['mob'][$mob_slug]);
+                $drop->setValue($value);
+
+                $this->entityManager->persist($drop);
+                $this->entityManager->flush();
+            }
+        });
 
         return $resource;
     }
