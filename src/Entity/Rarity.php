@@ -29,9 +29,13 @@ class Rarity
     #[ORM\OneToMany(mappedBy: 'rarity', targetEntity: Resource::class)]
     private Collection $resources;
 
+    #[ORM\OneToMany(mappedBy: 'rarity', targetEntity: Stuff::class)]
+    private Collection $stuffs;
+
     public function __construct()
     {
         $this->resources = new ArrayCollection();
+        $this->stuffs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +103,36 @@ class Rarity
             // set the owning side to null (unless already changed)
             if ($resource->getRarity() === $this) {
                 $resource->setRarity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stuff>
+     */
+    public function getStuffs(): Collection
+    {
+        return $this->stuffs;
+    }
+
+    public function addStuff(Stuff $stuff): static
+    {
+        if (!$this->stuffs->contains($stuff)) {
+            $this->stuffs->add($stuff);
+            $stuff->setRarity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStuff(Stuff $stuff): static
+    {
+        if ($this->stuffs->removeElement($stuff)) {
+            // set the owning side to null (unless already changed)
+            if ($stuff->getRarity() === $this) {
+                $stuff->setRarity(null);
             }
         }
 
