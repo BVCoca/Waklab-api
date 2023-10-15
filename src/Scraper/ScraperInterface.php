@@ -4,8 +4,14 @@ namespace App\Scraper;
 
 interface ScraperInterface {
 
+    // Retourne l'entité utilisée pour la création
+    public function getEntity();
+
     // Retourne les entités lié au scraper
-    public function getEntities() : array;
+    public function getLinkedEntities() : array;
+
+    // Retourne la clé utilisée dans le tableau scraped_data
+    public function getKey() : string;
 
     // Retourne l'url de l'entité
     public function getUrl() : string;

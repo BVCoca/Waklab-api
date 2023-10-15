@@ -11,7 +11,15 @@ class MobScraper extends Scraper {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/monstres';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'mob';
+    }
+
+    public function getEntity() {
+        return new Mobs();
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Mobs::class,
@@ -25,7 +33,7 @@ class MobScraper extends Scraper {
     }
 
     public function getEntityData(string $slug, array &$scraped_data = []) {
-        $mob = new Mobs();
+        $mob = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
         $mob->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
@@ -129,8 +137,6 @@ class MobScraper extends Scraper {
 
             $mob->setFamily($scraped_data['family_mob'][$family_label]);
         }
-
-        $scraped_data['mob'][$slug] = $mob;
 
         return $mob;
     }

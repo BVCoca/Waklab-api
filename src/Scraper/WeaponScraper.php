@@ -17,7 +17,15 @@ class WeaponScraper extends Scraper {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/armes';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'weapon';
+    }
+
+    public function getEntity() {
+        return new Stuff();
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Stuff::class,
@@ -34,7 +42,7 @@ class WeaponScraper extends Scraper {
     }
 
     public function getEntityData(string $slug, array &$scraped_data = []) {
-        $weapon = new Stuff();
+        $weapon = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
 

@@ -10,7 +10,15 @@ class RarityScraper extends Scraper {
         return '';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'rarity';
+    }
+
+    public function getEntity() {
+        return Rarity::class;
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Rarity::class
@@ -20,6 +28,10 @@ class RarityScraper extends Scraper {
     public function getName() : string
     {
         return 'Rarity';
+    }
+
+    public function fetchAllSlugs(array &$scraped_data) {
+        // On surcharge pour ne rien faire
     }
 
     public function scrap(array &$scraped_data): array {

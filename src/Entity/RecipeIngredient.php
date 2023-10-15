@@ -17,10 +17,10 @@ class RecipeIngredient
     #[ORM\JoinColumn(nullable: false)]
     private ?Recipe $recipe = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade:["persist"])]
     private ?Stuff $stuff = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade:["persist"])]
     private ?Resource $resource = null;
 
     #[ORM\Column]

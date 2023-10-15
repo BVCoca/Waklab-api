@@ -11,7 +11,15 @@ class ResourceScraper extends Scraper {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/ressources';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'resource';
+    }
+
+    public function getEntity() {
+        return new Resource();
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Resource::class,
@@ -25,7 +33,7 @@ class ResourceScraper extends Scraper {
     }
 
     public function getEntityData(string $slug, array &$scraped_data = []) {
-        $resource = new Resource();
+        $resource = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
 

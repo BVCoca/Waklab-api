@@ -10,7 +10,15 @@ class JobScraper extends Scraper {
         return '';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'job';
+    }
+
+    public function getEntity() {
+        return new Job();
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Job::class
@@ -20,6 +28,10 @@ class JobScraper extends Scraper {
     public function getName() : string
     {
         return 'Jon';
+    }
+
+    public function fetchAllSlugs(array &$scraped_data) {
+        // On surcharge pour ne rien faire
     }
 
     public function scrap(array &$scraped_data): array {

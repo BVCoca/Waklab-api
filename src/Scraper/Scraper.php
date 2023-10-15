@@ -25,6 +25,10 @@ abstract class Scraper implements ScraperInterface {
         $this->page_limit = $page_limit;
     }
 
+    public function getEntity() {
+        return null;
+    }
+
     /**
      * Truncate la base de données
      */
@@ -34,7 +38,7 @@ abstract class Scraper implements ScraperInterface {
         $conn = $this->entityManager->getConnection();
         $conn->executeQuery('SET FOREIGN_KEY_CHECKS=0;');
 
-        foreach($this->getEntities() as $entity) {
+        foreach($this->getLinkedEntities() as $entity) {
             $this->entityManager->createQuery(
                 'DELETE FROM ' . $entity . ' e'
             )->execute();
@@ -44,9 +48,9 @@ abstract class Scraper implements ScraperInterface {
     }
 
     /**
-     * Le coeur du scraping, retourne les objets crées
+     * Fetch de tous les slugs
      */
-    public function scrap(array &$scraped_data): array {
+    public function fetchAllSlugs(array &$scraped_data) {
         // Nombre de mobs et nombre de pages
         $crawler = $this->client->request('GET', $this->getUrl());
 
@@ -62,30 +66,33 @@ abstract class Scraper implements ScraperInterface {
         $sectionPages->writeln('Scrap slug of all ' . $this->getName());
         $progressBarPages->start();
 
-        $entities_slugs = $this->fetchSlugs($count_pages, $progressBarPages);
+        $this->fetchSlugs($count_pages, $progressBarPages, $scraped_data);
 
         $progressBarPages->finish();
-        $sectionPages->clear();
+    }
+
+    /**
+     * Le coeur du scraping, retourne les objets crées
+     */
+    public function scrap(array &$scraped_data) {
 
         $sectionEntities = $this->output->section();
-        $progressBarEntities = new ProgressBar($sectionEntities, count($entities_slugs));
+        $progressBarEntities = new ProgressBar($sectionEntities, count($scraped_data[$this->getKey()]));
 
         $sectionEntities->writeln('Scrap data of all ' . $this->getName());
         $progressBarEntities->start();
 
-        $entities = [];
-
         // Passage sur chaque mob
-        foreach($entities_slugs as $slug) {
+        foreach($scraped_data[$this->getKey()] as $slug => $value) {
 
             if(!isset($slug)) {
                 continue;
             }
 
             try {
-                $entities[$slug] = $this->getEntityData($slug, $scraped_data);
+                $scraped_data[$this->getKey()][$slug] = $this->getEntityData($slug, $scraped_data);
 
-                $this->entityManager->persist($entities[$slug]);
+                $this->entityManager->persist($scraped_data[$this->getKey()][$slug]);
                 $this->entityManager->flush();
 
                 sleep(1);
@@ -97,28 +104,27 @@ abstract class Scraper implements ScraperInterface {
         }
 
         $progressBarEntities->finish();
-
-        return $entities;
     }
 
     protected function getSlugs(Crawler $crawler) : array {
         return $crawler->filter('.ak-linker > a')->each(fn($a) => !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : null);
     }
 
-    protected function fetchSlugs(int $pages, ProgressBar $progressBar) : array {
-
-        $entities_slugs = [];
+    protected function fetchSlugs(int $pages, ProgressBar $progressBar, array &$scraped_data) {
 
         // Récolte des slugs pour chaque mob
         for($i = 1; $i <= $pages; $i++) {
             $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3A");
 
-            array_push($entities_slugs, ...$this->getSlugs($crawler));
+            foreach ($this->getSlugs($crawler) as $slug) {
+                $scraped_data[$this->getKey()][$slug] = $this->getEntity();
+            }
 
             $progressBar->advance();
 
             sleep(1);
         }
+    }
 
     protected function getRecipes(Crawler $crawler, array &$scraped_data) : array {
 
@@ -132,7 +138,7 @@ abstract class Scraper implements ScraperInterface {
                 ) {
                     // Récupération du métier et du niveau
                     $recipe = new Recipe();
-            $recipe->setJob($scraped_data['job'][$job_match[1]]);
+                    $recipe->setJob($scraped_data['job'][$job_match[1]]);
                     $recipe->setJobLevel(intval($job_match[2]));
         
                     // Récupération de tous les ingrédients
@@ -140,17 +146,17 @@ abstract class Scraper implements ScraperInterface {
                         $recipeIngredient = new RecipeIngredient();
                         $recipeIngredient->setRecipe($recipe);
                         
-                // Quantité
-                $recipeIngredient->setQuantity(intval($node->filter('.ak-front')->innerText()));
-
-                // Ingrédient (Stuff ou Resource)
-                $ingredient_href = $node->filter('.ak-image > a')->attr('href');
-                $ingredient_slug = substr($ingredient_href, strrpos($ingredient_href, '/'));
-
-                if(str_contains($ingredient_href, '/ressources') && isset($scraped_data['resource'][$ingredient_slug])) {
-                    $recipeIngredient->setResource($scraped_data['resource'][$ingredient_slug]);
-                } else if(str_contains($ingredient_href, '/armes') && isset($scraped_data['weapon'][$ingredient_slug])) {
-                    $recipeIngredient->setStuff($scraped_data['weapon'][$ingredient_slug]);
+                        // Quantité
+                        $recipeIngredient->setQuantity(intval($node->filter('.ak-front')->innerText()));
+        
+                        // Ingrédient (Stuff ou Resource)
+                        $ingredient_href = $node->filter('.ak-image > a')->attr('href');
+                        $ingredient_slug = substr($ingredient_href, strrpos($ingredient_href, '/'));
+        
+                        if(str_contains($ingredient_href, '/ressources') && isset($scraped_data['resource'][$ingredient_slug])) {
+                            $recipeIngredient->setResource($scraped_data['resource'][$ingredient_slug]);
+                        } else if(str_contains($ingredient_href, '/armes') && isset($scraped_data['weapon'][$ingredient_slug])) {
+                            $recipeIngredient->setStuff($scraped_data['weapon'][$ingredient_slug]);
                         } else if(str_contains($ingredient_href, '/armures') && isset($scraped_data['armor'][$ingredient_slug])) {
                             $recipeIngredient->setStuff($scraped_data['armor'][$ingredient_slug]);
                         } else {

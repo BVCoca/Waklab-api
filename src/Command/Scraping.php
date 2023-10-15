@@ -35,8 +35,8 @@ class Scraping extends Command {
         $scrapers = [
             'rarity' => new RarityScraper($this->entityManager, $output),
             'job' => new JobScraper($this->entityManager, $output),
-            'resource' => new ResourceScraper($this->entityManager, $output),
             'mob' => new MobScraper($this->entityManager, $output),
+            'resource' => new ResourceScraper($this->entityManager, $output),
             'weapon' => new WeaponScraper($this->entityManager, $output),
             'armor' => new ArmorScraper($this->entityManager, $output)
         ];
@@ -48,6 +48,11 @@ class Scraping extends Command {
 
         // On stock les données déja scrappées, car on a besoin pour faire les liens
         $scraped_data = [];
+
+        // On récolte tous les slugs
+        foreach($scrapers as $scraper) {
+            $scraper->fetchAllSlugs($scraped_data);
+        }
 
         // On fait le scrapping
         foreach($scrapers as $scraper) {
