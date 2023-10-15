@@ -37,6 +37,9 @@ class Resource
     #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true)]
     private Collection $resourceDrops;
 
+    #[ORM\OneToOne(mappedBy: 'resource', cascade: ['persist', 'remove'])]
+    private ?Recipe $recipe = null;
+
     public function __construct()
     {
         $this->resourceDrops = new ArrayCollection();
@@ -133,6 +136,28 @@ class Resource
                 $resourceDrop->setResource(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRecipe(): ?Recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(?Recipe $recipe): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($recipe === null && $this->recipe !== null) {
+            $this->recipe->setResource(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($recipe !== null && $recipe->getResource() !== $this) {
+            $recipe->setResource($this);
+        }
+
+        $this->recipe = $recipe;
 
         return $this;
     }
