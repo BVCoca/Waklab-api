@@ -15,12 +15,6 @@ class Recipe
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'recipe', cascade: ['persist', 'remove'])]
-    private ?Stuff $stuff = null;
-
-    #[ORM\OneToOne(inversedBy: 'recipe', cascade: ['persist', 'remove'])]
-    private ?Resource $resource = null;
-
     #[ORM\ManyToOne]
     private ?Job $job = null;
 
@@ -30,6 +24,12 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]
     private Collection $recipeIngredients;
 
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    private ?Resource $resource = null;
+
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    private ?Stuff $stuff = null;
+
     public function __construct()
     {
         $this->recipeIngredients = new ArrayCollection();
@@ -38,30 +38,6 @@ class Recipe
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getStuff(): ?Stuff
-    {
-        return $this->stuff;
-    }
-
-    public function setStuff(?Stuff $stuff): static
-    {
-        $this->stuff = $stuff;
-
-        return $this;
-    }
-
-    public function getResource(): ?Resource
-    {
-        return $this->resource;
-    }
-
-    public function setResource(?Resource $resource): static
-    {
-        $this->resource = $resource;
-
-        return $this;
     }
 
     public function getJob(): ?Job
@@ -114,6 +90,30 @@ class Recipe
                 $recipeIngredient->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getResource(): ?Resource
+    {
+        return $this->resource;
+    }
+
+    public function setResource(?Resource $resource): static
+    {
+        $this->resource = $resource;
+
+        return $this;
+    }
+
+    public function getStuff(): ?Stuff
+    {
+        return $this->stuff;
+    }
+
+    public function setStuff(?Stuff $stuff): static
+    {
+        $this->stuff = $stuff;
 
         return $this;
     }

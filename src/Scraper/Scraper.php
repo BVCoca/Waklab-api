@@ -120,27 +120,26 @@ abstract class Scraper implements ScraperInterface {
             sleep(1);
         }
 
-        $entities_slugs = array_unique($entities_slugs);
+    protected function getRecipes(Crawler $crawler, array &$scraped_data) : array {
 
-        return $entities_slugs;
-    }
+        $recipes = [];
 
-    protected function getRecipe(Crawler $crawler, array &$scraped_data) : ?Recipe {
-        // Recette
-        if(
-            $crawler->filter('.ak-crafts')->count() > 0 && 
-            preg_match('/(.*?) -.*?(\d+)/', $crawler->filter('.ak-crafts .ak-panel-intro')->innerText(), $job_match)
-        ) {
-            // Récupération du métier et du niveau
-            $recipe = new Recipe();
+        if($crawler->filter('.ak-crafts .ak-panel-intro')->count() > 0) {
+            $crawler->filter('.ak-crafts > .ak-panel-content .ak-panel-content')->each(function($node) use (&$scraped_data) {
+                if(
+                    $node->filter('.ak-panel-intro')->count() > 0 && 
+                    preg_match('/(.*?) -.*?(\d+)/', $node->filter('.ak-panel-intro')->innerText(), $job_match)
+                ) {
+                    // Récupération du métier et du niveau
+                    $recipe = new Recipe();
             $recipe->setJob($scraped_data['job'][$job_match[1]]);
-            $recipe->setJobLevel(intval($job_match[2]));
-
-            // Récupération de tous les ingrédients
-            $crawler->filter('.ak-crafts .ak-list-element')->each(function($node) use ($recipe, &$scraped_data) {
-                $recipeIngredient = new RecipeIngredient();
-                $recipeIngredient->setRecipe($recipe);
-                
+                    $recipe->setJobLevel(intval($job_match[2]));
+        
+                    // Récupération de tous les ingrédients
+                    $node->filter('.ak-list-element')->each(function($node) use ($recipe, &$scraped_data) {
+                        $recipeIngredient = new RecipeIngredient();
+                        $recipeIngredient->setRecipe($recipe);
+                        
                 // Quantité
                 $recipeIngredient->setQuantity(intval($node->filter('.ak-front')->innerText()));
 
@@ -152,14 +151,22 @@ abstract class Scraper implements ScraperInterface {
                     $recipeIngredient->setResource($scraped_data['resource'][$ingredient_slug]);
                 } else if(str_contains($ingredient_href, '/armes') && isset($scraped_data['weapon'][$ingredient_slug])) {
                     $recipeIngredient->setStuff($scraped_data['weapon'][$ingredient_slug]);
-                } else if(str_contains($ingredient_href, '/armures') && isset($scraped_data['armor'][$ingredient_slug])) {
-                    $recipeIngredient->setStuff($scraped_data['armor'][$ingredient_slug]);
-                } else {
-                    throw new Exception("L'ingrédient n'a pas été trouvé, c'est la merde");
+                        } else if(str_contains($ingredient_href, '/armures') && isset($scraped_data['armor'][$ingredient_slug])) {
+                            $recipeIngredient->setStuff($scraped_data['armor'][$ingredient_slug]);
+                        } else {
+                            throw new Exception("L'ingrédient n'a pas été trouvé, c'est la merde" . $ingredient_href);
+                        }
+
+                        $this->entityManager->persist($recipeIngredient);
+                    });
+
+                    $this->entityManager->persist($recipe);
+        
+                    return $recipe;
                 }
             });
-
-            return $recipe;
         }
+
+        return $recipes;
     }
 }  

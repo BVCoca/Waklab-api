@@ -161,14 +161,12 @@ class WeaponScraper extends Scraper {
         });
 
         // Recette de craft
-        $recipe = $this->getRecipe($crawler, $scraped_data);
+        $recipes = $this->getRecipes($crawler, $scraped_data);
 
-        if($recipe) {
-            $weapon->setRecipe($recipe);
+        foreach($recipes as $recipe) {
+            $weapon->addRecipe($recipe);
             $scraped_data['weapon_recipe'][] = 1;
         }
-
-        $scraped_data['weapon'][$slug] = $weapon;
 
         return $weapon;
     }

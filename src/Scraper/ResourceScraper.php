@@ -70,14 +70,12 @@ class ResourceScraper extends Scraper {
         });
 
         // Recette de craft
-        $recipe = $this->getRecipe($crawler, $scraped_data);
+        $recipes = $this->getRecipes($crawler, $scraped_data);
 
-        if($recipe) {
-            $resource->setRecipe($recipe);
+        foreach($recipes as $recipe) {
+            $resource->addRecipe($recipe);
             $scraped_data['resource_recipe'][] = 1;
         }
-
-        $scraped_data['resource'][$slug] = $resource;
 
         return $resource;
     }

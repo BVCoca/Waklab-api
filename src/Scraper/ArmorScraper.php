@@ -130,14 +130,12 @@ class ArmorScraper extends Scraper {
 
         
         // Recette de craft
-        $recipe = $this->getRecipe($crawler, $scraped_data);
+        $recipes = $this->getRecipes($crawler, $scraped_data);
 
-        if($recipe) {
-            $armor->setRecipe($recipe);
+        foreach($recipes as $recipe) {
+            $armor->addRecipe($recipe);
             $scraped_data['armor_recipe'][] = 1;
         }
-
-        $scraped_data['armor'][$slug] = $armor;
 
         return $armor;
     }

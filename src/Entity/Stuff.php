@@ -62,13 +62,14 @@ class Stuff
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffDrop::class, orphanRemoval: true)]
     private Collection $stuffDrops;
 
-    #[ORM\OneToOne(mappedBy: 'stuff', cascade: ['persist', 'remove'])]
-    private ?Recipe $recipe = null;
+    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: Recipe::class)]
+    private Collection $recipes;
 
     public function __construct()
     {
         $this->stuffCaracteristics = new ArrayCollection();
         $this->stuffDrops = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -280,24 +281,32 @@ class Stuff
         return $this;
     }
 
-    public function getRecipe(): ?Recipe
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
     {
-        return $this->recipe;
+        return $this->recipes;
     }
 
-    public function setRecipe(?Recipe $recipe): static
+    public function addRecipe(Recipe $recipe): static
     {
-        // unset the owning side of the relation if necessary
-        if ($recipe === null && $this->recipe !== null) {
-            $this->recipe->setStuff(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($recipe !== null && $recipe->getStuff() !== $this) {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
             $recipe->setStuff($this);
         }
 
-        $this->recipe = $recipe;
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getStuff() === $this) {
+                $recipe->setStuff(null);
+            }
+        }
 
         return $this;
     }
