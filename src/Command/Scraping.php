@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Scraper\MobScraper;
 use App\Scraper\RarityScraper;
 use App\Scraper\ResourceScraper;
+use App\Scraper\WeaponScraper;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +33,8 @@ class Scraping extends Command {
         $scrapers = [
             'mob' => new MobScraper($this->entityManager, $output),
             'rarity' => new RarityScraper($this->entityManager, $output),
-            'resource' => new ResourceScraper($this->entityManager, $output)
+            'resource' => new ResourceScraper($this->entityManager, $output),
+            'weapon' => new WeaponScraper($this->entityManager, $output)
         ];
 
         // On nettoie les données
@@ -44,8 +46,8 @@ class Scraping extends Command {
         $scraped_data = [];
 
         // On fait le scrapping
-        foreach($scrapers as $key => $scraper) {
-            $scraped_data[$key] = $scraper->scrap($scraped_data);
+        foreach($scrapers as $scraper) {
+            $scraper->scrap($scraped_data);
         }
 
         // Bilan du scraping
@@ -53,7 +55,7 @@ class Scraping extends Command {
         $table
             ->setHeaderTitle("End of scraping wakfu - Summary")
             ->setHeaders(['Nom', 'Nombre'])
-            ->setRows(array_reduce($scrapers, fn($acc, $s) => array_merge($acc,$s->getSummary()), []))
+            ->setRows(array_map(fn($type, $data) => [$type, count($data)], array_keys($scraped_data), $scraped_data))
             ->setStyle('box')
             ->setColumnWidths([30, 30]);
 

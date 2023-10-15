@@ -7,8 +7,6 @@ use App\Entity\Mobs;
 
 class MobScraper extends Scraper {
 
-    private $families = []; 
-
     public function getUrl(): string {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/monstres';
     }
@@ -119,18 +117,20 @@ class MobScraper extends Scraper {
             $family_label = $crawler->filter(".ak-encyclo-detail-type > span")->innerText();
 
              // Si la famille existe déja alors on set juste, sinon on crée la famille
-            if(!isset($this->families[$family_label]))
+            if(!isset($scraped_data['family_mob'][$family_label]))
             {
                 $new_family = new Family();
                 $new_family->setName($family_label);
 
                 $this->entityManager->persist($new_family);
 
-                $this->families[$family_label] = $new_family;
+                $scraped_data['family_mob'][$family_label] = $new_family;
             }
 
-            $mob->setFamily($this->families[$family_label]);
+            $mob->setFamily($scraped_data['family_mob'][$family_label]);
         }
+
+        $scraped_data['mob'][$slug] = $mob;
 
         return $mob;
     }

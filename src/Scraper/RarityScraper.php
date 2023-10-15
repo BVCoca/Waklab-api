@@ -22,7 +22,7 @@ class RarityScraper extends Scraper {
         return 'Rarity';
     }
 
-    public function scrap(array $scraped_data): array {
+    public function scrap(array &$scraped_data): array {
         $datas = [
             [
                 'Qualité commune',
@@ -58,11 +58,13 @@ class RarityScraper extends Scraper {
             ]
         ];
 
-        return array_map(function($data, $key) {
+        return array_map(function($data, $key) use(&$scraped_data) {
             $obj = new Rarity();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
             $obj->setValue($key);
+
+            $scraped_data['rarity'][$key] = $obj;
 
             $this->entityManager->persist($obj);
             $this->entityManager->flush();

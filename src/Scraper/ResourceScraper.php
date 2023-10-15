@@ -69,6 +69,8 @@ class ResourceScraper extends Scraper {
             }
         });
 
+        $scraped_data['resource'][$slug] = $resource;
+
         return $resource;
     }
 }
