@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Caracteristic[]    findAll()
  * @method Caracteristic[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CaracteristiRepository extends ServiceEntityRepository
+class CaracteristicRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

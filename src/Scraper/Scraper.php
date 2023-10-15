@@ -3,6 +3,7 @@
 namespace App\Scraper;
 
 use App\Entity\Recipe;
+use App\Entity\Job;
 use App\Entity\RecipeIngredient;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,7 +26,7 @@ abstract class Scraper implements ScraperInterface {
         $this->page_limit = $page_limit;
     }
 
-    public function getEntity() {
+    public function getEntity(array $data = [], array &$scraped_data = []) {
         return null;
     }
 
@@ -100,6 +101,7 @@ abstract class Scraper implements ScraperInterface {
                 $progressBarEntities->advance();
             } catch (Exception $e) {
                 echo sprintf("<error>Erreur sur le scrap de $slug : %s</error>" . PHP_EOL, $e->getMessage());
+                sleep(1);
             }
         }
 
@@ -107,17 +109,47 @@ abstract class Scraper implements ScraperInterface {
     }
 
     protected function getSlugs(Crawler $crawler) : array {
-        return $crawler->filter('.ak-linker > a')->each(fn($a) => !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : null);
+        return array_filter($crawler->filter('.ak-bg-even,.ak-bg-odd')->each(function($node) use ($crawler) {
+            
+            // slug
+            $href_value = $node->filter('.ak-linker > a')->attr('href');
+            $slug = !str_ends_with($href_value, '-') ? substr($href_value, strrpos($href_value, '/')) : null;
+
+            if($slug === null) {
+                return;
+            }
+
+            $name = $node->filter('td:nth-child(2) > .ak-linker > a')->text();
+            $image = $node->filter('.ak-linker img')->attr('src');
+            preg_match_all('/\d+/i', $node->filter('.item-level')->innerText(), $level_match);
+
+            if($node->filter("span.ak-icon-small")->count() > 0) {
+                preg_match('/\d+/i', $node->filter("span.ak-icon-small")->attr('class'), $rarity_match);
+            }
+
+            // Type
+            $type_img = $crawler->filter('.item-type > img');
+
+            return [
+                'slug' => $slug,
+                'name' => $name,
+                'image' => $image,
+                'level' => $level_match,
+                'rarity' => $rarity_match[0] ?? 0,
+                'type' => $type_img->count() > 0 ? $type_img->attr('title') : '',
+                'type_icon' => $type_img->count() > 0 ? $type_img->attr('src') : ''
+            ];
+        }));
     }
 
     protected function fetchSlugs(int $pages, ProgressBar $progressBar, array &$scraped_data) {
 
         // Récolte des slugs pour chaque mob
         for($i = 1; $i <= $pages; $i++) {
-            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3A");
+            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3D");
 
-            foreach ($this->getSlugs($crawler) as $slug) {
-                $scraped_data[$this->getKey()][$slug] = $this->getEntity();
+            foreach ($this->getSlugs($crawler) as $data) {
+                $scraped_data[$this->getKey()][$data['slug']] = $this->getEntity($data, $scraped_data);
             }
 
             $progressBar->advance();
@@ -131,11 +163,22 @@ abstract class Scraper implements ScraperInterface {
         $recipes = [];
 
         if($crawler->filter('.ak-crafts .ak-panel-intro')->count() > 0) {
-            $crawler->filter('.ak-crafts > .ak-panel-content .ak-panel-content')->each(function($node) use (&$scraped_data) {
+            $crawler->filter('.ak-crafts')->first()->filter('.ak-panel-content .ak-panel-content')->each(function($node) use (&$scraped_data, &$recipes) {
                 if(
                     $node->filter('.ak-panel-intro')->count() > 0 && 
                     preg_match('/(.*?) -.*?(\d+)/', $node->filter('.ak-panel-intro')->innerText(), $job_match)
                 ) {
+
+                    if(!isset($scraped_data['job'][$job_match[1]])) {
+                        $job = new Job();
+                        $job->setName($scraped_data['job'][$job_match[1]]);
+                        $job->setType('Autre');
+                        $job->setIcon('');
+
+                        $scraped_data['job'][$job_match[1]] = $job;
+                        $this->entityManager->persist($job);
+                    }
+
                     // Récupération du métier et du niveau
                     $recipe = new Recipe();
                     $recipe->setJob($scraped_data['job'][$job_match[1]]);
@@ -165,10 +208,8 @@ abstract class Scraper implements ScraperInterface {
 
                         $this->entityManager->persist($recipeIngredient);
                     });
-
-                    $this->entityManager->persist($recipe);
         
-                    return $recipe;
+                    $recipes[] = $recipe;
                 }
             });
         }

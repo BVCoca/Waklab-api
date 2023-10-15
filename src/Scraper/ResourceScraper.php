@@ -2,9 +2,10 @@
 
 namespace App\Scraper;
 
+use App\Entity\Recipe;
+use App\Entity\RecipeIngredient;
 use App\Entity\Resource;
 use App\Entity\ResourceDrop;
-
 class ResourceScraper extends Scraper {
 
     public function getUrl(): string {
@@ -15,15 +16,23 @@ class ResourceScraper extends Scraper {
         return 'resource';
     }
 
-    public function getEntity() {
-        return new Resource();
+    public function getEntity(array $data = [], array &$scraped_data = []) {
+        $resource = new Resource();
+        $resource->setName($data['name'] ?? 'Sans nom');
+        $resource->setImageUrl($data['image']);
+        $resource->setLevel($data['level'][0][0]);
+        $resource->setRarity($scraped_data['rarity'][$data['rarity']]);
+
+        return $resource;
     }
 
     public function getLinkedEntities() : array
     {
         return [
             Resource::class,
-            ResourceDrop::class
+            ResourceDrop::class,
+            Recipe::class,
+            RecipeIngredient::class
         ];
     }
 
@@ -37,24 +46,9 @@ class ResourceScraper extends Scraper {
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
 
-        // Nom et image
-        $resource->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
-        $resource->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
-        
-        // Niveau
-        preg_match('/\d+/i', $crawler->filter(".ak-encyclo-detail-level")->innerText(), $level_match);
-        $resource->setLevel($level_match[0]);
-
         // Description
         if($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->count() > 0) {
             $resource->setDescription($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->innerText());
-        }
-
-        // Rareté
-        preg_match('/\d+/i',$crawler->filter("div.ak-object-rarity > span > span")->attr('class'), $rarity_match);
-
-        if(isset($scraped_data['rarity'][$rarity_match[0]])) {
-            $resource->setRarity($scraped_data['rarity'][$rarity_match[0]]);
         }
 
         // Drop de mobs
@@ -73,7 +67,6 @@ class ResourceScraper extends Scraper {
                 $drop->setValue($value);
 
                 $this->entityManager->persist($drop);
-                $this->entityManager->flush();
             }
         });
 
@@ -81,7 +74,8 @@ class ResourceScraper extends Scraper {
         $recipes = $this->getRecipes($crawler, $scraped_data);
 
         foreach($recipes as $recipe) {
-            $resource->addRecipe($recipe);
+            $recipe->setResource($resource);
+            $this->entityManager->persist($recipe);
             $scraped_data['resource_recipe'][] = 1;
         }
 

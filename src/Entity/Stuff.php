@@ -38,7 +38,7 @@ class Stuff
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeStuff $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class)]
+    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class, cascade: ['persist'])]
     private Collection $stuffCaracteristics;
 
     #[ORM\Column(length: 255, nullable: true)]

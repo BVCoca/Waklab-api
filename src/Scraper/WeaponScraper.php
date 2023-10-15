@@ -9,7 +9,6 @@ use App\Entity\Caracteristic;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\StuffCaracteristic;
-use Exception;
 
 class WeaponScraper extends Scraper {
 
@@ -21,8 +20,26 @@ class WeaponScraper extends Scraper {
         return 'weapon';
     }
 
-    public function getEntity() {
-        return new Stuff();
+    public function getEntity(array $data = [], array &$scraped_data = []) {
+        $weapon = new Stuff();
+        $weapon->setName($data['name'] ?? 'Sans nom');
+        $weapon->setImageUrl($data['image']);
+        $weapon->setLevel($data['level'][0][0]);
+        $weapon->setRarity($scraped_data['rarity'][$data['rarity']]);
+
+        if(!isset($scraped_data['type_stuff'][$data['type']])) {
+            $typeStuff = new TypeStuff();
+            $typeStuff->setName($data['type']);
+            $typeStuff->setIcon($data['type_icon']);
+
+            $this->entityManager->persist($typeStuff);
+
+            $scraped_data['type_stuff'][$data['type']] = $typeStuff;
+        }
+
+        $weapon->setType($scraped_data['type_stuff'][$data['type']]); 
+
+        return $weapon;
     }
 
     public function getLinkedEntities() : array
@@ -32,7 +49,9 @@ class WeaponScraper extends Scraper {
             TypeStuff::class,
             StuffCaracteristic::class,
             Caracteristic::class,
-            StuffDrop::class
+            StuffDrop::class,
+            Recipe::class,
+            RecipeIngredient::class
         ];
     }
 
@@ -46,44 +65,10 @@ class WeaponScraper extends Scraper {
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
 
-        // Nom et image
-        $weapon->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
-        $weapon->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
-
-        // Niveau
-        preg_match('/\d+/i', $crawler->filter(".ak-encyclo-detail-level")->innerText(), $level_match);
-        $weapon->setLevel($level_match[0] ?? 100);
-
         // Description
         $path_description = "div.col-sm-9 > div >div.ak-container.ak-panel > div.ak-panel-title + div.ak-panel-content";
         if($crawler->filter($path_description)->count() > 0) {
             $weapon->setDescription($crawler->filter($path_description)->innerText());
-        }
-
-        // Rareté
-        preg_match('/\d+/i',$crawler->filter("div.ak-object-rarity > span > span")->attr('class'), $rarity_match);
-
-        if(isset($scraped_data['rarity'][$rarity_match[0]])) {
-            $weapon->setRarity($scraped_data['rarity'][$rarity_match[0]]);
-        }
-
-        // Type d'armes
-        $path_type = ".ak-encyclo-detail-type.col-xs-6 > span";
-        if($crawler->filter($path_type)->count() === 1) {
-
-            $label_type = $crawler->filter($path_type)->innerText();
-
-            if(!isset($scraped_data['type_stuff'][$label_type])) {
-                $typeStuff = new TypeStuff();
-                $typeStuff->setName($label_type);
-                $typeStuff->setIcon($crawler->filter($path_type)->children()->first()->attr('src'));
-
-                $this->entityManager->persist($typeStuff);
-
-                $scraped_data['type_stuff'][$label_type] = $typeStuff;
-            }
-
-            $weapon->setType($scraped_data['type_stuff'][$label_type]); 
         }
 
         // Cout en PA et portée
@@ -173,6 +158,7 @@ class WeaponScraper extends Scraper {
 
         foreach($recipes as $recipe) {
             $weapon->addRecipe($recipe);
+            $this->entityManager->persist($recipe);
             $scraped_data['weapon_recipe'][] = 1;
         }
 

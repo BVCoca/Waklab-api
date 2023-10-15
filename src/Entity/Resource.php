@@ -34,10 +34,10 @@ class Resource
     #[ORM\Column(length: 255)]
     private ?string $imageUrl = null;
 
-    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $resourceDrops;
 
-    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Recipe::class)]
+    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Recipe::class, cascade: ['persist'])]
     private Collection $recipes;
 
     public function __construct()

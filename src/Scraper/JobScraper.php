@@ -14,7 +14,7 @@ class JobScraper extends Scraper {
         return 'job';
     }
 
-    public function getEntity() {
+    public function getEntity(array $data = [], array &$scraped_data = []) {
         return new Job();
     }
 
@@ -27,14 +27,10 @@ class JobScraper extends Scraper {
 
     public function getName() : string
     {
-        return 'Jon';
+        return 'Job';
     }
 
     public function fetchAllSlugs(array &$scraped_data) {
-        // On surcharge pour ne rien faire
-    }
-
-    public function scrap(array &$scraped_data): array {
         $datas = [
             [
                 'Forestier',
@@ -108,19 +104,22 @@ class JobScraper extends Scraper {
             ],
         ];
 
-        return array_map(function($data) use(&$scraped_data) {
+        foreach($datas as $data) {
             $obj = new Job();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
             $obj->setType($data[2]);
 
-            $scraped_data['job'][$data[0]] = $obj;
+            $scraped_data[$this->getKey()][$data[0]] = $obj;
 
             $this->entityManager->persist($obj);
             $this->entityManager->flush();
+        }
+    }
 
-            return $obj;
-        }, $datas);
+    public function scrap(array &$scraped_data)
+    {
+        
     }
 
     /**

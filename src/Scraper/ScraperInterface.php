@@ -5,7 +5,7 @@ namespace App\Scraper;
 interface ScraperInterface {
 
     // Retourne l'entité utilisée pour la création
-    public function getEntity();
+    public function getEntity(array $data = [], array &$scraped_data = []);
 
     // Retourne les entités lié au scraper
     public function getLinkedEntities() : array;

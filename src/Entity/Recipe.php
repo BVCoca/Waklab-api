@@ -21,13 +21,13 @@ class Recipe
     #[ORM\Column(nullable: true)]
     private ?int $job_level = null;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $recipeIngredients;
 
-    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
     private ?Resource $resource = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
     private ?Stuff $stuff = null;
 
     public function __construct()
