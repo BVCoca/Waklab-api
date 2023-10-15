@@ -25,9 +25,6 @@ class Stuff
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $effect = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
@@ -35,7 +32,7 @@ class Stuff
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?rarity $rarity = null;
+    private ?Rarity $rarity = null;
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
@@ -100,18 +97,6 @@ class Stuff
         return $this;
     }
 
-    public function getEffect(): ?string
-    {
-        return $this->effect;
-    }
-
-    public function setEffect(?string $effect): static
-    {
-        $this->effect = $effect;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -136,12 +121,12 @@ class Stuff
         return $this;
     }
 
-    public function getRarity(): ?rarity
+    public function getRarity(): ?Rarity
     {
         return $this->rarity;
     }
 
-    public function setRarity(?rarity $rarity): static
+    public function setRarity(?Rarity $rarity): static
     {
         $this->rarity = $rarity;
 

@@ -24,7 +24,7 @@ class ResourceScraper extends Scraper {
         return 'Resource';
     }
 
-    public function getEntityData(string $slug, array $scraped_data = []) {
+    public function getEntityData(string $slug, array &$scraped_data = []) {
         $resource = new Resource();
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
@@ -68,6 +68,8 @@ class ResourceScraper extends Scraper {
                 $this->entityManager->flush();
             }
         });
+
+        $scraped_data['resource'][$slug] = $resource;
 
         return $resource;
     }

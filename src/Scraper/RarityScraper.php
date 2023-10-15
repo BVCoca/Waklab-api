@@ -7,7 +7,7 @@ use App\Entity\Rarity;
 class RarityScraper extends Scraper {
 
     public function getUrl(): string {
-        return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/ressources';
+        return '';
     }
 
     public function getEntities() : array
@@ -22,7 +22,7 @@ class RarityScraper extends Scraper {
         return 'Rarity';
     }
 
-    public function scrap(array $scraped_data): array {
+    public function scrap(array &$scraped_data): array {
         $datas = [
             [
                 'Qualité commune',
@@ -58,11 +58,13 @@ class RarityScraper extends Scraper {
             ]
         ];
 
-        return array_map(function($data, $key) {
+        return array_map(function($data, $key) use(&$scraped_data) {
             $obj = new Rarity();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
             $obj->setValue($key);
+
+            $scraped_data['rarity'][$key] = $obj;
 
             $this->entityManager->persist($obj);
             $this->entityManager->flush();
@@ -74,7 +76,7 @@ class RarityScraper extends Scraper {
     /**
      * Pas utilisée
      */
-    public function getEntityData(string $slug, array $scraped_data = []) {
+    public function getEntityData(string $slug, array &$scraped_data = []) {
        
     }
 }
