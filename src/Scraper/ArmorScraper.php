@@ -6,7 +6,10 @@ use App\Entity\Stuff;
 use App\Entity\StuffDrop;
 use App\Entity\TypeStuff;
 use App\Entity\Caracteristic;
+use App\Entity\Recipe;
+use App\Entity\RecipeIngredient;
 use App\Entity\StuffCaracteristic;
+use Exception;
 
 class ArmorScraper extends Scraper {
 
@@ -82,6 +85,10 @@ class ArmorScraper extends Scraper {
                     $node->filter('div.ak-title')->each(function($node) use($armor, &$scraped_data) {
                         $carac_data = explode(" ", $node->innerText(), 2);
 
+                        if(!isset($carac_data[1])) {
+                            return;
+                        }
+
                         if(!isset($scraped_data['carac'][$carac_data[1]])) {
                             $c = new Caracteristic();
                             $c->setName($carac_data[1]);
@@ -120,6 +127,15 @@ class ArmorScraper extends Scraper {
                 $this->entityManager->flush();
             }
         });
+
+        
+        // Recette de craft
+        $recipe = $this->getRecipe($crawler, $scraped_data);
+
+        if($recipe) {
+            $armor->setRecipe($recipe);
+            $scraped_data['armor_recipe'][] = 1;
+        }
 
         $scraped_data['armor'][$slug] = $armor;
 

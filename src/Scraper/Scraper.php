@@ -2,6 +2,8 @@
 
 namespace App\Scraper;
 
+use App\Entity\Recipe;
+use App\Entity\RecipeIngredient;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -48,7 +50,6 @@ abstract class Scraper implements ScraperInterface {
         // Nombre de mobs et nombre de pages
         $crawler = $this->client->request('GET', $this->getUrl());
 
-        $count_entities = intval($crawler->filter('.ak-list-info > strong')->innerText());
         $count_pages = intval($crawler->filter('.ak-pagination.hidden-xs > nav > ul > li:nth-child(8) > a')->innerText());
 
         $sectionPages = $this->output->section();
@@ -110,7 +111,7 @@ abstract class Scraper implements ScraperInterface {
 
         // Récolte des slugs pour chaque mob
         for($i = 1; $i <= $pages; $i++) {
-            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3D");
+            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3A");
 
             array_push($entities_slugs, ...$this->getSlugs($crawler));
 
@@ -122,5 +123,43 @@ abstract class Scraper implements ScraperInterface {
         $entities_slugs = array_unique($entities_slugs);
 
         return $entities_slugs;
+    }
+
+    protected function getRecipe(Crawler $crawler, array &$scraped_data) : ?Recipe {
+        // Recette
+        if(
+            $crawler->filter('.ak-crafts')->count() > 0 && 
+            preg_match('/(.*?) -.*?(\d+)/', $crawler->filter('.ak-crafts .ak-panel-intro')->innerText(), $job_match)
+        ) {
+            // Récupération du métier et du niveau
+            $recipe = new Recipe();
+            $recipe->setJob($scraped_data['job'][$job_match[1]]);
+            $recipe->setJobLevel(intval($job_match[2]));
+
+            // Récupération de tous les ingrédients
+            $crawler->filter('.ak-crafts .ak-list-element')->each(function($node) use ($recipe, &$scraped_data) {
+                $recipeIngredient = new RecipeIngredient();
+                $recipeIngredient->setRecipe($recipe);
+                
+                // Quantité
+                $recipeIngredient->setQuantity(intval($node->filter('.ak-front')->innerText()));
+
+                // Ingrédient (Stuff ou Resource)
+                $ingredient_href = $node->filter('.ak-image > a')->attr('href');
+                $ingredient_slug = substr($ingredient_href, strrpos($ingredient_href, '/'));
+
+                if(str_contains($ingredient_href, '/ressources') && isset($scraped_data['resource'][$ingredient_slug])) {
+                    $recipeIngredient->setResource($scraped_data['resource'][$ingredient_slug]);
+                } else if(str_contains($ingredient_href, '/armes') && isset($scraped_data['weapon'][$ingredient_slug])) {
+                    $recipeIngredient->setStuff($scraped_data['weapon'][$ingredient_slug]);
+                } else if(str_contains($ingredient_href, '/armures') && isset($scraped_data['armor'][$ingredient_slug])) {
+                    $recipeIngredient->setStuff($scraped_data['armor'][$ingredient_slug]);
+                } else {
+                    throw new Exception("L'ingrédient n'a pas été trouvé, c'est la merde");
+                }
+            });
+
+            return $recipe;
+        }
     }
 }  
