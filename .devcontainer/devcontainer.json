@@ -1,0 +1,27 @@
+{
+	"name": "Waklab Devcontainer",
+	"dockerComposeFile": [
+		"../.docker/docker-compose.yml"
+	],
+	"service": "php",
+	"workspaceFolder": "/workspace",
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// PHP intellisense by Intelephense.
+				"bmewburn.vscode-intelephense-client",
+				"xdebug.php-debug",
+				"recca0120.vscode-phpunit",
+				"kokororin.vscode-phpfmt",
+				"TheNouillet.symfony-vscode",
+				"eamodio.gitlens",
+				"jaguadoromero.vscode-php-create-class",
+				"ms-vscode.powershell",
+				"streetsidesoftware.code-spell-checker",
+				"yzhang.markdown-all-in-one"
+			]
+		}
+	}
+}
