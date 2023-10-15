@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+    db:
+        image: mysql:8.0.33
+        platform: linux/x86_64
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+            - "db_app:/var/lib/mysql"
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: true
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        ports:
+            - 3306:3306
+        networks:
+            - waklab_app
+    php:
+        build:
+            context: ./php
+            args:
+                TIMEZONE: ${TIMEZONE}
+        environment:
+            XDEBUG_MODE: debug
+            XDEBUG_SESSION: 1
+            XDEBUG_CONFIG: "client_host=localhost"
+        volumes:
+            - ../:/var/www/symfony:cached
+            - waklab_app_var:/var/www/symfony/var
+            - waklab_app_vendor:/var/www/symfony/vendor
+        networks:
+            - waklab_app
+
+    nginx:
+        build:
+            context: ./nginx
+        volumes:
+            - ../:/var/www/symfony:cached
+            - waklab_app_var:/var/www/symfony/var
+            - waklab_app_vendor:/var/www/symfony/vendor
+        ports:
+            - "$PHP_PORT:80"
+        networks:
+            - waklab_app
+        env_file:
+            - .env.nginx
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
+        ports:
+            - "$PMA_PORT:80"
+        networks:
+            - waklab_app
+volumes:
+    waklab_app_var:
+    waklab_app_vendor:
+    db_app:
+
+networks:
+    waklab_app:
