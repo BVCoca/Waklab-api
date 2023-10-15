@@ -7,7 +7,7 @@ use App\Entity\Rarity;
 class RarityScraper extends Scraper {
 
     public function getUrl(): string {
-        return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/ressources';
+        return '';
     }
 
     public function getEntities() : array
@@ -74,7 +74,7 @@ class RarityScraper extends Scraper {
     /**
      * Pas utilisée
      */
-    public function getEntityData(string $slug, array $scraped_data = []) {
+    public function getEntityData(string $slug, array &$scraped_data = []) {
        
     }
 }
