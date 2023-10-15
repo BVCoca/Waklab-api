@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Scraper\ArmorScraper;
 use App\Scraper\MobScraper;
 use App\Scraper\RarityScraper;
 use App\Scraper\ResourceScraper;
@@ -34,7 +35,8 @@ class Scraping extends Command {
             'mob' => new MobScraper($this->entityManager, $output),
             'rarity' => new RarityScraper($this->entityManager, $output),
             'resource' => new ResourceScraper($this->entityManager, $output),
-            'weapon' => new WeaponScraper($this->entityManager, $output)
+            'weapon' => new WeaponScraper($this->entityManager, $output),
+            'armor' => new ArmorScraper($this->entityManager, $output)
         ];
 
         // On nettoie les données
@@ -55,7 +57,7 @@ class Scraping extends Command {
         $table
             ->setHeaderTitle("End of scraping wakfu - Summary")
             ->setHeaders(['Nom', 'Nombre'])
-            ->setRows(array_map(fn($type, $data) => [$type, count($data)], array_keys($scraped_data), $scraped_data))
+            ->setRows(array_map(fn($type, $data) => [ucfirst($type), count($data)], array_keys($scraped_data), $scraped_data))
             ->setStyle('box')
             ->setColumnWidths([30, 30]);
 

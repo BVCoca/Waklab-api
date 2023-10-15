@@ -34,7 +34,7 @@ class TestScraping extends Command {
 
         $scraper = new $entity($this->entityManager, $output);
 
-        print_r($scraper->getEntityData($input->getArgument('slug')));
+        $scraper->getEntityData($input->getArgument('slug'));
 
         return Command::SUCCESS;
     }
