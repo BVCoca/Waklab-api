@@ -87,6 +87,9 @@ class Mobs
     #[ORM\OneToMany(mappedBy: 'Mob', targetEntity: ResourceDrop::class, orphanRemoval: true)]
     private Collection $resourceDrops;
 
+    #[ORM\OneToMany(mappedBy: 'mob', targetEntity: StuffDrop::class, orphanRemoval: true)]
+    private Collection $stuffDrops;
+
     public function __construct() {
         $this->actionPoints = 0;
         $this->movementPoints = 0;
@@ -97,6 +100,7 @@ class Mobs
         $this->criticalHit = 0;
         $this->hp = 0;
         $this->resourceDrops = new ArrayCollection();
+        $this->stuffDrops = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -392,6 +396,36 @@ class Mobs
             // set the owning side to null (unless already changed)
             if ($resourceDrop->getMob() === $this) {
                 $resourceDrop->setMob(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StuffDrop>
+     */
+    public function getStuffDrops(): Collection
+    {
+        return $this->stuffDrops;
+    }
+
+    public function addStuffDrop(StuffDrop $stuffDrop): static
+    {
+        if (!$this->stuffDrops->contains($stuffDrop)) {
+            $this->stuffDrops->add($stuffDrop);
+            $stuffDrop->setMob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStuffDrop(StuffDrop $stuffDrop): static
+    {
+        if ($this->stuffDrops->removeElement($stuffDrop)) {
+            // set the owning side to null (unless already changed)
+            if ($stuffDrop->getMob() === $this) {
+                $stuffDrop->setMob(null);
             }
         }
 

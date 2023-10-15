@@ -62,9 +62,13 @@ class Stuff
     #[ORM\Column(nullable: true)]
     private ?int $criticalEffectValue = null;
 
+    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffDrop::class, orphanRemoval: true)]
+    private Collection $stuffDrops;
+
     public function __construct()
     {
         $this->stuffCaracteristics = new ArrayCollection();
+        $this->stuffDrops = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +258,36 @@ class Stuff
     public function setCriticalEffectValue(?int $criticalEffectValue): static
     {
         $this->criticalEffectValue = $criticalEffectValue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StuffDrop>
+     */
+    public function getStuffDrops(): Collection
+    {
+        return $this->stuffDrops;
+    }
+
+    public function addStuffDrop(StuffDrop $stuffDrop): static
+    {
+        if (!$this->stuffDrops->contains($stuffDrop)) {
+            $this->stuffDrops->add($stuffDrop);
+            $stuffDrop->setStuff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStuffDrop(StuffDrop $stuffDrop): static
+    {
+        if ($this->stuffDrops->removeElement($stuffDrop)) {
+            // set the owning side to null (unless already changed)
+            if ($stuffDrop->getStuff() === $this) {
+                $stuffDrop->setStuff(null);
+            }
+        }
 
         return $this;
     }
