@@ -13,13 +13,16 @@ class StuffDrop
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stuffDrops')]
+    #[ORM\ManyToOne(inversedBy: 'stuffDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Stuff $stuff = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stuffDrops')]
+    #[ORM\ManyToOne(inversedBy: 'stuffDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Mobs $mob = null;
+
+    #[ORM\Column]
+    private ?float $value = null;
 
     public function getId(): ?int
     {
@@ -46,6 +49,18 @@ class StuffDrop
     public function setMob(?Mobs $mob): static
     {
         $this->mob = $mob;
+
+        return $this;
+    }
+
+    public function getValue(): ?float
+    {
+        return $this->value;
+    }
+
+    public function setValue(float $value): static
+    {
+        $this->value = $value;
 
         return $this;
     }

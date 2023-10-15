@@ -3,6 +3,7 @@
 namespace App\Scraper;
 
 use App\Entity\Stuff;
+use App\Entity\StuffDrop;
 use App\Entity\TypeStuff;
 use App\Entity\Caracteristic;
 use App\Entity\StuffCaracteristic;
@@ -19,7 +20,8 @@ class WeaponScraper extends Scraper {
             Stuff::class,
             TypeStuff::class,
             StuffCaracteristic::class,
-            Caracteristic::class
+            Caracteristic::class,
+            StuffDrop::class
         ];
     }
 
@@ -130,6 +132,25 @@ class WeaponScraper extends Scraper {
                         $this->entityManager->persist($weapon_carac);
                     });
                     break;
+            }
+        });
+
+        // Drop de mobs
+        $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function($a) use($weapon, &$scraped_data) {
+            $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
+
+            $value = floatval($a->ancestors()->first()->siblings()->last()->innerText());
+
+            // Si le mob existe on crée la relation
+            if(isset($scraped_data['mob'][$mob_slug])) {
+                $drop = new StuffDrop();
+
+                $drop->setStuff($weapon);
+                $drop->setMob($scraped_data['mob'][$mob_slug]);
+                $drop->setValue($value);
+
+                $this->entityManager->persist($drop);
+                $this->entityManager->flush();
             }
         });
 

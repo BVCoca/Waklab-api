@@ -13,12 +13,14 @@ abstract class Scraper implements ScraperInterface {
     protected HttpBrowser $client;
     protected EntityManagerInterface $entityManager;
     private OutputInterface $output;
+    private int $page_limit;
 
-    public function __construct(EntityManagerInterface $entityManager, OutputInterface $output)
+    public function __construct(EntityManagerInterface $entityManager, OutputInterface $output, ?int $page_limit = 999)
     {
         $this->client = new HttpBrowser();
         $this->entityManager = $entityManager;
         $this->output = $output;
+        $this->page_limit = $page_limit;
     }
 
     /**
@@ -51,6 +53,9 @@ abstract class Scraper implements ScraperInterface {
 
         $sectionPages = $this->output->section();
 
+        // Mise en place d'une limite de plage
+        $count_pages = min($this->page_limit, $count_pages); 
+
         $progressBarPages = new ProgressBar($sectionPages, $count_pages);
 
         $sectionPages->writeln('Scrap slug of all ' . $this->getName());
@@ -62,7 +67,7 @@ abstract class Scraper implements ScraperInterface {
         $sectionPages->clear();
 
         $sectionEntities = $this->output->section();
-        $progressBarEntities = new ProgressBar($sectionEntities, $count_entities);
+        $progressBarEntities = new ProgressBar($sectionEntities, count($entities_slugs));
 
         $sectionEntities->writeln('Scrap data of all ' . $this->getName());
         $progressBarEntities->start();
@@ -86,7 +91,7 @@ abstract class Scraper implements ScraperInterface {
 
                 $progressBarEntities->advance();
             } catch (Exception $e) {
-                echo "<error>Erreur sur le scrap de $slug</error>" . PHP_EOL;
+                echo sprintf("<error>Erreur sur le scrap de $slug : %s</error>" . PHP_EOL, $e->getMessage());
             }
         }
 
@@ -105,8 +110,7 @@ abstract class Scraper implements ScraperInterface {
 
         // Récolte des slugs pour chaque mob
         for($i = 1; $i <= $pages; $i++) {
-
-            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i");
+            $crawler = $this->client->request('GET', $this->getUrl() . "?page=$i&sort=3D");
 
             array_push($entities_slugs, ...$this->getSlugs($crawler));
 
