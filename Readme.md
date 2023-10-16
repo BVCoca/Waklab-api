@@ -11,7 +11,12 @@
 - Jouer les migrations ```sf doctrine:migrations:migrate```
 - Lancer le scraping via ```sf app:scrap-wakfu```
 
-## URL avec les valeurs par défaut
+## URL avec les valeurs par défaut en local
 
 - Documentation API : http://localhost:7071/api
 - PhpMyadmin : http://localhost:7070/
+
+## URL du serveur de production
+
+- Documentation API : https://waklaboratory.fr/
+- PhpMyadmin : https://db.waklaboratory.fr/
