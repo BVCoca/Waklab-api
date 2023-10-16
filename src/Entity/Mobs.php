@@ -7,6 +7,7 @@ use App\Repository\MobsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource]
@@ -19,6 +20,10 @@ class Mobs
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    private ?string $slug = null;
 
     #[ORM\Column]
     private ?int $actionPoints = null;
@@ -116,6 +121,18 @@ class Mobs
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -1,5 +1,5 @@
 api_platform:
-    title: Hello API Platform
+    title: Waklab API
     version: 1.0.0
     # Good defaults for REST APIs
     defaults:
