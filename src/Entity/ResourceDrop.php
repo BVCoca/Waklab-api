@@ -16,16 +16,16 @@ class ResourceDrop
 
     #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('drops')]
-    private ?Resource $Resource = null;
+    #[Groups(['resource:drops', 'mob:drops'])]
+    private ?Resource $resource = null;
 
     #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('drops')]
-    private ?Mobs $Mob = null;
+    #[Groups('resource:drops')]
+    private ?Mobs $mob = null;
 
     #[ORM\Column]
-    #[Groups('drops')]
+    #[Groups(['resource:drops', 'mob:drops'])]
     private ?int $value = null;
 
     public function getId(): ?int
@@ -35,24 +35,24 @@ class ResourceDrop
 
     public function getResource(): ?Resource
     {
-        return $this->Resource;
+        return $this->resource;
     }
 
     public function setResource(?Resource $Resource): static
     {
-        $this->Resource = $Resource;
+        $this->resource = $Resource;
 
         return $this;
     }
 
     public function getMob(): ?Mobs
     {
-        return $this->Mob;
+        return $this->mob;
     }
 
     public function setMob(?Mobs $Mob): static
     {
-        $this->Mob = $Mob;
+        $this->mob = $Mob;
 
         return $this;
     }

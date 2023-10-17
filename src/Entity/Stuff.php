@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
 class Stuff
@@ -19,27 +20,33 @@ class Stuff
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('mob:drops')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[Groups('mob:drops')]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Groups('mob:drops')]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('mob:drops')]
     private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('mob:drops')]
     private ?Rarity $rarity = null;
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('mob:drops')]
     private ?TypeStuff $type = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class, cascade: ['persist'])]

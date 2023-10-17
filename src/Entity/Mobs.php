@@ -2,101 +2,131 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MobsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Metadata\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
+#[ApiResource(operations: [
+    new Get(
+        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity']],
+    )
+])]
 class Mobs
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('drops')]
+    #[Groups('resource:drops', 'mob:item')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups('drops')]
+    #[Groups('resource:drops', 'mob:item')]
+    #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $actionPoints = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $movementPoints = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $initiative = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $tackle = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $dodge = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $parry = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $criticalHit = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $attackWater = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $attackEarth = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $attackWind = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $attackFire = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $resWater = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $resEarth = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $resWind = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $resFire = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $levelMin = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $levelMax = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?bool $isCapturable = null;
 
     #[ORM\ManyToOne(inversedBy: 'Mobs')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups('drops')]
+    #[Groups(['resource:drops', 'mob:item'])]
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('drops')]
+    #[Groups('resource:drops')]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
+    #[Groups('mob:item')]
     private ?int $hp = null;
 
-    #[ORM\OneToMany(mappedBy: 'Mob', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'mob', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    #[Groups('mob:drops')]
     private Collection $resourceDrops;
 
     #[ORM\OneToMany(mappedBy: 'mob', targetEntity: StuffDrop::class, orphanRemoval: true)]
+    #[Groups('mob:drops')]
     private Collection $stuffDrops;
 
     public function __construct() {

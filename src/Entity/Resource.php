@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['resource:item', 'rarity', 'drops', 'recipes', 'recipeIngredients']],
+        normalizationContext:['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients']],
     )
 ])]
 class Resource
@@ -28,21 +28,21 @@ class Resource
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('resource:item')]
+    #[Groups(['resource:item', 'mob:drops'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups('resource:item')]
+    #[Groups(['resource:item', 'mob:drops'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups('resource:item')]
+    #[Groups(['resource:item', 'mob:drops'])]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('resource:item')]
+    #[Groups(['resource:item'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'resources')]
@@ -51,11 +51,11 @@ class Resource
     private ?Rarity $rarity = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('resource:item')]
+    #[Groups(['resource:item', 'mob:drops'])]
     private ?string $imageUrl = null;
 
-    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
-    #[Groups('drops')]
+    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
+    #[Groups('resource:drops')]
     private ?Collection $resourceDrops;
 
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Recipe::class, cascade: ['persist'])]
