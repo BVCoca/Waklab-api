@@ -7,6 +7,7 @@ use App\Repository\FamilyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: FamilyRepository::class)]
 #[ApiResource]
@@ -19,6 +20,10 @@ class Family
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'family', targetEntity: Mobs::class, orphanRemoval: true)]
     private Collection $Mobs;
@@ -41,6 +46,18 @@ class Family
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource]
@@ -20,6 +21,10 @@ class Resource
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    private ?string $slug = null;
 
     #[ORM\Column]
     private ?int $level = null;
@@ -59,6 +64,18 @@ class Resource
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
