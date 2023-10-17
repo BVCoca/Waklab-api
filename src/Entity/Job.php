@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\JobRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 class Job
@@ -15,16 +16,20 @@ class Job
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('recipes')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[Groups('recipes')]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('recipes')]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('recipes')]
     private ?string $icon = null;
 
     public function getId(): ?int

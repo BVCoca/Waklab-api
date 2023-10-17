@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
-#[ApiResource]
 class Mobs
 {
     #[ORM\Id]
@@ -19,10 +19,12 @@ class Mobs
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('drops')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[Groups('drops')]
     private ?string $slug = null;
 
     #[ORM\Column]
@@ -81,9 +83,11 @@ class Mobs
 
     #[ORM\ManyToOne(inversedBy: 'Mobs')]
     #[ORM\JoinColumn(nullable: true)]
+    #[Groups('drops')]
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('drops')]
     private ?string $imageUrl = null;
 
     #[ORM\Column]

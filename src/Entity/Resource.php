@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ResourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,46 +10,67 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Metadata\Get;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
-#[ApiResource]
+#[ApiResource(operations: [
+    new Get(
+        normalizationContext:['groups' => ['resource:item', 'rarity', 'drops', 'recipes', 'recipeIngredients']],
+    )
+])]
 class Resource
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('resource:item')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[Groups('resource:item')]
+    #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Groups('resource:item')]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('resource:item')]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'resources')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('rarity')]
     private ?Rarity $rarity = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('resource:item')]
     private ?string $imageUrl = null;
 
     #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $resourceDrops;
+    #[Groups('drops')]
+    private ?Collection $resourceDrops;
 
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Recipe::class, cascade: ['persist'])]
-    private Collection $recipes;
+    #[Groups('recipes')]
+    private ?Collection $recipes;
+
+    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: RecipeIngredient::class, cascade: ['persist'])]
+    #[Groups('recipeIngredients')]
+    private ?Collection $recipeIngredients;
 
     public function __construct()
     {
         $this->resourceDrops = new ArrayCollection();
         $this->recipes = new ArrayCollection();
+        $this->recipeIngredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,9 +153,16 @@ class Resource
     /**
      * @return Collection<int, ResourceDrop>
      */
-    public function getResourceDrops(): Collection
+    public function getResourceDrops(): ?Collection
     {
         return $this->resourceDrops;
+    }
+
+    public function setResourceDrops($value): static
+    {
+        $this->resourceDrops = $value;
+
+        return $this;
     }
 
     public function addResourceDrop(ResourceDrop $resourceDrop): static
@@ -161,9 +190,16 @@ class Resource
     /**
      * @return Collection<int, Recipe>
      */
-    public function getRecipes(): Collection
+    public function getRecipes(): ?Collection
     {
         return $this->recipes;
+    }
+
+    public function setRecipes($value): static
+    {
+        $this->recipes = $value;
+
+        return $this;
     }
 
     public function addRecipe(Recipe $recipe): static
@@ -182,6 +218,43 @@ class Resource
             // set the owning side to null (unless already changed)
             if ($recipe->getResource() === $this) {
                 $recipe->setResource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipeIngredients(): ?Collection
+    {
+        return $this->recipeIngredients;
+    }
+
+    public function setRecipeIngredients($value): static
+    {
+        $this->recipeIngredients = $value;
+
+        return $this;
+    }
+
+    public function addRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if (!$this->recipeIngredients->contains($recipeIngredient)) {
+            $this->recipeIngredients->add($recipeIngredient);
+            $recipeIngredient->setResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipeIngredient->getResource() === $this) {
+                $recipeIngredient->setResource(null);
             }
         }
 
