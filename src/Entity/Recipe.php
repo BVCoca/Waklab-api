@@ -6,6 +6,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -16,18 +17,23 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\ManyToOne]
+    #[Groups('recipes', 'recipeIngredients')]
     private ?Job $job = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('recipes', 'recipeIngredients')]
     private ?int $job_level = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true, cascade: ['persist'])]
-    private Collection $recipeIngredients;
+    #[Groups('recipes')]
+    private ?Collection $recipeIngredients;
 
     #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
+    #[Groups('recipeIngredients')]
     private ?Resource $resource = null;
 
     #[ORM\ManyToOne(inversedBy: 'recipes', cascade: ['persist'])]
+    #[Groups('recipeIngredients')]
     private ?Stuff $stuff = null;
 
     public function __construct()
@@ -67,9 +73,16 @@ class Recipe
     /**
      * @return Collection<int, RecipeIngredient>
      */
-    public function getRecipeIngredients(): Collection
+    public function getRecipeIngredients(): ?Collection
     {
         return $this->recipeIngredients;
+    }
+
+    public function setRecipeIngredients($value): static
+    {
+        $this->recipeIngredients = $value;
+
+        return $this;
     }
 
     public function addRecipeIngredient(RecipeIngredient $recipeIngredient): static

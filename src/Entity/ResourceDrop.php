@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ResourceDropRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResourceDropRepository::class)]
 class ResourceDrop
@@ -15,13 +16,16 @@ class ResourceDrop
 
     #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('drops')]
     private ?Resource $Resource = null;
 
     #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('drops')]
     private ?Mobs $Mob = null;
 
     #[ORM\Column]
+    #[Groups('drops')]
     private ?int $value = null;
 
     public function getId(): ?int

@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
-#[ApiResource]
 class Stuff
 {
     #[ORM\Id]
@@ -65,10 +64,13 @@ class Stuff
     private ?int $criticalEffectValue = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffDrop::class, orphanRemoval: true)]
-    private Collection $stuffDrops;
+    private ?Collection $stuffDrops;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: Recipe::class)]
-    private Collection $recipes;
+    private ?Collection $recipes;
+
+    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: RecipeIngredient::class, cascade: ['persist'])]
+    private ?Collection $recipeIngredients;
 
     public function __construct()
     {
@@ -271,9 +273,16 @@ class Stuff
     /**
      * @return Collection<int, StuffDrop>
      */
-    public function getStuffDrops(): Collection
+    public function getStuffDrops(): ?Collection
     {
         return $this->stuffDrops;
+    }
+
+    public function setStuffDrops($value): static
+    {
+        $this->stuffDrops = $value;
+
+        return $this;
     }
 
     public function addStuffDrop(StuffDrop $stuffDrop): static
@@ -301,9 +310,16 @@ class Stuff
     /**
      * @return Collection<int, Recipe>
      */
-    public function getRecipes(): Collection
+    public function getRecipes(): ?Collection
     {
         return $this->recipes;
+    }
+
+    public function setRecipes($value): static
+    {
+        $this->recipes = $value;
+
+        return $this;
     }
 
     public function addRecipe(Recipe $recipe): static
@@ -322,6 +338,43 @@ class Stuff
             // set the owning side to null (unless already changed)
             if ($recipe->getStuff() === $this) {
                 $recipe->setStuff(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipeIngredients(): ?Collection
+    {
+        return $this->recipeIngredients;
+    }
+
+    public function setRecipeIngredients($value): static
+    {
+        $this->recipeIngredients = $value;
+
+        return $this;
+    }
+
+    public function addRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if (!$this->recipeIngredients->contains($recipeIngredient)) {
+            $this->recipeIngredients->add($recipeIngredient);
+            $recipeIngredient->setStuff($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeIngredient(RecipeIngredient $recipeIngredient): static
+    {
+        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipeIngredient->getStuff() === $this) {
+                $recipeIngredient->setStuff(null);
             }
         }
 
