@@ -12,7 +12,7 @@ final class ResourceNormalizer implements NormalizerInterface, NormalizerAwareIn
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'CLEAR_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'RESOURCE_NORMALIZER_ALREADY_CALLED';
 
     protected $baseUrl;
 
@@ -26,7 +26,7 @@ final class ResourceNormalizer implements NormalizerInterface, NormalizerAwareIn
         $context[self::ALREADY_CALLED] = true;
 
         // Suppression des resourceDrop des ingrédients des recettes
-        foreach( $object->getRecipes() as $recipes ) {
+        foreach( $object->getRecipes() ?? [] as $recipes ) {
             foreach($recipes->getRecipeIngredients() as $ingredients) {
 
                 $ingredients->setRecipe(null);
@@ -45,7 +45,7 @@ final class ResourceNormalizer implements NormalizerInterface, NormalizerAwareIn
             }
         }
 
-        foreach( $object->getResourceDrops() as $drops ) {
+        foreach( $object->getResourceDrops() ?? [] as $drops ) {
             $drops->setResource(null);
         }
 

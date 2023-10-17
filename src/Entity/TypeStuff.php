@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: TypeStuffRepository::class)]
 class TypeStuff
 {
@@ -16,13 +18,16 @@ class TypeStuff
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('typeStuff')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[Groups('typeStuff')]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('typeStuff')]
     private ?string $icon = null;
 
     #[ORM\OneToMany(mappedBy: 'type', targetEntity: Stuff::class)]

@@ -19,12 +19,12 @@ class Family
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('drops')]
+    #[Groups('family')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups('drops')]
+    #[Groups('family')]
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'family', targetEntity: Mobs::class, orphanRemoval: true)]

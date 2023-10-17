@@ -16,20 +16,20 @@ class Job
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('recipes')]
+    #[Groups('job')]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups('recipes')]
+    #[Groups('job')]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('recipes')]
+    #[Groups('job')]
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('recipes')]
+    #[Groups('job')]
     private ?string $icon = null;
 
     public function getId(): ?int

@@ -17,11 +17,11 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    #[Groups('recipes', 'recipeIngredients')]
+    #[Groups('job')]
     private ?Job $job = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups('recipes', 'recipeIngredients')]
+    #[Groups('job')]
     private ?int $job_level = null;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeIngredient::class, orphanRemoval: true, cascade: ['persist'])]
