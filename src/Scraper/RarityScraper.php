@@ -10,7 +10,15 @@ class RarityScraper extends Scraper {
         return '';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'rarity';
+    }
+
+    public function getEntity(array $data = [], array &$scraped_data = []) {
+        return Rarity::class;
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Rarity::class
@@ -22,7 +30,7 @@ class RarityScraper extends Scraper {
         return 'Rarity';
     }
 
-    public function scrap(array &$scraped_data): array {
+    public function fetchAllSlugs(array &$scraped_data) {
         $datas = [
             [
                 'Qualité commune',
@@ -58,7 +66,7 @@ class RarityScraper extends Scraper {
             ]
         ];
 
-        return array_map(function($data, $key) use(&$scraped_data) {
+        foreach($datas as $key => $data) {
             $obj = new Rarity();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
@@ -68,9 +76,12 @@ class RarityScraper extends Scraper {
 
             $this->entityManager->persist($obj);
             $this->entityManager->flush();
+        }
+    }
 
-            return $obj;
-        }, $datas, array_keys($datas));
+    public function scrap(array &$scraped_data)
+    {
+        
     }
 
     /**

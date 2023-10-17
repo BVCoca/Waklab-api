@@ -11,7 +11,21 @@ class MobScraper extends Scraper {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/monstres';
     }
 
-    public function getEntities() : array
+    public function getKey() : string {
+        return 'mob';
+    }
+
+    public function getEntity(array $data = [], array &$scraped_data = []) {
+        $mob = new Mobs();
+        $mob->setName($data['name'] ?? 'Sans nom');
+        $mob->setImageUrl($data['image']);
+        $mob->setLevelMin($data['level'][0][0]);
+        $mob->setLevelMax($data['level'][0][1] ?? $data['level'][0][0]);
+
+        return $mob;
+    }
+
+    public function getLinkedEntities() : array
     {
         return [
             Mobs::class,
@@ -25,16 +39,9 @@ class MobScraper extends Scraper {
     }
 
     public function getEntityData(string $slug, array &$scraped_data = []) {
-        $mob = new Mobs();
+        $mob = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
-        $mob->setName(substr($crawler->filter("title")->innerText(), 0 , strpos($crawler->filter("title")->innerText(), '-')));
-        $mob->setImageUrl($crawler->filter(".ak-encyclo-detail-illu.ak-encyclo-detail-illu-monster > img")->attr('data-src'));
-
-        // Niveau
-        preg_match_all('/\d+/i', $crawler->filter(".ak-encyclo-detail-level")->innerText(), $match);
-        $mob->setLevelMin($match[0][0]);
-        $mob->setLevelMax($match[0][1] ?? $match[0][0]);
 
         // Caractéristiques
         $crawler->filter(".ak-container.ak-content-list.ak-displaymode-col > .ak-list-element > .ak-main > .ak-main-content > .ak-content > .ak-title")->each(function($node) use ($mob) {
@@ -129,8 +136,6 @@ class MobScraper extends Scraper {
 
             $mob->setFamily($scraped_data['family_mob'][$family_label]);
         }
-
-        $scraped_data['mob'][$slug] = $mob;
 
         return $mob;
     }

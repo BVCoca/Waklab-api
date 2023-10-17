@@ -34,15 +34,16 @@ class Resource
     #[ORM\Column(length: 255)]
     private ?string $imageUrl = null;
 
-    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $resourceDrops;
 
-    #[ORM\OneToOne(mappedBy: 'resource', cascade: ['persist', 'remove'])]
-    private ?Recipe $recipe = null;
+    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Recipe::class, cascade: ['persist'])]
+    private Collection $recipes;
 
     public function __construct()
     {
         $this->resourceDrops = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,24 +141,32 @@ class Resource
         return $this;
     }
 
-    public function getRecipe(): ?Recipe
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
     {
-        return $this->recipe;
+        return $this->recipes;
     }
 
-    public function setRecipe(?Recipe $recipe): static
+    public function addRecipe(Recipe $recipe): static
     {
-        // unset the owning side of the relation if necessary
-        if ($recipe === null && $this->recipe !== null) {
-            $this->recipe->setResource(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($recipe !== null && $recipe->getResource() !== $this) {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
             $recipe->setResource($this);
         }
 
-        $this->recipe = $recipe;
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getResource() === $this) {
+                $recipe->setResource(null);
+            }
+        }
 
         return $this;
     }

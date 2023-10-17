@@ -13,11 +13,11 @@ class StuffCaracteristic
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'stuffCaracteristics')]
+    #[ORM\ManyToOne(inversedBy: 'stuffCaracteristics', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Stuff $stuff = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Caracteristic $caracteristic = null;
 
