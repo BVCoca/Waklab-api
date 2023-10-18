@@ -21,10 +21,11 @@ class StuffDrop
 
     #[ORM\ManyToOne(inversedBy: 'stuffDrops', cascade:['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('stuff:drops')]
     private ?Mobs $mob = null;
 
     #[ORM\Column]
-    #[Groups(['resource:drops', 'mob:drops'])]
+    #[Groups(['resource:drops', 'mob:drops', 'stuff:drops'])]
     private ?float $value = null;
 
     public function getId(): ?int

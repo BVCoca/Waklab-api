@@ -87,6 +87,7 @@ class Stuff
     private ?int $criticalEffectValue = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffDrop::class, orphanRemoval: true)]
+    #[Groups('stuff:drops')]
     private ?Collection $stuffDrops;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: Recipe::class)]

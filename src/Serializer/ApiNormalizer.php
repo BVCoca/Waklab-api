@@ -2,17 +2,18 @@
 
 namespace App\Serializer;
 
+use App\Entity\Resource;
 use App\Entity\Stuff;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
-final class StuffNormalizer implements NormalizerInterface, NormalizerAwareInterface
+final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'STUFF_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'API_NORMALIZER_ALREADY_CALLED';
 
     protected $baseUrl;
 
@@ -28,7 +29,11 @@ final class StuffNormalizer implements NormalizerInterface, NormalizerAwareInter
         // Suppression des resourceDrop des ingrédients des recettes
         foreach( $object->getRecipes() ?? [] as $recipe ) {
 
-            $recipe->setStuff(null);
+            if($object instanceof Resource) {
+                $recipe->setResource(null);
+            } else {
+                $recipe->setStuff(null);
+            }
 
             foreach($recipe->getRecipeIngredients() as $ingredients) {
 
@@ -42,16 +47,27 @@ final class StuffNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
         }
 
-        foreach( $object->getStuffDrops() ?? [] as $drop ) {
-            $drop->setStuff(null);
+        if($object instanceof Resource) { 
+            $drops = $object->getResourceDrops();
+        } else {
+            $drops = $object->getStuffDrops();
+        }
+
+        foreach( $drops ?? [] as $drop ) {
+            if($object instanceof Resource) {  
+                $drop->setResource(null);
+            } else {
+                $drop->setStuff(null);
+            }
         }
 
         // Ajout des ingrédients de recettes, on peut pas utiliser les Groups car ça fait une boucle infinie
         foreach($object->getRecipeIngredients() ?? [] as $recipeIngredients) {
             $recipeIngredients->getRecipe()->setRecipeIngredients(null);
             $recipeIngredients->setStuff(null);
+            $recipeIngredients->setResource(null);
 
-            if($recipeIngredients->getResource()) {
+            if($recipeIngredients->getRecipe()->getResource()) {
                 $recipeIngredients->getRecipe()->getResource()->clear();
             } else {
                 $recipeIngredients->getRecipe()->getStuff()->clear();
@@ -67,6 +83,6 @@ final class StuffNormalizer implements NormalizerInterface, NormalizerAwareInter
             return false;
         }
         
-        return $data instanceof Stuff;
+        return ($data instanceof Resource || $data instanceof Stuff);
     }
 }

@@ -27,12 +27,12 @@ class Mobs
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('resource:drops', 'mob:item')]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups('resource:drops', 'mob:item')]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
@@ -97,11 +97,11 @@ class Mobs
     private ?int $resFire = null;
 
     #[ORM\Column]
-    #[Groups('mob:item')]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
-    #[Groups('mob:item')]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
     private ?int $levelMax = null;
 
     #[ORM\Column]
@@ -110,11 +110,11 @@ class Mobs
 
     #[ORM\ManyToOne(inversedBy: 'Mobs')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['resource:drops', 'mob:item'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('resource:drops')]
+    #[Groups(['resource:drops', 'stuff:drops', 'mob:item'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
