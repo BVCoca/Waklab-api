@@ -2,6 +2,10 @@ api_platform:
     title: Waklab API
     version: 1.0.0
     # Good defaults for REST APIs
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']
+    elasticsearch:
+        hosts: ['%env(ELASTICSEARCH_URL)%']
     defaults:
         stateless: true
         cache_headers:

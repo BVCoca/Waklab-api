@@ -1,7 +1,7 @@
 # Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
 fos_elastica:
     clients:
-        default: { url: '%env(ELASTICSEARCH_URL)%' }
+        default: { url: '%env(ELASTICSEARCH_URL)%/' }
     indexes:
         resource:
             persistence:
@@ -10,5 +10,42 @@ fos_elastica:
                 provider: ~
                 finder: ~
             properties:
-                name: ~
-                
+                name: 
+                    type: 'text'
+                description:
+                    type: 'text'
+                rarity: 
+                    type: 'nested'
+                    properties:
+                        name: 
+                            type: 'text' 
+        mob:
+            persistence:
+                driver: orm
+                model: App\Entity\Mobs
+                provider: ~
+                finder: ~
+            properties:
+                name: 
+                    type: 'text'
+                family: 
+                    type: 'nested'
+                    properties:
+                        name: 
+                            type: 'text'
+        stuff:
+            persistence:
+                driver: orm
+                model: App\Entity\Stuff
+                provider: ~
+                finder: ~
+            properties:
+                name: 
+                    type: 'text'
+                description:
+                    type: 'text'
+                type: 
+                    type: 'nested'
+                    properties:
+                        name: 
+                            type: 'text'
