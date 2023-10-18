@@ -1,0 +1,14 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { url: '%env(ELASTICSEARCH_URL)%' }
+    indexes:
+        resource:
+            persistence:
+                driver: orm
+                model: App\Entity\Resource
+                provider: ~
+                finder: ~
+            properties:
+                name: ~
+                
