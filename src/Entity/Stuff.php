@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StuffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,14 +10,21 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Metadata\Get;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
+#[ApiResource(operations: [
+    new Get(
+        normalizationContext:['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'typeStuff', 'job', 'family']],
+    )
+])]
 class Stuff
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -25,6 +33,7 @@ class Stuff
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[ApiProperty(identifier: true)]
     #[Groups(['mob:drops', 'recipeIngredients'])]
     private ?string $slug = null;
 
@@ -50,33 +59,42 @@ class Stuff
     private ?TypeStuff $type = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class, cascade: ['persist'])]
-    private Collection $stuffCaracteristics;
+    #[Groups('stuff:item')]
+    private ?Collection $stuffCaracteristics;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('stuff:item')]
     private ?string $zoneType = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('stuff:item')]
     private ?int $costPa = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('stuff:item')]
     private ?int $requiredPo = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('stuff:item')]
     private ?string $effectType = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('stuff:item')]
     private ?int $effectValue = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups('stuff:item')]
     private ?int $criticalEffectValue = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffDrop::class, orphanRemoval: true)]
     private ?Collection $stuffDrops;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: Recipe::class)]
+    #[Groups('recipes')]
     private ?Collection $recipes;
 
-    #[ORM\OneToMany(mappedBy: 'resource', targetEntity: RecipeIngredient::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: RecipeIngredient::class, cascade: ['persist'])]
+    #[Groups('recipeIngredients')]
     private ?Collection $recipeIngredients;
 
     public function __construct()
@@ -178,9 +196,16 @@ class Stuff
     /**
      * @return Collection<int, StuffCaracteristic>
      */
-    public function getStuffCaracteristics(): Collection
+    public function getStuffCaracteristics(): ?Collection
     {
         return $this->stuffCaracteristics;
+    }
+
+    public function setStuffCaracteristics($value): static
+    {
+        $this->stuffCaracteristics = $value;
+
+        return $this;
     }
 
     public function addStuffCaracteristic(StuffCaracteristic $stuffCaracteristic): static
@@ -386,5 +411,21 @@ class Stuff
         }
 
         return $this;
+    }
+
+    /**
+     * Nettoie l'objet pour l'envoyer à l'API
+     */
+    public function clear() {
+        $this->setDescription(null);
+        $this->setStuffDrops(null);
+        $this->setRecipes(null);
+        $this->setRecipeIngredients(null);
+        $this->setStuffCaracteristics(null);
+        $this->setCostPa(null);
+        $this->setRequiredPo(null);
+        $this->setEffectType(null);
+        $this->setEffectValue(null);
+        $this->setCriticalEffectValue(null);
     }
 }

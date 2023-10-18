@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CaracteristicRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CaracteristicRepository::class)]
 class Caracteristic
@@ -14,9 +15,11 @@ class Caracteristic
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('stuff:item')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('stuff:item')]
     private ?string $icon = null;
 
     public function getId(): ?int

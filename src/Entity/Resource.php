@@ -28,17 +28,17 @@ class Resource
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:item', 'mob:drops'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:item', 'mob:drops'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['resource:item', 'mob:drops'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -51,7 +51,7 @@ class Resource
     private ?Rarity $rarity = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:item', 'mob:drops'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
     private ?string $imageUrl = null;
 
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]
@@ -259,5 +259,15 @@ class Resource
         }
 
         return $this;
+    }
+
+    /**
+     * Nettoie l'objet pour l'envoyer à l'API
+     */
+    public function clear() {
+        $this->setDescription(null);
+        $this->setResourceDrops(null);
+        $this->setRecipes(null);
+        $this->setRecipeIngredients(null);
     }
 }
