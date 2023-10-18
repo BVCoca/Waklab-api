@@ -15,6 +15,8 @@
 
 - Documentation API : http://localhost:7071/api
 - PhpMyadmin : http://localhost:7070/
+- ES : http://localhost:7073/
+- Kibana : http://localhost:7074/
 
 ## URL du serveur de production
 
