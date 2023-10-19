@@ -69,7 +69,7 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 
             if($recipeIngredients->getRecipe()->getResource()) {
                 $recipeIngredients->getRecipe()->getResource()->clear();
-            } else {
+            } else if($recipeIngredients->getRecipe()->getStuff()) {
                 $recipeIngredients->getRecipe()->getStuff()->clear();
             }
         }
