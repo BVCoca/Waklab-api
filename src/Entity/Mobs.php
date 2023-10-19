@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MobsRepository;
@@ -10,14 +11,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
     new Get(
         normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'typeStuff', 'family']],
+    ),
+    new GetCollection(
+        normalizationContext:['groups' => ['mob:search', 'family']]
     )
 ])]
+#[ApiFilter(FullTextFilter::class, properties:['index' => 'mob', 'fields' => ['name^5', 'family.name']])]
 class Mobs
 {
     #[ORM\Id]
@@ -27,12 +34,12 @@ class Mobs
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
@@ -97,11 +104,11 @@ class Mobs
     private ?int $resFire = null;
 
     #[ORM\Column]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
     private ?int $levelMax = null;
 
     #[ORM\Column]
@@ -114,7 +121,7 @@ class Mobs
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:drops', 'stuff:drops', 'mob:item'])]
+    #[Groups(['resource:drops', 'stuff:drops', 'mob:item', 'mob:search'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]

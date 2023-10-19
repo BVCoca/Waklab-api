@@ -9,6 +9,17 @@ fos_elastica:
                 model: App\Entity\Resource
                 provider: ~
                 finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 20
             properties:
                 name: 
                     type: 'text'
@@ -16,6 +27,7 @@ fos_elastica:
                     type: 'text'
                 rarity: 
                     type: 'nested'
+                    include_in_root : true
                     properties:
                         name: 
                             type: 'text' 
@@ -25,20 +37,45 @@ fos_elastica:
                 model: App\Entity\Mobs
                 provider: ~
                 finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 15
             properties:
                 name: 
                     type: 'text'
+                    analyzer : 'partial_analyzer'
                 family: 
                     type: 'nested'
+                    include_in_root : true
                     properties:
-                        name: 
+                        name:
                             type: 'text'
+                            analyzer : 'partial_analyzer'
         stuff:
             persistence:
                 driver: orm
                 model: App\Entity\Stuff
                 provider: ~
                 finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 15
             properties:
                 name: 
                     type: 'text'
@@ -46,6 +83,7 @@ fos_elastica:
                     type: 'text'
                 type: 
                     type: 'nested'
+                    include_in_root : true
                     properties:
                         name: 
                             type: 'text'
