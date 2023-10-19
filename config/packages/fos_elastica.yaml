@@ -19,7 +19,7 @@ fos_elastica:
                         partial:
                             type: 'edge_ngram'
                             min_gram: 3
-                            max_gram: 20
+                            max_gram: 15
             properties:
                 name: 
                     type: 'text'

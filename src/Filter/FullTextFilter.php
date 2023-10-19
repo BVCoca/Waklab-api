@@ -38,7 +38,7 @@ class FullTextFilter extends AbstractFilter
             '_source' => false, // you don't need the source document, just the ids
             'size' => 10000, // elasticsearch limit per page
             'query' => [
-                'multi_match' => [
+                'query_string' => [
                     'query' => $value,
                     'fields' => $this->properties['fields']
                 ]
@@ -56,6 +56,8 @@ class FullTextFilter extends AbstractFilter
         // search for the ids in the query
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $queryBuilder->andWhere("$rootAlias.id IN (:fulltext_search_filter_ids)");
+        $queryBuilder->addSelect("FIELD($rootAlias.id, :fulltext_search_filter_ids) AS HIDDEN orderScoring");
+        $queryBuilder->addOrderBy("orderScoring", "asc");
         $queryBuilder->setParameter('fulltext_search_filter_ids', $ids);
     }
 

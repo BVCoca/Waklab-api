@@ -117,7 +117,7 @@ class Mobs
 
     #[ORM\ManyToOne(inversedBy: 'Mobs')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'family'])]
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
