@@ -1,0 +1,95 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { url: '%env(ELASTICSEARCH_URL)%/' }
+    indexes:
+        resource:
+            persistence:
+                driver: orm
+                model: App\Entity\Resource
+                provider: ~
+                finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 15
+            properties:
+                name: 
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                description:
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                rarity: 
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name: 
+                            type: 'text' 
+                            analyzer : 'partial_analyzer'
+        mob:
+            persistence:
+                driver: orm
+                model: App\Entity\Mobs
+                provider: ~
+                finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 15
+            properties:
+                name: 
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                family: 
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'text'
+                            analyzer : 'partial_analyzer'
+        stuff:
+            persistence:
+                driver: orm
+                model: App\Entity\Stuff
+                provider: ~
+                finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : 'lowercase'
+                    tokenizer:
+                        partial:
+                            type: 'edge_ngram'
+                            min_gram: 3
+                            max_gram: 15
+            properties:
+                name: 
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                description:
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                type: 
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name: 
+                            type: 'text'
+                            analyzer : 'partial_analyzer'
