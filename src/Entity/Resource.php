@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ResourceRepository;
@@ -11,14 +12,20 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
         normalizationContext:['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'typeStuff', 'job', 'family']],
+    ),
+    new GetCollection(
+        normalizationContext:['groups' => ['resource:search','rarity']]
     )
 ])]
+#[ApiFilter(FullTextFilter::class, properties:['index' => 'resource', 'fields' => ['name']])]
 class Resource
 {
     #[ORM\Id]
@@ -28,21 +35,21 @@ class Resource
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['resource:item'])]
+    #[Groups(['resource:item','resource:search'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'resources')]
@@ -51,7 +58,7 @@ class Resource
     private ?Rarity $rarity = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients', 'resource:search'])]
     private ?string $imageUrl = null;
 
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: ResourceDrop::class, orphanRemoval: true, cascade: ['persist'])]

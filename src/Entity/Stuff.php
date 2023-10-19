@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\StuffRepository;
@@ -11,14 +12,20 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
 #[ApiResource(operations: [
     new Get(
         normalizationContext:['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'typeStuff', 'job', 'family']],
+    ),
+    new GetCollection(
+        normalizationContext:['groups' => ['stuff:search', 'typeStuff', 'rarity']]
     )
 ])]
+#[ApiFilter(FullTextFilter::class, properties:['index' => 'stuff', 'fields' => ['name']])]
 class Stuff
 {
     #[ORM\Id]
@@ -28,29 +35,30 @@ class Stuff
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['mob:drops', 'recipeIngredients'])]
+    #[Groups(['mob:drops', 'recipeIngredients', 'stuff:search'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
     #[ApiProperty(identifier: true)]
-    #[Groups(['mob:drops', 'recipeIngredients'])]
+    #[Groups(['mob:drops', 'recipeIngredients', 'stuff:search'])]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['mob:drops', 'recipeIngredients'])]
+    #[Groups(['mob:drops', 'recipeIngredients', 'stuff:search'])]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups('stuff:search')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['mob:drops', 'recipeIngredients'])]
+    #[Groups(['mob:drops', 'recipeIngredients', 'stuff:search'])]
     private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['mob:drops', 'recipeIngredients'])]
+    #[Groups(['mob:drops', 'recipeIngredients', 'rarity'])]
     private ?Rarity $rarity = null;
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]

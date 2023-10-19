@@ -23,14 +23,17 @@ fos_elastica:
             properties:
                 name: 
                     type: 'text'
+                    analyzer : 'partial_analyzer'
                 description:
                     type: 'text'
+                    analyzer : 'partial_analyzer'
                 rarity: 
                     type: 'nested'
                     include_in_root : true
                     properties:
                         name: 
                             type: 'text' 
+                            analyzer : 'partial_analyzer'
         mob:
             persistence:
                 driver: orm
@@ -79,11 +82,14 @@ fos_elastica:
             properties:
                 name: 
                     type: 'text'
+                    analyzer : 'partial_analyzer'
                 description:
                     type: 'text'
+                    analyzer : 'partial_analyzer'
                 type: 
                     type: 'nested'
                     include_in_root : true
                     properties:
                         name: 
                             type: 'text'
+                            analyzer : 'partial_analyzer'
