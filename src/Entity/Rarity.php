@@ -26,6 +26,7 @@ class Rarity
     private ?string $icon = null;
 
     #[ORM\Column]
+    #[Groups('rarity')]
     private ?int $value = null;
 
     #[ORM\OneToMany(mappedBy: 'rarity', targetEntity: Resource::class)]
