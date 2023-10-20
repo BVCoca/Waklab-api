@@ -22,3 +22,29 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Search\MultiIndex:
+        arguments:
+            $name: 'all'
+        calls:
+            - [ addIndices, [['@fos_elastica.index.mob', '@fos_elastica.index.stuff', '@fos_elastica.index.resource']]]
+
+    Elastica\SearchableInterface: '@App\Search\MultiIndex'
+
+    #FOS\ElasticaBundle\Transformer\ElasticaToModelTransformerCollection:
+    App\Search\ElasticaToModelTransformerCollection:
+        arguments:
+            - {
+                mob: '@fos_elastica.elastica_to_model_transformer.mob',
+                stuff: '@fos_elastica.elastica_to_model_transformer.stuff',
+                resource: '@fos_elastica.elastica_to_model_transformer.resource'
+              }
+
+    FOS\ElasticaBundle\Transformer\ElasticaToModelTransformerInterface: '@App\Search\ElasticaToModelTransformerCollection'
+
+    FOS\ElasticaBundle\Finder\TransformedFinder:
+        arguments:
+            - '@App\Search\MultiIndex'
+            - '@App\Search\ElasticaToModelTransformerCollection'
+
+    FOS\ElasticaBundle\Finder\PaginatedFinderInterface: '@FOS\ElasticaBundle\Finder\TransformedFinder'
+
