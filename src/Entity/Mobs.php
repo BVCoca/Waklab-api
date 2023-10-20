@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Elasticsearch\State\CollectionProvider;
+use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -12,19 +14,31 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\SearchController;
 use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'typeStuff', 'family']],
+        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['mob:search', 'family']]
-    )
+        normalizationContext:['groups' => ['mob:search', 'family']],
+        provider: CollectionProvider::class,
+        stateOptions: new Options(index: 'mob'),
+        extraProperties: [
+            'fields' => ['name^5', 'family.name']
+        ]
+    ),
+    new GetCollection(
+        name: 'search_all',
+        uriTemplate: '/search',
+        controller: SearchController::class,
+        normalizationContext:['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family','rarity', 'type']]
+    ),
 ])]
-#[ApiFilter(FullTextFilter::class, properties:['index' => 'mob', 'fields' => ['name^5', 'family.name']])]
+#[ApiFilter(FullTextFilter::class)]
 class Mobs
 {
     #[ORM\Id]
