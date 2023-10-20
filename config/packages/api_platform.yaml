@@ -7,7 +7,7 @@ api_platform:
     elasticsearch:
         hosts: ['%env(ELASTICSEARCH_URL)%']
     formats:
-        json:  ['application/json']
+        jsonld: ['application/ld+json']
         html: ['text/html']
     defaults:
         stateless: true
@@ -15,3 +15,4 @@ api_platform:
             vary: ['Content-Type', 'Authorization', 'Origin']
         extra_properties:
             standard_put: true
+        pagination_items_per_page: 20
