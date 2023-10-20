@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Elasticsearch\State\CollectionProvider;
+use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -19,13 +21,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'typeStuff', 'job', 'family']],
+        normalizationContext:['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['stuff:search', 'typeStuff', 'rarity']]
+        normalizationContext:['groups' => ['stuff:search', 'rarity', 'type']],
+        provider: CollectionProvider::class,
+        stateOptions: new Options(index: 'stuff'),
+        extraProperties: [
+            'fields' => ['name^5', 'type.name']
+        ]
     )
 ])]
-#[ApiFilter(FullTextFilter::class, properties:['index' => 'stuff', 'fields' => ['name']])]
+#[ApiFilter(FullTextFilter::class)]
 class Stuff
 {
     #[ORM\Id]
@@ -63,7 +70,7 @@ class Stuff
 
     #[ORM\ManyToOne(inversedBy: 'stuffs')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('typeStuff')]
+    #[Groups('type')]
     private ?TypeStuff $type = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class, cascade: ['persist'])]
@@ -111,6 +118,7 @@ class Stuff
         $this->stuffCaracteristics = new ArrayCollection();
         $this->stuffDrops = new ArrayCollection();
         $this->recipes = new ArrayCollection();
+        $this->recipeIngredients = new ArrayCollection();
     }
 
     public function getId(): ?int

@@ -21,19 +21,29 @@ fos_elastica:
                             min_gram: 3
                             max_gram: 15
             properties:
-                name: 
+                slug:
+                    type: 'text'
+                name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
                 description:
                     type: 'text'
                     analyzer : 'partial_analyzer'
-                rarity: 
+                level:
+                    type: 'integer'
+                imageUrl:
+                    type: 'text'
+                rarity:
                     type: 'nested'
                     include_in_root : true
                     properties:
-                        name: 
-                            type: 'text' 
+                        name:
+                            type: 'text'
                             analyzer : 'partial_analyzer'
+                        icon:
+                            type: 'text'
+                        value:
+                            type: 'integer'
         mob:
             persistence:
                 driver: orm
@@ -52,16 +62,26 @@ fos_elastica:
                             min_gram: 3
                             max_gram: 15
             properties:
-                name: 
+                slug:
+                    type: 'text'
+                name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
-                family: 
+                levelMin:
+                    type: 'integer'
+                levelMax:
+                    type: 'integer'
+                imageUrl:
+                    type: 'text'
+                family:
                     type: 'nested'
                     include_in_root : true
                     properties:
                         name:
                             type: 'text'
                             analyzer : 'partial_analyzer'
+                        slug:
+                            type: 'text'
         stuff:
             persistence:
                 driver: orm
@@ -80,16 +100,37 @@ fos_elastica:
                             min_gram: 3
                             max_gram: 15
             properties:
-                name: 
+                slug:
+                    type: 'text'
+                name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
                 description:
                     type: 'text'
                     analyzer : 'partial_analyzer'
-                type: 
+                level:
+                    type: 'integer'
+                imageUrl:
+                    type: 'text'
+                rarity:
                     type: 'nested'
                     include_in_root : true
                     properties:
-                        name: 
+                        name:
                             type: 'text'
                             analyzer : 'partial_analyzer'
+                        icon:
+                            type: 'text'
+                        value:
+                            type: 'integer'
+                type:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'text'
+                            analyzer : 'partial_analyzer'
+                        icon:
+                            type: 'text'
+                        slug:
+                            type: 'text'

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Elasticsearch\State\CollectionProvider;
+use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
@@ -19,13 +21,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'typeStuff', 'job', 'family']],
+        normalizationContext:['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['resource:search','rarity']]
+        normalizationContext:['groups' => ['resource:search', 'rarity']],
+        provider: CollectionProvider::class,
+        stateOptions: new Options(index: 'resource'),
+        extraProperties: [
+            'fields' => ['name^5', 'description']
+        ]
     )
 ])]
-#[ApiFilter(FullTextFilter::class, properties:['index' => 'resource', 'fields' => ['name']])]
+#[ApiFilter(FullTextFilter::class)]
 class Resource
 {
     #[ORM\Id]
