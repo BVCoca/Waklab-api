@@ -78,7 +78,7 @@ class MobScraper extends Scraper {
 
         // Boost
         $crawler->filter(".ak-icon-small.ak-boost")->each(function($node, $key) use ($mob) {
-            $value = intval(trim($node->siblings()->innerText(), '%'));
+            $value = intval(trim($node->nextAll()->innerText(), '%'));
 
             switch($key) {
                 case 0:
@@ -98,7 +98,7 @@ class MobScraper extends Scraper {
 
         // Résistance
         $crawler->filter(".ak-icon-small.ak-resist")->each(function($node, $key) use ($mob) {
-            $value = intval(trim($node->siblings()->innerText(), '%'));
+            $value = intval(trim($node->nextAll()->innerText(), '%'));
 
             switch($key) {
                 case 0:
