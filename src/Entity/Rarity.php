@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RarityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -83,7 +82,7 @@ class Rarity
     }
 
     /**
-     * @return Collection<int, Resource>
+     * @return Collection<int, resource>
      */
     public function getResources(): Collection
     {

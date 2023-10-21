@@ -6,36 +6,36 @@ use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Filter\FullTextFilter;
 use App\Repository\ResourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
+        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['resource:search', 'rarity']],
+        normalizationContext: ['groups' => ['resource:search', 'rarity']],
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'resource'),
         extraProperties: [
-            'fields' => ['name^5', 'description']
+            'fields' => ['name^5', 'description'],
         ],
         filters: [FullTextFilter::class]
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['slug']],
-        uriTemplate:"/resource/slugs",
-        paginationItemsPerPage:200
-    )
+        normalizationContext: ['groups' => ['slug']],
+        uriTemplate: '/resource/slugs',
+        paginationItemsPerPage: 200
+    ),
 ])]
 class Resource
 {
@@ -46,21 +46,21 @@ class Resource
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients', 'resource:search'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search','slug'])]
+    #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients', 'resource:search', 'slug'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients', 'resource:search'])]
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['resource:item','resource:search'])]
+    #[Groups(['resource:item', 'resource:search'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'resources')]
@@ -280,9 +280,10 @@ class Resource
     }
 
     /**
-     * Nettoie l'objet pour l'envoyer à l'API
+     * Nettoie l'objet pour l'envoyer à l'API.
      */
-    public function clear() {
+    public function clear()
+    {
         $this->setDescription(null);
         $this->setResourceDrops(null);
         $this->setRecipes(null);

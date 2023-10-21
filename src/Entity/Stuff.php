@@ -6,36 +6,36 @@ use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Filter\FullTextFilter;
 use App\Repository\StuffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StuffRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext:['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
+        normalizationContext: ['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['stuff:search', 'rarity', 'type']],
+        normalizationContext: ['groups' => ['stuff:search', 'rarity', 'type']],
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'stuff'),
         extraProperties: [
-            'fields' => ['name^5', 'type.name']
+            'fields' => ['name^5', 'type.name'],
         ],
         filters: [FullTextFilter::class]
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['slug']],
-        uriTemplate:"/stuff/slugs",
-        paginationItemsPerPage:200
-    )
+        normalizationContext: ['groups' => ['slug']],
+        uriTemplate: '/stuff/slugs',
+        paginationItemsPerPage: 200
+    ),
 ])]
 class Stuff
 {
@@ -50,7 +50,7 @@ class Stuff
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
     #[ApiProperty(identifier: true)]
     #[Groups(['mob:drops', 'recipeIngredients', 'stuff:search', 'slug'])]
     private ?string $slug = null;
@@ -435,9 +435,10 @@ class Stuff
     }
 
     /**
-     * Nettoie l'objet pour l'envoyer à l'API
+     * Nettoie l'objet pour l'envoyer à l'API.
      */
-    public function clear() {
+    public function clear()
+    {
         $this->setDescription(null);
         $this->setStuffDrops(null);
         $this->setRecipes(null);

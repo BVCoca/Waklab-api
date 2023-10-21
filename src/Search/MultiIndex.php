@@ -25,9 +25,9 @@ class MultiIndex extends Index
      *
      * @param \Elastica\Index|string $index Index object or string
      *
-     * @throws \Elastica\Exception\InvalidException
-     *
      * @return $this
+     *
+     * @throws \Elastica\Exception\InvalidException
      */
     public function addIndex($index)
     {
@@ -47,8 +47,6 @@ class MultiIndex extends Index
     /**
      * Add array of indices at once.
      *
-     * @param array $indices
-     *
      * @return $this
      */
     public function addIndices(array $indices = [])
@@ -61,8 +59,7 @@ class MultiIndex extends Index
     }
 
     /**
-     * Set array of indices
-     * @param array $indices
+     * Set array of indices.
      *
      * @return $this
      */
@@ -84,11 +81,8 @@ class MultiIndex extends Index
     /**
      * @param string|array|\Elastica\Query $query
      * @param int|array                    $options
-     * @param BuilderInterface             $builder
-     *
-     * @return Search
      */
-    public function createSearch($query = '', $options = null, ?BuilderInterface $builder = null): Search
+    public function createSearch($query = '', $options = null, BuilderInterface $builder = null): Search
     {
         $search = new Search($this->getClient(), $builder);
         $search->addIndices($this->getIndices());

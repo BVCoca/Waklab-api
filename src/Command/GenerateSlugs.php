@@ -52,7 +52,7 @@ class GenerateSlugs extends Command
         return Command::SUCCESS;
     }
 
-    private function slugify(string $text, string $divider = '-') : string
+    private function slugify(string $text, string $divider = '-'): string
     {
         $rules = <<<'RULES'
             :: Any-Latin;

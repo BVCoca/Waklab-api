@@ -8,17 +8,17 @@ use App\Scraper\MobScraper;
 use App\Scraper\RarityScraper;
 use App\Scraper\ResourceScraper;
 use App\Scraper\WeaponScraper;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\Table;
-use Doctrine\ORM\EntityManagerInterface;
 
 // the name of the command is what users type after "php bin/console"
 #[AsCommand(name: 'app:scrap-wakfu')]
-class Scraping extends Command {
-
+class Scraping extends Command
+{
     private EntityManagerInterface $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -29,8 +29,7 @@ class Scraping extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-        $output->writeln("<info>Start to scraping wakfu</info>");
+        $output->writeln('<info>Start to scraping wakfu</info>');
 
         $scrapers = [
             'rarity' => new RarityScraper($this->entityManager, $output),
@@ -38,11 +37,11 @@ class Scraping extends Command {
             'mob' => new MobScraper($this->entityManager, $output),
             'resource' => new ResourceScraper($this->entityManager, $output),
             'weapon' => new WeaponScraper($this->entityManager, $output),
-            'armor' => new ArmorScraper($this->entityManager, $output)
+            'armor' => new ArmorScraper($this->entityManager, $output),
         ];
 
         // On nettoie les données
-        foreach($scrapers as $scraper) {
+        foreach ($scrapers as $scraper) {
             $scraper->clear();
         }
 
@@ -50,21 +49,21 @@ class Scraping extends Command {
         $scraped_data = [];
 
         // On récolte tous les slugs
-        foreach($scrapers as $scraper) {
+        foreach ($scrapers as $scraper) {
             $scraper->fetchAllSlugs($scraped_data);
         }
 
         // On fait le scrapping
-        foreach($scrapers as $scraper) {
+        foreach ($scrapers as $scraper) {
             $scraper->scrap($scraped_data);
         }
 
         // Bilan du scraping
         $table = new Table($output);
         $table
-            ->setHeaderTitle("End of scraping wakfu - Summary")
+            ->setHeaderTitle('End of scraping wakfu - Summary')
             ->setHeaders(['Nom', 'Nombre'])
-            ->setRows(array_map(fn($type, $data) => [ucfirst($type), count($data)], array_keys($scraped_data), $scraped_data))
+            ->setRows(array_map(fn ($type, $data) => [ucfirst($type), count($data)], array_keys($scraped_data), $scraped_data))
             ->setStyle('box')
             ->setColumnWidths([30, 30]);
 

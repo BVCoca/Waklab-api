@@ -5,9 +5,9 @@ namespace App\Serializer;
 use App\Entity\Resource;
 use App\Entity\Stuff;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
@@ -22,24 +22,22 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
         $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
     }
 
-    public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
+    public function normalize($object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $context[self::ALREADY_CALLED] = true;
 
         // Suppression des resourceDrop des ingrédients des recettes
-        foreach( $object->getRecipes() ?? [] as $recipe ) {
-
-            if($object instanceof Resource) {
+        foreach ($object->getRecipes() ?? [] as $recipe) {
+            if ($object instanceof Resource) {
                 $recipe->setResource(null);
             } else {
                 $recipe->setStuff(null);
             }
 
-            foreach($recipe->getRecipeIngredients() as $ingredients) {
-
+            foreach ($recipe->getRecipeIngredients() as $ingredients) {
                 $ingredients->setRecipe(null);
 
-                if($ingredients->getResource()) {
+                if ($ingredients->getResource()) {
                     $ingredients->getResource()->clear();
                 } else {
                     $ingredients->getStuff()->clear();
@@ -47,14 +45,14 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
             }
         }
 
-        if($object instanceof Resource) { 
+        if ($object instanceof Resource) {
             $drops = $object->getResourceDrops();
         } else {
             $drops = $object->getStuffDrops();
         }
 
-        foreach( $drops ?? [] as $drop ) {
-            if($object instanceof Resource) {  
+        foreach ($drops ?? [] as $drop) {
+            if ($object instanceof Resource) {
                 $drop->setResource(null);
             } else {
                 $drop->setStuff(null);
@@ -62,14 +60,14 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
         }
 
         // Ajout des ingrédients de recettes, on peut pas utiliser les Groups car ça fait une boucle infinie
-        foreach($object->getRecipeIngredients() ?? [] as $recipeIngredients) {
+        foreach ($object->getRecipeIngredients() ?? [] as $recipeIngredients) {
             $recipeIngredients->getRecipe()->setRecipeIngredients(null);
             $recipeIngredients->setStuff(null);
             $recipeIngredients->setResource(null);
 
-            if($recipeIngredients->getRecipe()->getResource()) {
+            if ($recipeIngredients->getRecipe()->getResource()) {
                 $recipeIngredients->getRecipe()->getResource()->clear();
-            } else if($recipeIngredients->getRecipe()->getStuff()) {
+            } elseif ($recipeIngredients->getRecipe()->getStuff()) {
                 $recipeIngredients->getRecipe()->getStuff()->clear();
             }
         }
@@ -77,12 +75,12 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
         return $this->normalizer->normalize($object, $format, $context);
     }
 
-    public function supportsNormalization($data, ?string $format = null, array $context = []): bool
+    public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-        
-        return ($data instanceof Resource || $data instanceof Stuff);
+
+        return $data instanceof Resource || $data instanceof Stuff;
     }
 }

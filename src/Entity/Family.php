@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FamilyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +22,7 @@ class Family
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
     #[Groups('family')]
     private ?string $slug = null;
 

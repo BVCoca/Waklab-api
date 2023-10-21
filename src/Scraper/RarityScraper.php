@@ -4,33 +4,37 @@ namespace App\Scraper;
 
 use App\Entity\Rarity;
 
-class RarityScraper extends Scraper {
-
-    public function getUrl(): string {
+class RarityScraper extends Scraper
+{
+    public function getUrl(): string
+    {
         return '';
     }
 
-    public function getKey() : string {
+    public function getKey(): string
+    {
         return 'rarity';
     }
 
-    public function getEntity(array $data = [], array &$scraped_data = []) {
+    public function getEntity(array $data = [], array &$scraped_data = [])
+    {
         return Rarity::class;
     }
 
-    public function getLinkedEntities() : array
+    public function getLinkedEntities(): array
     {
         return [
-            Rarity::class
+            Rarity::class,
         ];
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'Rarity';
     }
 
-    public function fetchAllSlugs(array &$scraped_data) {
+    public function fetchAllSlugs(array &$scraped_data)
+    {
         $datas = [
             [
                 'Qualité commune',
@@ -63,10 +67,10 @@ class RarityScraper extends Scraper {
             [
                 'Souvenir',
                 'https://waklaboratory.fr/images/rarity/bleu.png',
-            ]
+            ],
         ];
 
-        foreach($datas as $key => $data) {
+        foreach ($datas as $key => $data) {
             $obj = new Rarity();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
@@ -81,13 +85,12 @@ class RarityScraper extends Scraper {
 
     public function scrap(array &$scraped_data)
     {
-
     }
 
     /**
-     * Pas utilisée
+     * Pas utilisée.
      */
-    public function getEntityData(string $slug, array &$scraped_data = []) {
-
+    public function getEntityData(string $slug, array &$scraped_data = [])
+    {
     }
 }

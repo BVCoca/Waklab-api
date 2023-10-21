@@ -14,12 +14,12 @@ class ResourceDrop
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['resource:drops', 'mob:drops'])]
     private ?Resource $resource = null;
 
-    #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade:['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'resourceDrops', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('resource:drops')]
     private ?Mobs $mob = null;

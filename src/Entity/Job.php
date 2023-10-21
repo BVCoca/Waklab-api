@@ -20,7 +20,7 @@ class Job
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
     #[Groups('job')]
     private ?string $slug = null;
 
