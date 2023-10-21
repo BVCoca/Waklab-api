@@ -23,7 +23,6 @@ class WeaponScraper extends Scraper {
     public function getEntity(array $data = [], array &$scraped_data = []) {
         $weapon = new Stuff();
         $weapon->setName($data['name'] ?? 'Sans nom');
-        $weapon->setImageUrl($data['image']);
         $weapon->setLevel($data['level'][0][0]);
         $weapon->setRarity($scraped_data['rarity'][$data['rarity']]);
 
@@ -37,7 +36,7 @@ class WeaponScraper extends Scraper {
             $scraped_data['type_stuff'][$data['type']] = $typeStuff;
         }
 
-        $weapon->setType($scraped_data['type_stuff'][$data['type']]); 
+        $weapon->setType($scraped_data['type_stuff'][$data['type']]);
 
         return $weapon;
     }
@@ -64,6 +63,8 @@ class WeaponScraper extends Scraper {
         $weapon = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
+
+        $weapon->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
 
         // Description
         $path_description = "div.col-sm-9 > div >div.ak-container.ak-panel > div.ak-panel-title + div.ak-panel-content";
@@ -118,12 +119,12 @@ class WeaponScraper extends Scraper {
                         if(!isset($scraped_data['carac'][$carac_data[1]])) {
                             $c = new Caracteristic();
                             $c->setName($carac_data[1]);
-            
+
                             $this->entityManager->persist($c);
-            
+
                             $scraped_data['carac'][$carac_data[1]] = $c;
                         }
-            
+
                         $weapon_carac = new StuffCaracteristic();
                         $weapon_carac->setCaracteristic($scraped_data['carac'][$carac_data[1]]);
                         $weapon_carac->setStuff($weapon);

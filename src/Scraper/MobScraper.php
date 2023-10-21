@@ -18,7 +18,6 @@ class MobScraper extends Scraper {
     public function getEntity(array $data = [], array &$scraped_data = []) {
         $mob = new Mobs();
         $mob->setName($data['name'] ?? 'Sans nom');
-        $mob->setImageUrl($data['image']);
         $mob->setLevelMin($data['level'][0][0]);
         $mob->setLevelMax($data['level'][0][1] ?? $data['level'][0][0]);
 
@@ -42,6 +41,8 @@ class MobScraper extends Scraper {
         $mob = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
+
+        $mob->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
 
         // Caractéristiques
         $crawler->filter(".ak-container.ak-content-list.ak-displaymode-col > .ak-list-element > .ak-main > .ak-main-content > .ak-content > .ak-title")->each(function($node) use ($mob) {

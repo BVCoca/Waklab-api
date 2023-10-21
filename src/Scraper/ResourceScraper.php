@@ -19,7 +19,6 @@ class ResourceScraper extends Scraper {
     public function getEntity(array $data = [], array &$scraped_data = []) {
         $resource = new Resource();
         $resource->setName($data['name'] ?? 'Sans nom');
-        $resource->setImageUrl($data['image']);
         $resource->setLevel($data['level'][0][0]);
         $resource->setRarity($scraped_data['rarity'][$data['rarity']]);
 
@@ -45,6 +44,8 @@ class ResourceScraper extends Scraper {
         $resource = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
+
+        $resource->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
 
         // Description
         if($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->count() > 0) {

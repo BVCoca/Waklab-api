@@ -60,7 +60,7 @@ abstract class Scraper implements ScraperInterface {
         $sectionPages = $this->output->section();
 
         // Mise en place d'une limite de plage
-        $count_pages = min($this->page_limit, $count_pages); 
+        $count_pages = min($this->page_limit, $count_pages);
 
         $progressBarPages = new ProgressBar($sectionPages, $count_pages);
 
@@ -110,7 +110,7 @@ abstract class Scraper implements ScraperInterface {
 
     protected function getSlugs(Crawler $crawler) : array {
         return array_filter($crawler->filter('.ak-bg-even,.ak-bg-odd')->each(function($node) use ($crawler) {
-            
+
             // slug
             $href_value = $node->filter('.ak-linker > a')->attr('href');
             $slug = !str_ends_with($href_value, '-') ? substr($href_value, strrpos($href_value, '/')) : null;
@@ -120,7 +120,6 @@ abstract class Scraper implements ScraperInterface {
             }
 
             $name = $node->filter('td:nth-child(2) > .ak-linker > a')->text();
-            $image = $node->filter('.ak-linker img')->attr('src');
             preg_match_all('/\d+/i', $node->filter('.item-level')->innerText(), $level_match);
 
             if($node->filter("span.ak-icon-small")->count() > 0) {
@@ -133,7 +132,6 @@ abstract class Scraper implements ScraperInterface {
             return [
                 'slug' => $slug,
                 'name' => $name,
-                'image' => $image,
                 'level' => $level_match,
                 'rarity' => $rarity_match[0] ?? 0,
                 'type' => $type_img->count() > 0 ? $type_img->attr('title') : '',
@@ -165,7 +163,7 @@ abstract class Scraper implements ScraperInterface {
         if($crawler->filter('.ak-crafts .ak-panel-intro')->count() > 0) {
             $crawler->filter('.ak-crafts')->first()->filter('.ak-panel-content .ak-panel-content')->each(function($node) use (&$scraped_data, &$recipes) {
                 if(
-                    $node->filter('.ak-panel-intro')->count() > 0 && 
+                    $node->filter('.ak-panel-intro')->count() > 0 &&
                     preg_match('/(.*?) -.*?(\d+)/', $node->filter('.ak-panel-intro')->innerText(), $job_match)
                 ) {
 
@@ -183,19 +181,19 @@ abstract class Scraper implements ScraperInterface {
                     $recipe = new Recipe();
                     $recipe->setJob($scraped_data['job'][$job_match[1]]);
                     $recipe->setJobLevel(intval($job_match[2]));
-        
+
                     // Récupération de tous les ingrédients
                     $node->filter('.ak-list-element')->each(function($node) use ($recipe, &$scraped_data) {
                         $recipeIngredient = new RecipeIngredient();
                         $recipeIngredient->setRecipe($recipe);
-                        
+
                         // Quantité
                         $recipeIngredient->setQuantity(intval($node->filter('.ak-front')->innerText()));
-        
+
                         // Ingrédient (Stuff ou Resource)
                         $ingredient_href = $node->filter('.ak-image > a')->attr('href');
                         $ingredient_slug = substr($ingredient_href, strrpos($ingredient_href, '/'));
-        
+
                         if(str_contains($ingredient_href, '/ressources') && isset($scraped_data['resource'][$ingredient_slug])) {
                             $recipeIngredient->setResource($scraped_data['resource'][$ingredient_slug]);
                         } else if(str_contains($ingredient_href, '/armes') && isset($scraped_data['weapon'][$ingredient_slug])) {
@@ -208,7 +206,7 @@ abstract class Scraper implements ScraperInterface {
 
                         $this->entityManager->persist($recipeIngredient);
                     });
-        
+
                     $recipes[] = $recipe;
                 }
             });

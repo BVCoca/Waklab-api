@@ -23,7 +23,6 @@ class ArmorScraper extends Scraper {
     public function getEntity(array $data = [], array &$scraped_data = []) {
         $armor = new Stuff();
         $armor->setName($data['name'] ?? 'Sans nom');
-        $armor->setImageUrl($data['image']);
         $armor->setLevel($data['level'][0][0]);
         $armor->setRarity($scraped_data['rarity'][$data['rarity']]);
 
@@ -37,7 +36,7 @@ class ArmorScraper extends Scraper {
             $scraped_data['type_stuff'][$data['type']] = $typeStuff;
         }
 
-        $armor->setType($scraped_data['type_stuff'][$data['type']]); 
+        $armor->setType($scraped_data['type_stuff'][$data['type']]);
 
         return $armor;
     }
@@ -65,6 +64,9 @@ class ArmorScraper extends Scraper {
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
 
+        // Image
+        $armor->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('src'));
+
         // Description
         $path_description = "div.col-sm-9 > div >div.ak-container.ak-panel > div.ak-panel-title + div.ak-panel-content";
         if($crawler->filter($path_description)->count() > 0) {
@@ -85,12 +87,12 @@ class ArmorScraper extends Scraper {
                         if(!isset($scraped_data['carac'][$carac_data[1]])) {
                             $c = new Caracteristic();
                             $c->setName($carac_data[1]);
-            
+
                             $this->entityManager->persist($c);
-            
+
                             $scraped_data['carac'][$carac_data[1]] = $c;
                         }
-            
+
                         $armor_carac = new StuffCaracteristic();
                         $armor_carac->setCaracteristic($scraped_data['carac'][$carac_data[1]]);
                         $armor_carac->setStuff($armor);
@@ -121,7 +123,7 @@ class ArmorScraper extends Scraper {
             }
         });
 
-        
+
         // Recette de craft
         $recipes = $this->getRecipes($crawler, $scraped_data);
 
