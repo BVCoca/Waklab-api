@@ -128,7 +128,7 @@ abstract class Scraper implements ScraperInterface {
             }
 
             // Type
-            $type_img = $crawler->filter('.item-type > img');
+            $type_img = $node->filter('.item-type > img');
 
             return [
                 'slug' => $slug,
@@ -216,4 +216,4 @@ abstract class Scraper implements ScraperInterface {
 
         return $recipes;
     }
-}  
+}
