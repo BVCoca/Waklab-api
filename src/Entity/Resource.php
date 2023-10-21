@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Elasticsearch\State\Options;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ResourceRepository;
@@ -29,10 +28,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
         stateOptions: new Options(index: 'resource'),
         extraProperties: [
             'fields' => ['name^5', 'description']
-        ]
+        ],
+        filters: [FullTextFilter::class]
+    ),
+    new GetCollection(
+        normalizationContext:['groups' => ['slug']],
+        uriTemplate:"/resource/slugs",
+        paginationItemsPerPage:200
     )
 ])]
-#[ApiFilter(FullTextFilter::class)]
 class Resource
 {
     #[ORM\Id]
@@ -47,7 +51,7 @@ class Resource
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search'])]
+    #[Groups(['resource:item', 'mob:drops', 'recipeIngredients','resource:search','slug'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
