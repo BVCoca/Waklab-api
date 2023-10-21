@@ -34,35 +34,35 @@ class RarityScraper extends Scraper {
         $datas = [
             [
                 'Qualité commune',
-                '',
+                'https://waklaboratory.fr/images/rarity/gris.png',
             ],
             [
                 'Inhabituel',
-                '',
+                'https://waklaboratory.fr/images/rarity/blanc.png',
             ],
             [
                 'Rare',
-                '',
+                'https://waklaboratory.fr/images/rarity/vert.png',
             ],
             [
                 'Mythique',
-                '',
+                'https://waklaboratory.fr/images/rarity/orange.png',
             ],
             [
                 'Légendaire',
-                '',
-            ],
-            [
-                'Relique',
-                '',
-            ],
-            [
-                'Souvenir',
-                '',
+                'https://waklaboratory.fr/images/rarity/jaune.png',
             ],
             [
                 'Epique',
-                '',
+                'https://waklaboratory.fr/images/rarity/rose.png',
+            ],
+            [
+                'Relique',
+                'https://waklaboratory.fr/images/rarity/violet.png',
+            ],
+            [
+                'Souvenir',
+                'https://waklaboratory.fr/images/rarity/bleu.png',
             ]
         ];
 
@@ -81,13 +81,13 @@ class RarityScraper extends Scraper {
 
     public function scrap(array &$scraped_data)
     {
-        
+
     }
 
     /**
      * Pas utilisée
      */
     public function getEntityData(string $slug, array &$scraped_data = []) {
-       
+
     }
 }

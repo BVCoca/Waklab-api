@@ -18,7 +18,6 @@ class MobScraper extends Scraper {
     public function getEntity(array $data = [], array &$scraped_data = []) {
         $mob = new Mobs();
         $mob->setName($data['name'] ?? 'Sans nom');
-        $mob->setImageUrl($data['image']);
         $mob->setLevelMin($data['level'][0][0]);
         $mob->setLevelMax($data['level'][0][1] ?? $data['level'][0][0]);
 
@@ -42,6 +41,8 @@ class MobScraper extends Scraper {
         $mob = $scraped_data[$this->getKey()][$slug];
 
         $crawler = $this->client->request('GET', $this->getUrl() . $slug);
+
+        $mob->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img")->attr('data-src'));
 
         // Caractéristiques
         $crawler->filter(".ak-container.ak-content-list.ak-displaymode-col > .ak-list-element > .ak-main > .ak-main-content > .ak-content > .ak-title")->each(function($node) use ($mob) {
@@ -78,7 +79,7 @@ class MobScraper extends Scraper {
 
         // Boost
         $crawler->filter(".ak-icon-small.ak-boost")->each(function($node, $key) use ($mob) {
-            $value = intval(trim($node->siblings()->innerText(), '%'));
+            $value = intval(trim($node->nextAll()->innerText(), '%'));
 
             switch($key) {
                 case 0:
@@ -98,7 +99,7 @@ class MobScraper extends Scraper {
 
         // Résistance
         $crawler->filter(".ak-icon-small.ak-resist")->each(function($node, $key) use ($mob) {
-            $value = intval(trim($node->siblings()->innerText(), '%'));
+            $value = intval(trim($node->nextAll()->innerText(), '%'));
 
             switch($key) {
                 case 0:
