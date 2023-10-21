@@ -50,7 +50,7 @@ class ResourceScraper extends Scraper
 
         $crawler = $this->client->request('GET', $this->getUrl().$slug);
 
-        $resource->setImageUrl($crawler->filter('.ak-encyclo-detail-illu > img.img-maxresponsive')->attr('data-src'));
+        $resource->setImageUrl($crawler->filter('.ak-encyclo-detail-illu > img.img-maxresponsive')->attr('src'));
 
         // Description
         if ($crawler->filter('div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content')->count() > 0) {

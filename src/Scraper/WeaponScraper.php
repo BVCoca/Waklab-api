@@ -68,7 +68,7 @@ class WeaponScraper extends Scraper
 
         $crawler = $this->client->request('GET', $this->getUrl().$slug);
 
-        $weapon->setImageUrl($crawler->filter('.ak-encyclo-detail-illu > img.img-maxresponsive')->attr('data-src'));
+        $weapon->setImageUrl($crawler->filter('.ak-encyclo-detail-illu > img.img-maxresponsive')->attr('src'));
 
         // Description
         $path_description = 'div.col-sm-9 > div >div.ak-container.ak-panel > div.ak-panel-title + div.ak-panel-content';
