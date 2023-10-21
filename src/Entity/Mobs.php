@@ -6,43 +6,43 @@ use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\SearchController;
+use App\Filter\FullTextFilter;
 use App\Repository\MobsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use App\Controller\SearchController;
-use App\Filter\FullTextFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(
-        normalizationContext:['groups' => ['mob:search', 'family']],
+        normalizationContext: ['groups' => ['mob:search', 'family']],
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'mob'),
         extraProperties: [
-            'fields' => ['name^5', 'family.name']
+            'fields' => ['name^5', 'family.name'],
         ],
         filters: [FullTextFilter::class]
     ),
     new GetCollection(
-        normalizationContext:['groups' => ['slug']],
-        uriTemplate:"/mobs/slugs",
-        paginationItemsPerPage:200
+        normalizationContext: ['groups' => ['slug']],
+        uriTemplate: '/mobs/slugs',
+        paginationItemsPerPage: 200
     ),
     new GetCollection(
         name: 'search_all',
         uriTemplate: '/search',
         controller: SearchController::class,
-        normalizationContext:['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family','rarity', 'type']],
+        normalizationContext: ['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family', 'rarity', 'type']],
         filters: [FullTextFilter::class]
     ),
     new Get(
-        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
-    )
+        normalizationContext: ['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
+    ),
 ])]
 class Mobs
 {
@@ -57,7 +57,7 @@ class Mobs
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
-    #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
+    #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
     #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'slug'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
@@ -155,7 +155,8 @@ class Mobs
     #[Groups('mob:drops')]
     private Collection $stuffDrops;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->actionPoints = 0;
         $this->movementPoints = 0;
         $this->initiative = 0;

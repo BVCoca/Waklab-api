@@ -9,7 +9,7 @@
 - Un petit ```composer install``` pour installer les dépendances du projet
 - Créer la base de données via  ```sf doctrine:database:create```
 - Jouer les migrations ```sf doctrine:migrations:migrate```
-- Lancer le scraping via ```sf app:scrap-wakfu```
+- Lancer le scraping via ```sf app:scrap-wakfu``
 
 ## URL avec les valeurs par défaut en local
 

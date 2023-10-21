@@ -120,6 +120,7 @@ abstract class Scraper implements ScraperInterface {
             }
 
             $name = $node->filter('td:nth-child(2) > .ak-linker > a')->text();
+            $image = $node->filter('.ak-linker img')->attr('src');
             preg_match_all('/\d+/i', $node->filter('.item-level')->innerText(), $level_match);
 
             if($node->filter("span.ak-icon-small")->count() > 0) {
@@ -132,6 +133,7 @@ abstract class Scraper implements ScraperInterface {
             return [
                 'slug' => $slug,
                 'name' => $name,
+                'image' => $image,
                 'level' => $level_match,
                 'rarity' => $rarity_match[0] ?? 0,
                 'type' => $type_img->count() > 0 ? $type_img->attr('title') : '',

@@ -5,8 +5,8 @@ namespace App\Search;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use Pagerfanta\Pagerfanta;
 
-class PagerFantaToPaginator implements PaginatorInterface, \IteratorAggregate {
-   
+class PagerFantaToPaginator implements PaginatorInterface, \IteratorAggregate
+{
     private Pagerfanta $pagerfanta;
 
     public function __construct(Pagerfanta $pagerfanta)
@@ -19,20 +19,23 @@ class PagerFantaToPaginator implements PaginatorInterface, \IteratorAggregate {
         return $this->pagerfanta->getNbResults();
     }
 
-    public function getLastPage(): float {
+    public function getLastPage(): float
+    {
         return $this->pagerfanta->getNbPages();
     }
 
-   
-    public function getTotalItems(): float {
+    public function getTotalItems(): float
+    {
         return $this->pagerfanta->getNbResults();
     }
 
-    public function getCurrentPage(): float {
+    public function getCurrentPage(): float
+    {
         return $this->pagerfanta->getCurrentPage();
     }
 
-    public function getItemsPerPage(): float {
+    public function getItemsPerPage(): float
+    {
         return $this->pagerfanta->getMaxPerPage();
     }
 

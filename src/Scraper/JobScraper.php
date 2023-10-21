@@ -4,107 +4,111 @@ namespace App\Scraper;
 
 use App\Entity\Job;
 
-class JobScraper extends Scraper {
-
-    public function getUrl(): string {
+class JobScraper extends Scraper
+{
+    public function getUrl(): string
+    {
         return '';
     }
 
-    public function getKey() : string {
+    public function getKey(): string
+    {
         return 'job';
     }
 
-    public function getEntity(array $data = [], array &$scraped_data = []) {
+    public function getEntity(array $data = [], array &$scraped_data = [])
+    {
         return new Job();
     }
 
-    public function getLinkedEntities() : array
+    public function getLinkedEntities(): array
     {
         return [
-            Job::class
+            Job::class,
         ];
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'Job';
     }
 
-    public function fetchAllSlugs(array &$scraped_data) {
+    public function fetchAllSlugs(array &$scraped_data)
+    {
         $datas = [
             [
                 'Forestier',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Herboriste',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Mineur',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Paysan',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Pêcheur',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Trappeur',
                 '',
-                'collecte'
+                'collecte',
             ],
             [
                 'Armurier',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Bijoutier',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Boulanger',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Cuisinier',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Ébéniste',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Maitre d\'Armes',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Maroquinier',
                 '',
-                'artisanat'
+                'artisanat',
             ],
             [
                 'Tailleur',
                 '',
-                'artisanat'
+                'artisanat',
             ],
         ];
 
-        foreach($datas as $data) {
+        foreach ($datas as $data) {
             $obj = new Job();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
@@ -119,13 +123,12 @@ class JobScraper extends Scraper {
 
     public function scrap(array &$scraped_data)
     {
-        
     }
 
     /**
-     * Pas utilisée
+     * Pas utilisée.
      */
-    public function getEntityData(string $slug, array &$scraped_data = []) {
-       
+    public function getEntityData(string $slug, array &$scraped_data = [])
+    {
     }
 }

@@ -26,9 +26,6 @@ class ElasticaToModelTransformerCollection implements ElasticaToModelTransformer
         $this->transformers = $transformers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectClass(): string
     {
         return implode(',', array_map(function (ElasticaToModelTransformerInterface $transformer) {
@@ -36,9 +33,6 @@ class ElasticaToModelTransformerCollection implements ElasticaToModelTransformer
         }, $this->transformers));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierField(): string
     {
         return array_map(function (ElasticaToModelTransformerInterface $transformer) {
@@ -46,9 +40,6 @@ class ElasticaToModelTransformerCollection implements ElasticaToModelTransformer
         }, $this->transformers)[0];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(array $elasticaObjects)
     {
         $sorted = [];
@@ -81,9 +72,6 @@ class ElasticaToModelTransformerCollection implements ElasticaToModelTransformer
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hybridTransform(array $elasticaObjects)
     {
         $objects = $this->transform($elasticaObjects);

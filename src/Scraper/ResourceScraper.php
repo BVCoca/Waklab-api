@@ -6,61 +6,67 @@ use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\Resource;
 use App\Entity\ResourceDrop;
-class ResourceScraper extends Scraper {
 
-    public function getUrl(): string {
+class ResourceScraper extends Scraper
+{
+    public function getUrl(): string
+    {
         return 'https://www.wakfu.com/fr/mmorpg/encyclopedie/ressources';
     }
 
-    public function getKey() : string {
+    public function getKey(): string
+    {
         return 'resource';
     }
 
-    public function getEntity(array $data = [], array &$scraped_data = []) {
+    public function getEntity(array $data = [], array &$scraped_data = [])
+    {
         $resource = new Resource();
         $resource->setName($data['name'] ?? 'Sans nom');
+        $resource->setImageUrl($data['image']);
         $resource->setLevel($data['level'][0][0]);
         $resource->setRarity($scraped_data['rarity'][$data['rarity']]);
 
         return $resource;
     }
 
-    public function getLinkedEntities() : array
+    public function getLinkedEntities(): array
     {
         return [
             Resource::class,
             ResourceDrop::class,
             Recipe::class,
-            RecipeIngredient::class
+            RecipeIngredient::class,
         ];
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'Resource';
     }
 
-    public function getEntityData(string $slug, array &$scraped_data = []) {
+    public function getEntityData(string $slug, array &$scraped_data = [])
+    {
         $resource = $scraped_data[$this->getKey()][$slug];
 
-        $crawler = $this->client->request('GET', $this->getUrl() . $slug);
+        $crawler = $this->client->request('GET', $this->getUrl().$slug);
 
-        $resource->setImageUrl($crawler->filter(".ak-encyclo-detail-illu > img.img-maxresponsive")->attr('data-src'));
+        $resource->setImageUrl($crawler->filter('.ak-encyclo-detail-illu > img.img-maxresponsive')->attr('src'));
 
         // Description
-        if($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->count() > 0) {
-            $resource->setDescription($crawler->filter("div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content")->innerText());
+        if ($crawler->filter('div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content')->count() > 0) {
+            $resource->setDescription($crawler->filter('div.col-sm-9 > div > div.ak-container.ak-panel > div.ak-panel-content')->innerText());
         }
 
         // Drop de mobs
-        $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function($a) use($resource, $scraped_data) {
+        $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function ($a) use ($resource, $scraped_data) {
             $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
 
             preg_match('/\d+/i', $a->ancestors()->first()->siblings()->last()->innerText(), $drop_match);
             $value = intval($drop_match[0]);
 
             // Si le mob existe on crée la relation
-            if(isset($scraped_data['mob'][$mob_slug])) {
+            if (isset($scraped_data['mob'][$mob_slug])) {
                 $drop = new ResourceDrop();
 
                 $drop->setResource($resource);
@@ -74,7 +80,7 @@ class ResourceScraper extends Scraper {
         // Recette de craft
         $recipes = $this->getRecipes($crawler, $scraped_data);
 
-        foreach($recipes as $recipe) {
+        foreach ($recipes as $recipe) {
             $recipe->setResource($resource);
             $this->entityManager->persist($recipe);
             $scraped_data['resource_recipe'][] = 1;

@@ -10,7 +10,6 @@ class SearchRepository extends Repository
     public function search(string $searchTerm, int $page = 1, int $item_per_page = 20)
     {
         if ($searchTerm) {
-
             $fieldQuery = new \Elastica\Query\MultiMatch();
             $fieldQuery->setQuery($searchTerm);
             $fieldQuery->setFields(['name^10', 'family.name^2', 'type.name']);

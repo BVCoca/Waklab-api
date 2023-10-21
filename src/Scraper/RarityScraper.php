@@ -4,69 +4,73 @@ namespace App\Scraper;
 
 use App\Entity\Rarity;
 
-class RarityScraper extends Scraper {
-
-    public function getUrl(): string {
+class RarityScraper extends Scraper
+{
+    public function getUrl(): string
+    {
         return '';
     }
 
-    public function getKey() : string {
+    public function getKey(): string
+    {
         return 'rarity';
     }
 
-    public function getEntity(array $data = [], array &$scraped_data = []) {
+    public function getEntity(array $data = [], array &$scraped_data = [])
+    {
         return Rarity::class;
     }
 
-    public function getLinkedEntities() : array
+    public function getLinkedEntities(): array
     {
         return [
-            Rarity::class
+            Rarity::class,
         ];
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return 'Rarity';
     }
 
-    public function fetchAllSlugs(array &$scraped_data) {
+    public function fetchAllSlugs(array &$scraped_data)
+    {
         $datas = [
             [
                 'Qualité commune',
-                'https://waklaboratory.fr/images/rarity/gris.png',
+                'https://api.waklaboratory.fr/images/rarity/gris.png',
             ],
             [
                 'Inhabituel',
-                'https://waklaboratory.fr/images/rarity/blanc.png',
+                'https://api.waklaboratory.fr/images/rarity/blanc.png',
             ],
             [
                 'Rare',
-                'https://waklaboratory.fr/images/rarity/vert.png',
+                'https:/api./waklaboratory.fr/images/rarity/vert.png',
             ],
             [
                 'Mythique',
-                'https://waklaboratory.fr/images/rarity/orange.png',
+                'https://api.waklaboratory.fr/images/rarity/orange.png',
             ],
             [
                 'Légendaire',
-                'https://waklaboratory.fr/images/rarity/jaune.png',
+                'https://api.waklaboratory.fr/images/rarity/jaune.png',
             ],
             [
                 'Epique',
-                'https://waklaboratory.fr/images/rarity/rose.png',
+                'https://api.waklaboratory.fr/images/rarity/rose.png',
             ],
             [
                 'Relique',
-                'https://waklaboratory.fr/images/rarity/violet.png',
+                'https://api.waklaboratory.fr/images/rarity/violet.png',
             ],
             [
                 'Souvenir',
-                'https://waklaboratory.fr/images/rarity/bleu.png',
-            ]
+                'https://api.waklaboratory.fr/images/rarity/bleu.png',
+            ],
         ];
 
-        foreach($datas as $key => $data) {
+        foreach ($datas as $key => $data) {
             $obj = new Rarity();
             $obj->setName($data[0]);
             $obj->setIcon($data[1]);
@@ -81,13 +85,12 @@ class RarityScraper extends Scraper {
 
     public function scrap(array &$scraped_data)
     {
-
     }
 
     /**
-     * Pas utilisée
+     * Pas utilisée.
      */
-    public function getEntityData(string $slug, array &$scraped_data = []) {
-
+    public function getEntityData(string $slug, array &$scraped_data = [])
+    {
     }
 }
