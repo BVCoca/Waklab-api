@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Elasticsearch\State\Options;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MobsRepository;
@@ -20,25 +19,31 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
-    new Get(
-        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
-    ),
     new GetCollection(
         normalizationContext:['groups' => ['mob:search', 'family']],
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'mob'),
         extraProperties: [
             'fields' => ['name^5', 'family.name']
-        ]
+        ],
+        filters: [FullTextFilter::class]
+    ),
+    new GetCollection(
+        normalizationContext:['groups' => ['slug']],
+        uriTemplate:"/mobs/slugs",
+        paginationItemsPerPage:200
     ),
     new GetCollection(
         name: 'search_all',
         uriTemplate: '/search',
         controller: SearchController::class,
-        normalizationContext:['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family','rarity', 'type']]
+        normalizationContext:['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family','rarity', 'type']],
+        filters: [FullTextFilter::class]
     ),
+    new Get(
+        normalizationContext:['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
+    )
 ])]
-#[ApiFilter(FullTextFilter::class)]
 class Mobs
 {
     #[ORM\Id]
@@ -53,7 +58,7 @@ class Mobs
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : "string", length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'slug'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
