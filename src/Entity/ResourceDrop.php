@@ -26,7 +26,7 @@ class ResourceDrop
 
     #[ORM\Column]
     #[Groups(['resource:drops', 'mob:drops'])]
-    private ?int $value = null;
+    private ?float $value = null;
 
     public function getId(): ?int
     {
@@ -57,12 +57,12 @@ class ResourceDrop
         return $this;
     }
 
-    public function getValue(): ?int
+    public function getValue(): ?float
     {
         return $this->value;
     }
 
-    public function setValue(int $value): static
+    public function setValue(float $value): static
     {
         $this->value = $value;
 

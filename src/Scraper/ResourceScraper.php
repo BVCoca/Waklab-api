@@ -63,7 +63,7 @@ class ResourceScraper extends Scraper
             $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
 
             preg_match('/\d+/i', $a->ancestors()->first()->siblings()->last()->innerText(), $drop_match);
-            $value = intval($drop_match[0]);
+            $value = floatval($drop_match[0]);
 
             // Si le mob existe on crée la relation
             if (isset($scraped_data['mob'][$mob_slug])) {
