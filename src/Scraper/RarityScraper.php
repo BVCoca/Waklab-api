@@ -46,7 +46,7 @@ class RarityScraper extends Scraper
             ],
             [
                 'Rare',
-                'https:/api./waklaboratory.fr/images/rarity/vert.png',
+                'https:/api.waklaboratory.fr/images/rarity/vert.png',
             ],
             [
                 'Mythique',

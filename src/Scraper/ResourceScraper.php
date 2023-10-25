@@ -75,8 +75,7 @@ class ResourceScraper extends Scraper
         $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function ($a) use ($resource, $scraped_data) {
             $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
 
-            preg_match('/\d+/i', $a->ancestors()->first()->siblings()->last()->innerText(), $drop_match);
-            $value = floatval($drop_match[0]);
+            $value = floatval($a->ancestors()->first()->siblings()->last()->innerText());
 
             // Si le mob existe on crée la relation
             if (isset($scraped_data['mob'][$mob_slug])) {
