@@ -60,7 +60,7 @@ class Resource
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['resource:item', 'resource:search'])]
+    #[Groups(['resource:item'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'resources')]
