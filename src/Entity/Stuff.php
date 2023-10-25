@@ -60,7 +60,7 @@ class Stuff
     private ?int $level = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('stuff:search')]
+    #[Groups('stuff:item')]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
