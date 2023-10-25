@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\Resource;
 use App\Entity\ResourceDrop;
+use App\Entity\TypeResource;
 
 class ResourceScraper extends Scraper
 {
@@ -26,6 +27,18 @@ class ResourceScraper extends Scraper
         $resource->setImageUrl($data['image']);
         $resource->setLevel($data['level'][0][0]);
         $resource->setRarity($scraped_data['rarity'][$data['rarity']]);
+
+        if (!isset($scraped_data['type_resource'][$data['type']])) {
+            $typeResource = new TypeResource();
+            $typeResource->setName($data['type']);
+            $typeResource->setIcon($data['type_icon']);
+
+            $this->entityManager->persist($typeResource);
+
+            $scraped_data['type_resource'][$data['type']] = $typeResource;
+        }
+
+        $resource->setType($scraped_data['type_resource'][$data['type']]);
 
         return $resource;
     }

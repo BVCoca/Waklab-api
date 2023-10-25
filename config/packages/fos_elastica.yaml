@@ -22,7 +22,7 @@ fos_elastica:
                             max_gram: 15
             properties:
                 slug:
-                    type: 'text'
+                    type: 'keyword'
                 name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
@@ -32,7 +32,7 @@ fos_elastica:
                 level:
                     type: 'integer'
                 imageUrl:
-                    type: 'text'
+                    type: 'keyword'
                 rarity:
                     type: 'nested'
                     include_in_root : true
@@ -41,9 +41,20 @@ fos_elastica:
                             type: 'text'
                             analyzer : 'partial_analyzer'
                         icon:
-                            type: 'text'
+                            type: 'keyword'
                         value:
                             type: 'integer'
+                type:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'text'
+                            analyzer : 'partial_analyzer'
+                        icon:
+                            type: 'keyword'
+                        slug:
+                            type: 'keyword'
         mob:
             persistence:
                 driver: orm
@@ -63,7 +74,7 @@ fos_elastica:
                             max_gram: 15
             properties:
                 slug:
-                    type: 'text'
+                    type: 'keyword'
                 name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
@@ -72,7 +83,7 @@ fos_elastica:
                 levelMax:
                     type: 'integer'
                 imageUrl:
-                    type: 'text'
+                    type: 'keyword'
                 family:
                     type: 'nested'
                     include_in_root : true
@@ -81,7 +92,7 @@ fos_elastica:
                             type: 'text'
                             analyzer : 'partial_analyzer'
                         slug:
-                            type: 'text'
+                            type: 'keyword'
         stuff:
             persistence:
                 driver: orm
@@ -101,7 +112,7 @@ fos_elastica:
                             max_gram: 15
             properties:
                 slug:
-                    type: 'text'
+                    type: 'keyword'
                 name:
                     type: 'text'
                     analyzer : 'partial_analyzer'
@@ -111,7 +122,7 @@ fos_elastica:
                 level:
                     type: 'integer'
                 imageUrl:
-                    type: 'text'
+                    type: 'keyword'
                 rarity:
                     type: 'nested'
                     include_in_root : true
@@ -120,7 +131,7 @@ fos_elastica:
                             type: 'text'
                             analyzer : 'partial_analyzer'
                         icon:
-                            type: 'text'
+                            type: 'keyword'
                         value:
                             type: 'integer'
                 type:
@@ -131,6 +142,6 @@ fos_elastica:
                             type: 'text'
                             analyzer : 'partial_analyzer'
                         icon:
-                            type: 'text'
+                            type: 'keyword'
                         slug:
-                            type: 'text'
+                            type: 'keyword'
