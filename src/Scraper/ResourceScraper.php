@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use App\Entity\Resource;
 use App\Entity\ResourceDrop;
+use App\Entity\TypeResource;
 
 class ResourceScraper extends Scraper
 {
@@ -26,6 +27,18 @@ class ResourceScraper extends Scraper
         $resource->setImageUrl($data['image']);
         $resource->setLevel($data['level'][0][0]);
         $resource->setRarity($scraped_data['rarity'][$data['rarity']]);
+
+        if (!isset($scraped_data['type_resource'][$data['type']])) {
+            $typeResource = new TypeResource();
+            $typeResource->setName($data['type']);
+            $typeResource->setIcon($data['type_icon']);
+
+            $this->entityManager->persist($typeResource);
+
+            $scraped_data['type_resource'][$data['type']] = $typeResource;
+        }
+
+        $resource->setType($scraped_data['type_resource'][$data['type']]);
 
         return $resource;
     }
@@ -62,8 +75,7 @@ class ResourceScraper extends Scraper
         $crawler->filter('div.ak-panel-stack div.ak-image > a[href*="encyclopedie/monstres/"]')->each(function ($a) use ($resource, $scraped_data) {
             $mob_slug = !str_ends_with($a->attr('href'), '-') ? substr($a->attr('href'), strrpos($a->attr('href'), '/')) : '';
 
-            preg_match('/\d+/i', $a->ancestors()->first()->siblings()->last()->innerText(), $drop_match);
-            $value = intval($drop_match[0]);
+            $value = floatval($a->ancestors()->first()->siblings()->last()->innerText());
 
             // Si le mob existe on crée la relation
             if (isset($scraped_data['mob'][$mob_slug])) {

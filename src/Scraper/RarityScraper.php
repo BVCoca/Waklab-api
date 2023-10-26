@@ -46,7 +46,7 @@ class RarityScraper extends Scraper
             ],
             [
                 'Rare',
-                'https:/api./waklaboratory.fr/images/rarity/vert.png',
+                'https:/api.waklaboratory.fr/images/rarity/vert.png',
             ],
             [
                 'Mythique',
@@ -57,10 +57,6 @@ class RarityScraper extends Scraper
                 'https://api.waklaboratory.fr/images/rarity/jaune.png',
             ],
             [
-                'Epique',
-                'https://api.waklaboratory.fr/images/rarity/rose.png',
-            ],
-            [
                 'Relique',
                 'https://api.waklaboratory.fr/images/rarity/violet.png',
             ],
@@ -68,6 +64,10 @@ class RarityScraper extends Scraper
                 'Souvenir',
                 'https://api.waklaboratory.fr/images/rarity/bleu.png',
             ],
+            [
+                'Epique',
+                'https://api.waklaboratory.fr/images/rarity/rose.png',
+            ]
         ];
 
         foreach ($datas as $key => $data) {

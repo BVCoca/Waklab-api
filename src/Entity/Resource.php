@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext: ['groups' => ['resource:search', 'rarity']],
+        normalizationContext: ['groups' => ['resource:search', 'rarity', 'type']],
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'resource'),
         extraProperties: [
@@ -83,6 +83,10 @@ class Resource
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: RecipeIngredient::class, cascade: ['persist'])]
     #[Groups('recipeIngredients')]
     private ?Collection $recipeIngredients;
+
+    #[ORM\ManyToOne(inversedBy: 'resources')]
+    #[Groups('type')]
+    private ?TypeResource $type = null;
 
     public function __construct()
     {
@@ -288,5 +292,17 @@ class Resource
         $this->setResourceDrops(null);
         $this->setRecipes(null);
         $this->setRecipeIngredients(null);
+    }
+
+    public function getType(): ?TypeResource
+    {
+        return $this->type;
+    }
+
+    public function setType(?TypeResource $type): static
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

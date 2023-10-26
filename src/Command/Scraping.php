@@ -3,6 +3,8 @@
 namespace App\Command;
 
 use App\Scraper\ArmorScraper;
+use App\Scraper\CaracteristicScraper;
+use App\Scraper\EmblemScraper;
 use App\Scraper\JobScraper;
 use App\Scraper\MobScraper;
 use App\Scraper\RarityScraper;
@@ -33,9 +35,11 @@ class Scraping extends Command
 
         $scrapers = [
             'rarity' => new RarityScraper($this->entityManager, $output),
+            'carac' => new CaracteristicScraper($this->entityManager, $output),
             'job' => new JobScraper($this->entityManager, $output),
             'mob' => new MobScraper($this->entityManager, $output),
             'resource' => new ResourceScraper($this->entityManager, $output),
+            'emblem' => new EmblemScraper($this->entityManager, $output),
             'weapon' => new WeaponScraper($this->entityManager, $output),
             'armor' => new ArmorScraper($this->entityManager, $output),
         ];
