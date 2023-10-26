@@ -14,12 +14,12 @@ fos_elastica:
                     analyzer:
                         partial_analyzer:
                             tokenizer: 'partial'
-                            filter : 'lowercase'
+                            filter : ['lowercase','asciifolding']
                     tokenizer:
                         partial:
-                            type: 'edge_ngram'
+                            type: 'ngram'
                             min_gram: 3
-                            max_gram: 15
+                            max_gram: 4
             properties:
                 slug:
                     type: 'keyword'
@@ -66,12 +66,12 @@ fos_elastica:
                     analyzer:
                         partial_analyzer:
                             tokenizer: 'partial'
-                            filter : 'lowercase'
+                            filter : ['lowercase','asciifolding']
                     tokenizer:
                         partial:
-                            type: 'edge_ngram'
+                            type: 'ngram'
                             min_gram: 3
-                            max_gram: 15
+                            max_gram: 4
             properties:
                 slug:
                     type: 'keyword'
@@ -104,12 +104,12 @@ fos_elastica:
                     analyzer:
                         partial_analyzer:
                             tokenizer: 'partial'
-                            filter : 'lowercase'
+                            filter : ['lowercase','asciifolding']
                     tokenizer:
                         partial:
-                            type: 'edge_ngram'
+                            type: 'ngram'
                             min_gram: 3
-                            max_gram: 15
+                            max_gram: 4
             properties:
                 slug:
                     type: 'keyword'
