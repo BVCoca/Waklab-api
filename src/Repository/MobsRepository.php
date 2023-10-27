@@ -21,6 +21,31 @@ class MobsRepository extends ServiceEntityRepository
         parent::__construct($registry, Mobs::class);
     }
 
+    public function findByName(string $value): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('LOWER(m.name) = LOWER(:val)')
+            ->setParameter('val', $value)
+            ->orderBy('m.levelMax', 'DESC')
+            ->addOrderBy('m.family', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByNameLike(string $value): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('LOWER(m.name) LIKE LOWER(:val)')
+            ->setParameter('val', "%" . $value . "%")
+            ->orderBy('m.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Mobs[] Returns an array of Mobs objects
     //     */

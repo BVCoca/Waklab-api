@@ -158,6 +158,12 @@ class Mobs
     #[Groups('mob:drops')]
     private Collection $stuffDrops;
 
+    #[ORM\ManyToMany(targetEntity: Dungeon::class, mappedBy: 'Mobs')]
+    private Collection $dungeons;
+
+    #[ORM\ManyToOne(inversedBy: 'boss')]
+    private ?Dungeon $dungeon = null;
+
     public function __construct()
     {
         $this->actionPoints = 0;
@@ -170,6 +176,7 @@ class Mobs
         $this->hp = 0;
         $this->resourceDrops = new ArrayCollection();
         $this->stuffDrops = new ArrayCollection();
+        $this->dungeons = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -509,6 +516,45 @@ class Mobs
                 $stuffDrop->setMob(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Dungeon>
+     */
+    public function getDungeons(): Collection
+    {
+        return $this->dungeons;
+    }
+
+    public function addDungeon(Dungeon $dungeon): static
+    {
+        if (!$this->dungeons->contains($dungeon)) {
+            $this->dungeons->add($dungeon);
+            $dungeon->addMob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDungeon(Dungeon $dungeon): static
+    {
+        if ($this->dungeons->removeElement($dungeon)) {
+            $dungeon->removeMob($this);
+        }
+
+        return $this;
+    }
+
+    public function getDungeon(): ?Dungeon
+    {
+        return $this->dungeon;
+    }
+
+    public function setDungeon(?Dungeon $dungeon): static
+    {
+        $this->dungeon = $dungeon;
 
         return $this;
     }

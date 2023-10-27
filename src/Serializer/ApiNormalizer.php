@@ -19,7 +19,9 @@ final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 
     public function __construct(RequestStack $requestStack)
     {
-        $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        if(null !== $requestStack->getCurrentRequest()) {
+            $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        }
     }
 
     public function normalize($object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
