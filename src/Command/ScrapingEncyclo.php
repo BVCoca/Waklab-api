@@ -2,14 +2,14 @@
 
 namespace App\Command;
 
-use App\Scraper\ArmorScraper;
-use App\Scraper\CaracteristicScraper;
-use App\Scraper\EmblemScraper;
-use App\Scraper\JobScraper;
-use App\Scraper\MobScraper;
-use App\Scraper\RarityScraper;
-use App\Scraper\ResourceScraper;
-use App\Scraper\WeaponScraper;
+use App\Scraper\Encyclo\ArmorScraper;
+use App\Scraper\Encyclo\CaracteristicScraper;
+use App\Scraper\Encyclo\EmblemScraper;
+use App\Scraper\Encyclo\JobScraper;
+use App\Scraper\Encyclo\MobScraper;
+use App\Scraper\Encyclo\RarityScraper;
+use App\Scraper\Encyclo\ResourceScraper;
+use App\Scraper\Encyclo\WeaponScraper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -18,8 +18,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 // the name of the command is what users type after "php bin/console"
-#[AsCommand(name: 'app:scrap-wakfu')]
-class Scraping extends Command
+#[AsCommand(name: 'app:scrap-encylco-wakfu')]
+class ScrapingEncyclo extends Command
 {
     private EntityManagerInterface $entityManager;
 
