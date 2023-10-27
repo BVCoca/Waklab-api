@@ -28,6 +28,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         stateOptions: new Options(index: 'stuff'),
         extraProperties: [
             'fields' => ['name^5', 'type.name'],
+            'sort_mapping' => [
+                'rarity' => 'rarity.value',
+                'level' => 'level'
+            ]
         ],
         filters: [FullTextFilter::class]
     ),
