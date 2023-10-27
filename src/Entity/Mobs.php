@@ -25,6 +25,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         stateOptions: new Options(index: 'mob'),
         extraProperties: [
             'fields' => ['name^5', 'family.name'],
+            'sort_mapping' => [
+                'level' => 'levelMin'
+            ]
         ],
         filters: [FullTextFilter::class]
     ),

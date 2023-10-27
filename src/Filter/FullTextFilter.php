@@ -22,6 +22,16 @@ class FullTextFilter extends AbstractFilter
                 'type' => 'integer',
                 'required' => true,
             ],
+            'sort_field' => [
+                'property' => 'sort_field',
+                'type' => 'string',
+                'required' => false,
+            ],
+            'sort_order' => [
+                'property' => 'sort_order',
+                'type' => 'string',
+                'required' => false,
+            ]
         ];
     }
 

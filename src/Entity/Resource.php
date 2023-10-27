@@ -27,7 +27,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'resource'),
         extraProperties: [
-            'fields' => ['name^5', 'description'],
+            'fields' => ['name'],
+            'sort_mapping' => [
+                'rarity' => 'rarity.value',
+                'level' => 'level'
+            ]
         ],
         filters: [FullTextFilter::class]
     ),
