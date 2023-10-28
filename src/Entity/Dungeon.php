@@ -53,7 +53,7 @@ class Dungeon
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search', 'slug'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 

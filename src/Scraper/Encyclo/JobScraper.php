@@ -38,72 +38,72 @@ class JobScraper extends Scraper
         $datas = [
             [
                 'Forestier',
-                '',
+                'https://api.waklaboratory.fr/images/job/bucheron.png',
                 'collecte',
             ],
             [
                 'Herboriste',
-                '',
+                'https://api.waklaboratory.fr/images/job/herboriste.png',
                 'collecte',
             ],
             [
                 'Mineur',
-                '',
+                'https://api.waklaboratory.fr/images/job/mineur.png',
                 'collecte',
             ],
             [
                 'Paysan',
-                '',
+                'https://api.waklaboratory.fr/images/job/paysan.png',
                 'collecte',
             ],
             [
                 'Pêcheur',
-                '',
+                'https://api.waklaboratory.fr/images/job/pecheur.png',
                 'collecte',
             ],
             [
                 'Trappeur',
-                '',
+                'https://api.waklaboratory.fr/images/job/trappeur.png',
                 'collecte',
             ],
             [
                 'Armurier',
-                '',
+                'https://api.waklaboratory.fr/images/job/armurier.png',
                 'artisanat',
             ],
             [
                 'Bijoutier',
-                '',
+                'https://api.waklaboratory.fr/images/job/bijoutier.png',
                 'artisanat',
             ],
             [
                 'Boulanger',
-                '',
+                'https://api.waklaboratory.fr/images/job/boulanger.png',
                 'artisanat',
             ],
             [
                 'Cuisinier',
-                '',
+                'https://api.waklaboratory.fr/images/job/cuisinier.png',
                 'artisanat',
             ],
             [
                 'Ébéniste',
-                '',
+                'https://api.waklaboratory.fr/images/job/ebeniste.png',
                 'artisanat',
             ],
             [
                 'Maitre d\'Armes',
-                '',
+                'https://api.waklaboratory.fr/images/job/maitre_arme.png',
                 'artisanat',
             ],
             [
                 'Maroquinier',
-                '',
+                'https://api.waklaboratory.fr/images/job/maroquinier.png',
                 'artisanat',
             ],
             [
                 'Tailleur',
-                '',
+                'https://api.waklaboratory.fr/images/job/tailleur.png',
                 'artisanat',
             ],
         ];
