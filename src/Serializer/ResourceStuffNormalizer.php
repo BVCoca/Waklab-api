@@ -9,17 +9,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterface
+final class ResourceStuffNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'API_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'ResourceStuff_NORMALIZER_ALREADY_CALLED';
 
     protected $baseUrl;
 
     public function __construct(RequestStack $requestStack)
     {
-        $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        if(null !== $requestStack->getCurrentRequest()) {
+            $this->baseUrl = $requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        }
     }
 
     public function normalize($object, string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null

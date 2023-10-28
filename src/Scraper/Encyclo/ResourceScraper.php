@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scraper;
+namespace App\Scraper\Encyclo;
 
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;

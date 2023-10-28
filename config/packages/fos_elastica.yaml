@@ -145,3 +145,42 @@ fos_elastica:
                             type: 'keyword'
                         slug:
                             type: 'keyword'
+        dungeon:
+            persistence:
+                driver: orm
+                model: App\Entity\Dungeon
+                provider: ~
+                finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : ['lowercase','asciifolding']
+                    tokenizer:
+                        partial:
+                            type: 'ngram'
+                            min_gram: 3
+                            max_gram: 4
+            properties:
+                slug:
+                    type: 'keyword'
+                name:
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                level:
+                    type: 'integer'
+                imageUrl:
+                    type: 'keyword'
+                max_player:
+                    type: 'integer'
+                room_count:
+                    type: 'integer'
+                boss:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'text'
+                            analyzer : 'partial_analyzer'
+
