@@ -9,11 +9,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class ApiNormalizer implements NormalizerInterface, NormalizerAwareInterface
+final class ResourceStuffNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'API_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'ResourceStuff_NORMALIZER_ALREADY_CALLED';
 
     protected $baseUrl;
 

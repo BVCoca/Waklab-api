@@ -56,12 +56,12 @@ class Mobs
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'dungeon:item'])]
     private ?string $name = null;
 
     #[Gedmo\Slug(fields: ['name'])]
     #[ORM\Column(type : 'string', length : 128, unique : false, nullable : true)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'slug'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'slug', 'dungeon:item'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
@@ -126,11 +126,11 @@ class Mobs
     private ?int $resFire = null;
 
     #[ORM\Column]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'dungeon:item'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'mob:search', 'dungeon:item'])]
     private ?int $levelMax = null;
 
     #[ORM\Column]
@@ -139,11 +139,11 @@ class Mobs
 
     #[ORM\ManyToOne(inversedBy: 'Mobs')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'family'])]
+    #[Groups(['resource:drops', 'mob:item', 'stuff:drops', 'family', 'dungeon:item'])]
     private ?Family $family = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['resource:drops', 'stuff:drops', 'mob:item', 'mob:search'])]
+    #[Groups(['resource:drops', 'stuff:drops', 'mob:item', 'mob:search', 'dungeon:item'])]
     private ?string $imageUrl = null;
 
     #[ORM\Column]
@@ -151,18 +151,20 @@ class Mobs
     private ?int $hp = null;
 
     #[ORM\OneToMany(mappedBy: 'mob', targetEntity: ResourceDrop::class, orphanRemoval: true)]
-    #[Groups('mob:drops')]
+    #[Groups(['mob:drops', 'dungeon:item'])]
     private Collection $resourceDrops;
 
     #[ORM\OneToMany(mappedBy: 'mob', targetEntity: StuffDrop::class, orphanRemoval: true)]
-    #[Groups('mob:drops')]
+    #[Groups(['mob:drops', 'dungeon:item'])]
     private Collection $stuffDrops;
 
     #[ORM\ManyToMany(targetEntity: Dungeon::class, mappedBy: 'Mobs')]
+    #[Groups('mob:item')]
     private Collection $dungeons;
 
-    #[ORM\ManyToOne(inversedBy: 'boss')]
-    private ?Dungeon $dungeon = null;
+    #[ORM\OneToOne(mappedBy: 'Boss', cascade: ['persist', 'remove'])]
+    #[Groups('mob:item')]
+    private ?Dungeon $boss = null;
 
     public function __construct()
     {
@@ -547,14 +549,24 @@ class Mobs
         return $this;
     }
 
-    public function getDungeon(): ?Dungeon
+    public function getBoss(): ?Dungeon
     {
-        return $this->dungeon;
+        return $this->boss;
     }
 
-    public function setDungeon(?Dungeon $dungeon): static
+    public function setBoss(?Dungeon $boss): static
     {
-        $this->dungeon = $dungeon;
+        // unset the owning side of the relation if necessary
+        if ($boss === null && $this->boss !== null) {
+            $this->boss->setBoss(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($boss !== null && $boss->getBoss() !== $this) {
+            $boss->setBoss($this);
+        }
+
+        $this->boss = $boss;
 
         return $this;
     }
