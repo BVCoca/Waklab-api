@@ -12,7 +12,7 @@ class SearchRepository extends Repository
         if ($searchTerm) {
             $fieldQuery = new \Elastica\Query\MultiMatch();
             $fieldQuery->setQuery($searchTerm);
-            $fieldQuery->setFields(['name^10', 'family.name^2', 'type.name']);
+            $fieldQuery->setFields(['name']);
 
             $items = $this->findPaginated($fieldQuery);
             $items->setCurrentPage($page);

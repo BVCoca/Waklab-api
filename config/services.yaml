@@ -26,7 +26,7 @@ services:
         arguments:
             $name: 'all'
         calls:
-            - [ addIndices, [['@fos_elastica.index.mob', '@fos_elastica.index.stuff', '@fos_elastica.index.resource']]]
+            - [ addIndices, [['@fos_elastica.index.mob', '@fos_elastica.index.stuff', '@fos_elastica.index.resource', '@fos_elastica.index.dungeon']]]
 
     Elastica\SearchableInterface: '@App\Search\MultiIndex'
 
@@ -36,7 +36,8 @@ services:
             - {
                 mob: '@fos_elastica.elastica_to_model_transformer.mob',
                 stuff: '@fos_elastica.elastica_to_model_transformer.stuff',
-                resource: '@fos_elastica.elastica_to_model_transformer.resource'
+                resource: '@fos_elastica.elastica_to_model_transformer.resource',
+                dungeon: '@fos_elastica.elastica_to_model_transformer.dungeon'
               }
 
     FOS\ElasticaBundle\Transformer\ElasticaToModelTransformerInterface: '@App\Search\ElasticaToModelTransformerCollection'

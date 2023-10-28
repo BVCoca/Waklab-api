@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Elasticsearch\State\CollectionProvider;
 use ApiPlatform\Metadata\Get;
 use App\Repository\DungeonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
+use App\Filter\FullTextFilter;
 
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 #[ApiResource(operations: [
@@ -24,7 +26,7 @@ use ApiPlatform\Metadata\ApiProperty;
         provider: CollectionProvider::class,
         stateOptions: new Options(index: 'dungeon'),
         extraProperties: [
-            'fields' => ['name'],
+            'fields' => ['name^4','boss.name'],
             'sort_mapping' => [
                 'level' => 'level'
             ]
@@ -46,21 +48,21 @@ class Dungeon
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     private ?int $max_player = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     private ?int $room_count = null;
 
     #[ORM\ManyToMany(targetEntity: Mobs::class, inversedBy: 'dungeons')]
@@ -68,11 +70,11 @@ class Dungeon
     private Collection $Mobs;
 
     #[ORM\Column]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     private ?int $level = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['mob:item','dungeon:item'])]
+    #[Groups(['mob:item','dungeon:item', 'dungeon:search'])]
     private ?string $imageUrl = null;
 
     #[ORM\OneToOne(inversedBy: 'boss', cascade: ['persist', 'remove'])]

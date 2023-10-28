@@ -40,7 +40,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         name: 'search_all',
         uriTemplate: '/search',
         controller: SearchController::class,
-        normalizationContext: ['groups' => ['mob:search', 'stuff:search', 'resource:search', 'family', 'rarity', 'type']],
+        normalizationContext: ['groups' => ['mob:search', 'stuff:search', 'resource:search', 'dungeon:search', 'family', 'rarity', 'type']],
         filters: [FullTextFilter::class]
     ),
     new Get(
