@@ -164,6 +164,7 @@ class ScrapingMethod extends Command
             if($dungeon->getMobs()->matching($orderBy)->first()) {
                 $boss = $dungeon->getMobs()->matching($orderBy)->first();
                 $dungeon->setBoss($boss);
+                $dungeon->setImageUrl($boss->getImageUrl());
                 $dungeon->removeMob($boss);
             }
 
