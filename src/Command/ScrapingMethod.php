@@ -4,6 +4,8 @@ namespace App\Command;
 
 use App\Entity\Dungeon;
 use App\Entity\Mobs;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -93,6 +95,26 @@ class ScrapingMethod extends Command
                         $mob_match[1] = "Larve Bleue/Larve Verte/Larve Orange/Larve Violette";
                     }
 
+                    // Cas des Bouftou Noir et Blanc
+                    if(in_array($mob_match[1], ['Bouftou Blanc', 'Bouftou Noir']))
+                    {
+                        $mob_match[1] = str_replace('Bouftou', 'Boufton', $mob_match[1]);
+                    }
+
+                    // Cas du Blopgang
+                    if($mob_match[1] === "Blopang Amadeus Mozart") {
+                        $mob_match[1] = "Blopgang Amadeus Blopzart";
+                    }
+
+                     // Cas des rats imbibé
+                    if($mob_match[1] === "Ratchitik Imbibé") {
+                        $mob_match[1] = "Ratchitik";
+                    }
+
+                    if(str_ends_with($mob_match[1],"Os Imbibé")) {
+                        $mob_match[1] = "Rat'Os";
+                    }
+
                     array_push($mobs,
                         ...explode(
                             "/",
@@ -132,6 +154,17 @@ class ScrapingMethod extends Command
                 } else if(count($founded_mobs) === 0) {
                     $output->writeln($dungeon->getName() . " : Aucun mob trouvé pour " . $mob);
                 }
+            }
+
+            $orderBy = (Criteria::create())->orderBy([
+                'levelMax' => Criteria::DESC,
+            ]);
+
+            // On set le boss du dj, on prend le plus HL, et on l'enlève de la liste des movs
+            if($dungeon->getMobs()->matching($orderBy)->first()) {
+                $boss = $dungeon->getMobs()->matching($orderBy)->first();
+                $dungeon->setBoss($boss);
+                $dungeon->removeMob($boss);
             }
 
             $this->entityManager->persist($dungeon);
