@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SublimationRepository::class)]
 class Sublimation
@@ -20,15 +21,19 @@ class Sublimation
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['resource:item'])]
     private ?string $effect = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['resource:item'])]
     private ?string $first_chasse = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['resource:item'])]
     private ?string $second_chasse = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['resource:item'])]
     private ?string $third_chasse = null;
 
     #[ORM\OneToMany(mappedBy: 'sublimation', targetEntity: Resource::class)]

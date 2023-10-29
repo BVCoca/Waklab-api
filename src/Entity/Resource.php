@@ -92,7 +92,8 @@ class Resource
     #[Groups('type')]
     private ?TypeResource $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relation')]
+    #[ORM\ManyToOne(inversedBy: 'resources')]
+    #[Groups(['resource:item'])]
     private ?Sublimation $sublimation = null;
 
     public function __construct()
