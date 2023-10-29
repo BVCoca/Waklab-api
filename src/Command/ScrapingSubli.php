@@ -46,12 +46,20 @@ class ScrapingSubli extends Command
             // Effet
             $effect = str_replace(['<td class="column-3">','</td>'], [""], $node->filter(".column-3")->outerHtml());
 
+            // Obtention
+            $obtention = $node->filter(".column-6")->text();
+
+            if(str_contains($obtention, 'niveau')) {
+                $obtention = null;
+            }
+
             $sublis[] = [
                 'name' => $name,
                 'first_chasse' => $first_chasse ?? '',
                 'seconde_chasse' => $seconde_chasse ?? '',
                 'third_chasse' => $third_chasse ?? '',
-                'effect' => $effect
+                'effect' => $effect,
+                'obtention' => $obtention ?? null
             ];
         });
 
@@ -66,6 +74,10 @@ class ScrapingSubli extends Command
             $subli->setSecondChasse($s['seconde_chasse']);
             $subli->setThirdChasse($s['third_chasse']);
             $subli->setEffect($s['effect']);
+
+            if($s['obtention']) {
+                $subli->setObtention($s['obtention']);
+            }
 
             if(count($ResourceRepository->findByName($s['name'])) === 0)
             {
