@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Dungeon;
 use App\Entity\Mobs;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\BrowserKit\HttpBrowser;
