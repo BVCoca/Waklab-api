@@ -21,6 +21,15 @@ class ResourceRepository extends ServiceEntityRepository
         parent::__construct($registry, Resource::class);
     }
 
+    public function findByName($name) {
+        return $this->createQueryBuilder('r')
+            ->andWhere('LOWER(r.name) LIKE LOWER(:name)')
+            ->setParameter('name', $name . "%" )
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Resource[] Returns an array of Resource objects
     //     */
