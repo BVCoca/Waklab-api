@@ -15,12 +15,12 @@ class FullTextFilter extends AbstractFilter
             'q' => [
                 'property' => 'q',
                 'type' => 'string',
-                'required' => true,
+                'required' => false,
             ],
             'page' => [
                 'property' => 'page',
                 'type' => 'integer',
-                'required' => true,
+                'required' => false,
             ],
             'sort_field' => [
                 'property' => 'sort_field',
