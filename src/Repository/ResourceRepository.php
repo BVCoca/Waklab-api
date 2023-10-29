@@ -30,6 +30,15 @@ class ResourceRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByNameStrict($name) {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     //    /**
     //     * @return Resource[] Returns an array of Resource objects
     //     */
