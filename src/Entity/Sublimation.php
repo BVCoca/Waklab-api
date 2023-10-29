@@ -32,11 +32,11 @@ class Sublimation
     private ?string $third_chasse = null;
 
     #[ORM\OneToMany(mappedBy: 'sublimation', targetEntity: Resource::class)]
-    private Collection $relation;
+    private Collection $resources;
 
     public function __construct()
     {
-        $this->relation = new ArrayCollection();
+        $this->resources = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,27 +107,27 @@ class Sublimation
     /**
      * @return Collection<int, resource>
      */
-    public function getRelation(): Collection
+    public function getResources(): Collection
     {
-        return $this->relation;
+        return $this->resources;
     }
 
-    public function addRelation(Resource $relation): static
+    public function addResource(Resource $resource): static
     {
-        if (!$this->relation->contains($relation)) {
-            $this->relation->add($relation);
-            $relation->setSublimation($this);
+        if (!$this->resources->contains($resource)) {
+            $this->resources->add($resource);
+            $resource->setSublimation($this);
         }
 
         return $this;
     }
 
-    public function removeRelation(Resource $relation): static
+    public function removeresource(Resource $resources): static
     {
-        if ($this->relation->removeElement($relation)) {
+        if ($this->resources->removeElement($resources)) {
             // set the owning side to null (unless already changed)
-            if ($relation->getSublimation() === $this) {
-                $relation->setSublimation(null);
+            if ($resources->getSublimation() === $this) {
+                $resources->setSublimation(null);
             }
         }
 

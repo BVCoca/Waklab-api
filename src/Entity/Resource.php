@@ -318,7 +318,7 @@ class Resource
         return $this->sublimation;
     }
 
-    public function setSublimation(?Sublimation $sublimation): static
+    public function setSublimation(?Sublimation $sublimation)
     {
         $this->sublimation = $sublimation;
 

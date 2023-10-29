@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Resource;
+use App\Entity\Sublimation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -25,6 +27,8 @@ class ScrapingSubli extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->clear();
+
         $crawler = $this->client->request('GET', 'https://methodwakfu.com/optimisation/enchantement/');
 
         $sublis = [];
@@ -51,9 +55,47 @@ class ScrapingSubli extends Command
             ];
         });
 
+        $ResourceRepository = $this->entityManager->getRepository(Resource::class);
 
+        foreach($sublis as $s) {
+
+            $subli = new Sublimation();
+
+            $subli->setName($s['name']);
+            $subli->setFirstChasse($s['first_chasse']);
+            $subli->setSecondChasse($s['seconde_chasse']);
+            $subli->setThirdChasse($s['third_chasse']);
+            $subli->setEffect($s['effect']);
+
+            if(count($ResourceRepository->findByName($s['name'])) === 0)
+            {
+                echo $s['name'] . "\n";
+            }
+
+            foreach($ResourceRepository->findByName($s['name']) as $resource) {
+                $resource->setSublimation($subli);
+            }
+
+            $this->entityManager->persist($subli);
+            $this->entityManager->flush();
+        }
 
         return Command::SUCCESS;
     }
 
+     /**
+     * Truncate la base de données
+     */
+    public function clear(): void {
+
+        // On désactive et réactive les forein key checks
+        $conn = $this->entityManager->getConnection();
+        $conn->executeQuery('SET FOREIGN_KEY_CHECKS=0;');
+
+        $this->entityManager->createQuery(
+            'DELETE FROM ' . Sublimation::class . ' s'
+        )->execute();
+
+        $conn->executeQuery('SET FOREIGN_KEY_CHECKS=1;');
+    }
 }

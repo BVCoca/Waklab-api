@@ -33,14 +33,11 @@ class ScrapingMethod extends Command
         // On parcours chaque page de DJ
         $donjons = $this->getDonjonsLink();
 
-        $datas = [];
-
+        $MobsRepository = $this->entityManager->getRepository(Mobs::class);
 
         foreach($donjons as $dj)
         {
             $dungeon = new Dungeon();
-
-            $MobsRepository = $this->entityManager->getRepository(Mobs::class);
 
             $crawler = $this->client->request('GET', $dj['href']);
 
