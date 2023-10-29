@@ -30,8 +30,11 @@ class ScrapingSubli extends Command
         $this->clear();
 
         $crawler = $this->client->request('GET', 'https://methodwakfu.com/optimisation/enchantement/');
+        $ResourceRepository = $this->entityManager->getRepository(Resource::class);
 
+        // Vrai subli avec les chasse
         $sublis = [];
+
 
         $crawler->filter("#tablepress-enchant_sublis > tbody > tr")->each(function($node) use (&$sublis) {
 
@@ -63,8 +66,6 @@ class ScrapingSubli extends Command
             ];
         });
 
-        $ResourceRepository = $this->entityManager->getRepository(Resource::class);
-
         foreach($sublis as $s) {
 
             $subli = new Sublimation();
@@ -89,6 +90,31 @@ class ScrapingSubli extends Command
             }
 
             $this->entityManager->persist($subli);
+            $this->entityManager->flush();
+        }
+
+        $bonus = [];
+
+        // Les bonus
+        $crawler->filter("#tablepress-enchant-epique > tbody > tr")->each(function($node) use(&$bonus) {
+            $bonus[] = [
+                'name' => $node->filter('.column-2 > a')->innerText(),
+                'effect' =>  $node->filter('.column-3')->innerText()
+            ];
+        });
+
+        $crawler->filter("#tablepress-enchant-relique > tbody > tr")->each(function($node) use(&$bonus) {
+            $bonus[] = [
+                'name' => $node->filter('.column-2 > a')->innerText(),
+                'effect' =>  $node->filter('.column-3')->innerText()
+            ];
+        });
+
+        foreach($bonus as $b) {
+            foreach($ResourceRepository->findByNameStrict($b['name']) as $resource) {
+                $resource->setDescription($b['effect']);
+            }
+
             $this->entityManager->flush();
         }
 
