@@ -39,6 +39,10 @@ class Sublimation
     #[ORM\OneToMany(mappedBy: 'sublimation', targetEntity: Resource::class)]
     private Collection $resources;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['resource:item'])]
+    private ?string $obtention = null;
+
     public function __construct()
     {
         $this->resources = new ArrayCollection();
@@ -135,6 +139,18 @@ class Sublimation
                 $resources->setSublimation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getObtention(): ?string
+    {
+        return $this->obtention;
+    }
+
+    public function setObtention(?string $obtention): static
+    {
+        $this->obtention = $obtention;
 
         return $this;
     }
