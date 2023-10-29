@@ -7,7 +7,7 @@ use FOS\ElasticaBundle\Repository;
 
 class SearchRepository extends Repository
 {
-    public function search(string $searchTerm, int $page = 1, int $item_per_page = 20)
+    public function search(string $searchTerm = null, int $page = 1, int $item_per_page = 20)
     {
         if ($searchTerm) {
             $fieldQuery = new \Elastica\Query\MultiMatch();
