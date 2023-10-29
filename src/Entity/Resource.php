@@ -92,6 +92,9 @@ class Resource
     #[Groups('type')]
     private ?TypeResource $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'relation')]
+    private ?Sublimation $sublimation = null;
+
     public function __construct()
     {
         $this->resourceDrops = new ArrayCollection();
@@ -306,6 +309,18 @@ class Resource
     public function setType(?TypeResource $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSublimation(): ?Sublimation
+    {
+        return $this->sublimation;
+    }
+
+    public function setSublimation(?Sublimation $sublimation): static
+    {
+        $this->sublimation = $sublimation;
 
         return $this;
     }
