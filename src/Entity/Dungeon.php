@@ -19,7 +19,7 @@ use App\Filter\FullTextFilter;
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops']],
+        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['dungeon:search']],
