@@ -30,6 +30,450 @@ class ScrapingMethod extends Command
     {
         $this->clear();
 
+        // Merci à Rudy pour les travaux
+        $dungeons = [
+            array(
+                "level" => 36,
+                "name" => "Donjon Équipage du Poulpe",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "flibustier d'asse",
+                    "soeur de la côte",
+                    "bataillard des mers",
+                    "Pohl le poulpe"
+                ),
+            ),
+            array(
+                "level" => 36,
+                "name" => "Donjon Morts-Brûlés",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "bwork brûlé",
+                    "nimbrasier",
+                    "défunéraire",
+                    "Hark Saniss, Dernier géant"
+                ),
+            ),
+            array(
+                "level" => 51,
+                "name" => "Tour des Miss Moches",
+                "maxPlayer" => 3,
+                "roomCount" => 1,
+                "mobs" => array(
+                    "Lela",
+                    "Ydalipe",
+                    "Erpel",
+                    "Eenca"
+                ),
+            ),
+            array(
+                "level" => 51,
+                "name" => "Donjon Marteaux-Aigris",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Marthos",
+                    "Parrapuits",
+                    "Bouclihash",
+                    "Goël le golem"
+                ),
+            ),
+            array(
+                "level" => 66,
+                "name" => "Temple du Grand Orrok",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Krocky",
+                    "Kroamagnon",
+                    "Korbelle",
+                    "Grand Orrok"
+                ),
+            ),
+            array(
+                "level" => 66,
+                "name" => "Truchière Abandonnée",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Truchon",
+                    "Truchemuche",
+                    "Truche",
+                    "Hongrue, Haute Truche"
+                ),
+            ),
+            array(
+                "level" => 66,
+                "name" => "Domaine du Petit Groin",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Glaie",
+                    "Marcassinet",
+                    "Gligli agressif",
+                    "Prespic",
+                    "Gligli Royal",
+                    "Sangria le Fruité"
+                ),
+            ),
+            array(
+                "level" => 66,
+                "name" => "Palais du Tsu",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Moskito",
+                    "Sangsuce Tsu Tsu",
+                    "Gros Boo",
+                    "Tsar Tsu Tsu"
+                ),
+            ),
+            array(
+                "level" => 81,
+                "name" => "Le Misolée",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Gore-Gone",
+                    "Gargrouilleur",
+                    "Aplâtissier",
+                    "Viktoria-France Kenstein"
+                ),
+            ),
+            array(
+                "level" => 81,
+                "name" => "Académie Trool",
+                "maxPlayer" => 3,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Rey Mystroolrio",
+                    "The Undertroolker",
+                    "Troolk Hoogan",
+                    "El Pochito"
+                ),
+            ),
+            array(
+                "level" => 81,
+                "name" => "Le Hammamamoule",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "El Moulstacho",
+                    "Ver Moulé Immature",
+                    "Ver Moulé Vorace",
+                    "Requin Moularteau",
+                    "Bilbymoule Nacrée"
+                ),
+            ),
+            array(
+                "level" => 81,
+                "name" => "Caverne des Slekymoses",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Crasslek",
+                    "Magislek",
+                    "Long Brick",
+                    "Reine Slek"
+                ),
+            ),
+            array(
+                "level" => 81,
+                "name" => "Nécropoil de Morbax",
+                "maxPlayer" => 6,
+                "roomCount" => 4,
+                "mobs" => array(
+                    "Chafer lancier de la mine",
+                    "Chafer archer de la mine",
+                    "Chafer Elite de la mine",
+                    "Chafer Elite",
+                    "Chafer Lancier",
+                    "Chafer Archer",
+                    "Chaferfu, roi Chafer"
+                ),
+            ),
+            array(
+                "level" => 96,
+                "name" => "Repaire des Super-Vilains",
+                "maxPlayer" => 3,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Lardevil",
+                    "Kralaman",
+                    "Mégathon",
+                    "Merkator"
+                ),
+            ),
+            array(
+                "level" => 96,
+                "name" => "L’Arène Dansante",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Bilbyboy Framboise",
+                    "Bilbyboy Fraise",
+                    "Bilbygirl Menthe",
+                    "Bilbygirl Citron",
+                    "Bilby Queen"
+                ),
+            ),
+            array(
+                "level" => 96,
+                "name" => "Le Glaglacier Cornu",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Glaglawi",
+                    "Glagla Cornegivre",
+                    "Glagla Froidacier",
+                    "Lady Glagla"
+                ),
+            ),
+            array(
+                "level" => 96,
+                "name" => "Donjon Gelée",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Gelée Framboise",
+                    "Gelée Menthe",
+                    "Gelée Fraise",
+                    "Gelée Citron",
+                    "Empereur Gelax"
+                ),
+            ),
+            array(
+                "level" => 96,
+                "name" => "Chuchobase",
+                "maxPlayer" => 6,
+                "roomCount" => 4,
+                "mobs" => array(
+                    "Chuchoteurs Arbalétriers",
+                    "Chuchoteurs Fantassins",
+                    "Chuchoteur Porte-Etendard",
+                    "Craqueboule Chuchoté",
+                    "Craqueleur Chuchoté",
+                    "Grand Craqueleur Chuchoté",
+                    "Maître Chuchoku"
+                ),
+            ),
+            array(
+                "level" => 111,
+                "name" => "Le Pot d’Hagën Glass",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Craktite",
+                    "Crakmite",
+                    "Crakeurn Polaire",
+                    "Crarte d’Or",
+                    "Hagën-Glass"
+                ),
+            ),
+            array(
+                "level" => 111,
+                "name" => "Aile de l’Ambassadrice",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Archer du Nord",
+                    "Garde du Nord",
+                    "Brute du Nord",
+                    "Traqueur du Nord",
+                    "Kya, Missiz Frizz"
+                ),
+            ),
+            array(
+                "level" => 111,
+                "name" => "Caverne Smarrante",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Smarmot",
+                    "Smare Couatique",
+                    "Gros Smare",
+                    "Smarillion"
+                ),
+            ),
+            array(
+                "level" => 111,
+                "name" => "La Pichine",
+                "maxPlayer" => 6,
+                "roomCount" => 4,
+                "mobs" => array(
+                    "Don Rascaillès",
+                    "Sergent Poiscaille",
+                    "Bernardo dé la Carpett",
+                    "Zespadon",
+                    "Zespadon Noir"
+                ),
+            ),
+            array(
+                "level" => 126,
+                "name" => "Temple de l’Empeleul Lenald",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Mini Lenald",
+                    "Lenald",
+                    "Vieux Lenald",
+                    "Fatt Lenald",
+                    "Empeleul Lenald"
+                ),
+            ),
+            array(
+                "level" => 126,
+                "name" => "Donjon Noirespore",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Cépolourpode Ecrasant",
+                    "Amionite Bicéphaloïde",
+                    "Haploïde Sporulateur",
+                    "Coulemellanche Sauteur",
+                    "Telob le Champmane"
+                ),
+            ),
+            array(
+                "level" => 126,
+                "name" => "Domaine de la Trouffe Salée",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Bébé Phorreur",
+                    "Phorreur Domestique",
+                    "Phorreur Entraîné",
+                    "Fripon"
+                ),
+            ),
+            array(
+                "level" => 141,
+                "name" => "Vignoble Ignoble",
+                "maxPlayer" => 6,
+                "roomCount" => 4,
+                "mobs" => array(
+                    "Serprieuse",
+                    "Papy Crate",
+                    "Mamie Lésime",
+                    "Dranipoch",
+                    "Grande Prêtresse Sydonia"
+                ),
+            ),
+            array(
+                "level" => 141,
+                "name" => "Wesewve de Cawottes Abandonnée",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Wabbit Tados",
+                    "Gwand Pa Zwombbit Bandé",
+                    "Wo Zwombbit",
+                    "Gwand Wabbit GM"
+                ),
+            ),
+            array(
+                "level" => 141,
+                "name" => "Donjon Srambad",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Bulldague Nain",
+                    "Dresseur Longuelames",
+                    "Apothicaire Macchabrant",
+                    "Sramva",
+                    "Venâme le Mangelombre"
+                ),
+            ),
+            array(
+                "level" => 141,
+                "name" => "Donjon Enutrosor",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Chevalancier",
+                    "Malozaure",
+                    "Enutroffre-Fort",
+                    "Kamarachnide",
+                    "Jamall'Auneth le Porte-clés"
+                ),
+            ),
+            array(
+                "level" => 156,
+                "name" => "Roub’Bar",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Roublard Tiste",
+                    "Blar le roux",
+                    "Roublard Alard Amasse",
+                    "Brise-Tibias",
+                    "Remington Smisse"
+                ),
+            ),
+            array(
+                "level" => 201,
+                "name" => "Donjon Toundrasoirs",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Tigris",
+                    "Loupin",
+                    "Renard Valo",
+                    "Bufflamboyant"
+                ),
+            ),
+            array(
+                "level" => 201,
+                "name" => "Donjon Cagnardeurs",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Carabajoie",
+                    "Tatourbillon",
+                    "Castorbital",
+                    "Scorpiétineur"
+                ),
+            ),
+            array(
+                "level" => 201,
+                "name" => "Donjon Carapattes",
+                "maxPlayer" => 6,
+                "roomCount" => 2,
+                "mobs" => array(
+                    "Caméléhombre",
+                    "Dragonorrhée",
+                    "Torturbulent",
+                    "Tortumulte"
+                ),
+            ),
+            array(
+                "level" => 216,
+                "name" => "Donjon Steamers",
+                "maxPlayer" => 6,
+                "roomCount" => 4,
+                "mobs" => array(
+                    "Artilleur d'élite",
+                    "Unité stasificatrice",
+                    "Mékano",
+                    "Sir Comte FLex"
+                ),
+            ),
+            array(
+                "level" => 216,
+                "name" => "Donjon Poisseux Abyssaux",
+                "maxPlayer" => 6,
+                "roomCount" => 3,
+                "mobs" => array(
+                    "Petit-poisseux",
+                    "Cogneur abyssal",
+                    "Assassirène",
+                    "Raeliss"
+                ),
+            ),
+        ];
+
         // On parcours chaque page de DJ
         $donjons = $this->getDonjonsLink();
 
@@ -37,7 +481,7 @@ class ScrapingMethod extends Command
 
         foreach($donjons as $dj)
         {
-            $dungeon = new Dungeon();
+            $dungeon = [];
 
             $crawler = $this->client->request('GET', $dj['href']);
 
@@ -45,8 +489,9 @@ class ScrapingMethod extends Command
 
             preg_match('/^(.*?) NIV.+?(\d+)/i', $title_tag, $match);
 
-            $dungeon->setName(trim($match[1], '? -'));
-            $dungeon->setLevel(intval($match[2]));
+            $dungeon['name'] = trim($match[1], '? -');
+            $output->writeln($dungeon['name']);
+            $dungeon['level'] = intval($match[2]);
 
             // Encadré du haut de page pour récupérer le nombre de joueur et le nombre de salle
             $quote = '';
@@ -59,14 +504,14 @@ class ScrapingMethod extends Command
             preg_match('/(\d+) joueur/i', $quote, $player_match);
 
             if(isset($player_match[1])) {
-                $dungeon->setMaxPlayer($player_match[1]);
+                $dungeon['maxPlayer'] = $player_match[1];
             }
 
             // Nombre de salles
             preg_match('/(\d+) salle/i', $quote, $salle_match);
 
             if(isset($salle_match[1])) {
-                $dungeon->setRoomCount($salle_match[1]);
+                $dungeon['roomCount'] = $salle_match[1];
             }
 
             $mobs = [];
@@ -124,7 +569,26 @@ class ScrapingMethod extends Command
                 }
             });
 
-            foreach($mobs as $mob) {
+            $dungeon['mobs'] = $mobs;
+
+            $dungeons[] = $dungeon;
+        }
+
+        foreach($dungeons as $data) {
+            $dungeon = new Dungeon();
+
+            $dungeon->setName($data['name']);
+            $dungeon->setLevel($data['level']);
+
+            if(isset($data['maxPlayer'])) {
+                $dungeon->setMaxPlayer($data['maxPlayer']);
+            }
+
+            if(isset($data['roomCount'])) {
+                $dungeon->setRoomCount($data['roomCount']);
+            }
+
+            foreach($data['mobs'] as $mob) {
 
                 $mob = str_replace("’","'",trim(html_entity_decode($mob), " \t\n\r\0\x0B\xC2\xA0"));
 
