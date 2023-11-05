@@ -7,37 +7,27 @@ use Elastica\Aggregation\Nested;
 use Elastica\Aggregation\ReverseNested;
 use Elastica\Aggregation\Terms;
 use Elastica\Query;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\FunctionScore;
+use Elastica\Query\MatchQuery;
 use FOS\ElasticaBundle\Repository;
 
 class SearchRepository extends Repository
 {
-    public function search(string $q = null, int $page = 1, int $item_per_page = 20)
+    public function search(string $q = null, array $rarity = [], array $type = [], array $family = [], string $sort_field = null, string $sort_order = null, string $model = null, int $page = 1, int $item_per_page = 20)
     {
-        if ($q) {
-            $fieldQuery = new \Elastica\Query\MultiMatch();
-            $fieldQuery->setQuery($q);
-            $fieldQuery->setFields(['name']);
+        $items = $this->findPaginated($this->getQuery($q, $rarity, $type, $family, $sort_field, $sort_order, $model));
+        $items->setCurrentPage($page);
+        $items->setMaxPerPage($item_per_page);
 
-            $items = $this->findPaginated($fieldQuery);
-            $items->setCurrentPage($page);
-            $items->setMaxPerPage($item_per_page);
-
-            return new PagerFantaToPaginator($items);
-        }
-
-        return null;
+        return new PagerFantaToPaginator($items);
     }
 
-    public function aggregate(string $model, string $q = null) {
-        $query = new Query();
-        $query->setSize(0);
+    public function aggregate(string $model, string $q = null, array $rarity = [], array $type = [], array $family = []) {
 
         // Recherche
-        $fieldQuery = new \Elastica\Query\MultiMatch();
-        $fieldQuery->setQuery($q);
-        $fieldQuery->setFields(['name']);
-
-        $query->setQuery($fieldQuery);
+        $query = $this->getQuery($q, $rarity, $type, $family);
+        $query->setSize(0);
 
         // Aggregation
 
@@ -103,5 +93,77 @@ class SearchRepository extends Repository
         $query->addAggregation($family);
 
         return $this->createPaginatorAdapter($query)->getAggregations();
+    }
+
+    private function getQuery(string $q = null, array $rarity = [], array $type = [], array $family = [], string $sort_field = null, string $sort_order = null, string $model = null) : Query {
+        $query = new Query();
+
+        $boolQuery = new BoolQuery();
+
+        // Recherche
+
+        // Nom
+        if($q)
+            $boolQuery->addMust(new MatchQuery("name", $q));
+        else {
+            $seed = time() . rand(10000, 20000);
+
+            $random_score = new FunctionScore();
+            $random_score->setRandomScore($seed);
+
+            $boolQuery->addShould($random_score);
+        }
+
+        // Rareté
+        if(!empty($rarity)) {
+            $rarityQuery = new BoolQuery();
+
+            foreach($rarity as $r) {
+                $rarityQuery->addShould(new MatchQuery("rarity.value", $r));
+            }
+
+            $boolQuery->addMust($rarityQuery);
+        }
+
+        // Type
+        if(!empty($type)) {
+            $typeQuery = new BoolQuery();
+
+            foreach($type as $t) {
+                $typeQuery->addShould(new MatchQuery("type.slug", $t));
+            }
+
+            $boolQuery->addMust($typeQuery);
+        }
+
+        // Famille
+        if(!empty($family)) {
+            $familyQuery = new BoolQuery();
+
+            foreach($family as $f) {
+                $familyQuery->addShould(new MatchQuery("family.slug", $f));
+            }
+
+            $boolQuery->addMust($familyQuery);
+        }
+
+        // Fin recherche
+        $query->setQuery($boolQuery);
+
+        // Tri
+        if(isset($sort_field) && isset($sort_order)) {
+
+            if($sort_field === "level" && $model === "mob") {
+                $sort_field = "levelMin";
+            }
+
+            if($sort_field === "rarity") {
+                $sort_field = "rarity.value";
+            }
+
+            $query->setSort([$sort_field => ['order' => $sort_order]]);
+        }
+
+        return $query;
     }
 }

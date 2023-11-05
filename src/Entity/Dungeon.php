@@ -22,18 +22,6 @@ use App\Filter\FullTextFilter;
         normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity']],
     ),
     new GetCollection(
-        normalizationContext: ['groups' => ['dungeon:search']],
-        provider: CollectionProvider::class,
-        stateOptions: new Options(index: 'dungeon'),
-        extraProperties: [
-            'fields' => ['name^4','boss.name'],
-            'sort_mapping' => [
-                'level' => 'level'
-            ]
-        ],
-        filters: [FullTextFilter::class]
-    ),
-    new GetCollection(
         normalizationContext: ['groups' => ['slug']],
         uriTemplate: '/dungeon/slugs',
         paginationItemsPerPage: 200

@@ -21,18 +21,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
     new GetCollection(
-        normalizationContext: ['groups' => ['mob:search', 'family']],
-        provider: CollectionProvider::class,
-        stateOptions: new Options(index: 'mob'),
-        extraProperties: [
-            'fields' => ['name^5', 'family.name'],
-            'sort_mapping' => [
-                'level' => 'levelMin'
-            ]
-        ],
-        filters: [FullTextFilter::class]
-    ),
-    new GetCollection(
         normalizationContext: ['groups' => ['slug']],
         uriTemplate: '/mobs/slugs',
         paginationItemsPerPage: 200

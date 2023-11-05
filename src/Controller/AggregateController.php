@@ -29,7 +29,7 @@ class AggregateController extends AbstractController
         $this->multiIndex = $multiIndex;
     }
 
-    #[Route(name:"api_mobs_aggregate", path:"/{model}/aggregate", methods:"GET", requirements: ['model' => 'mob|stuff|resource|dungeon|all'])]
+    #[Route(name:"api_aggregate", path:"/api/{model}/aggregate", methods:"GET", requirements: ['model' => 'mob|stuff|resource|dungeon'])]
     public function __invoke(Request $request, string $model)
     {
 
@@ -39,7 +39,10 @@ class AggregateController extends AbstractController
 
         $items = $this->searchRepository->aggregate(
             $model,
-            $request->query->get('q')
+            $request->query->get('q'),
+            array_filter(explode("|", $request->query->get('rarity') ?? "")),
+            array_filter(explode("|", $request->query->get('type') ?? "")),
+            array_filter(explode("|", $request->query->get('family') ?? ""))
         ) ?? [];
 
         // Transformation des aggrégations
