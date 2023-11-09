@@ -64,6 +64,7 @@ class SearchRepository extends Repository
 
         $type_terms = new Terms("type_terms");
         $type_terms->setField("type.slug");
+        $type_terms->setSize(500);
 
         $type_object = new ReverseNested("type_object");
 
@@ -81,6 +82,7 @@ class SearchRepository extends Repository
 
         $family_terms = new Terms("family_terms");
         $family_terms->setField("family.slug");
+        $family_terms->setSize(500);
 
         $family_object = new ReverseNested("family_object");
 

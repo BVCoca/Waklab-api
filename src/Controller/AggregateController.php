@@ -63,7 +63,8 @@ class AggregateController extends AbstractController
                 'value' => $rarityValue,
                 'icon' => $iconValue,
                 'name' => $nameValue,
-                'count' => $bucket['doc_count']
+                'count' => $bucket['doc_count'],
+                '@type' => 'Rarity'
             ];
 
             $rarityArray[] = $rarityObject;
@@ -87,7 +88,8 @@ class AggregateController extends AbstractController
                 'value' => $typeValue,
                 'icon' => $iconValue,
                 'name' => $nameValue,
-                'count' => $bucket['doc_count']
+                'count' => $bucket['doc_count'],
+                '@type' => 'Type'
             ];
 
             $typeArray[] = $typeObject;
@@ -109,7 +111,8 @@ class AggregateController extends AbstractController
             $familyObject = [
                 'value' => $familyValue,
                 'name' => $nameValue,
-                'count' => $bucket['doc_count']
+                'count' => $bucket['doc_count'],
+                '@type' => 'Family'
             ];
 
             $familyArray[] = $familyObject;
