@@ -65,7 +65,8 @@ services:
             - ${ES_PORT}:9200
         restart: always
         environment:
-            - xpack.security.enabled=false
+            - xpack.security.enabled=true
+            - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
             - discovery.type=single-node
             - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         ulimits:
