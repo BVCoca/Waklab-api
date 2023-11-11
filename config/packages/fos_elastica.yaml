@@ -38,8 +38,7 @@ fos_elastica:
                     include_in_root : true
                     properties:
                         name:
-                            type: 'text'
-                            analyzer : 'partial_analyzer'
+                            type: 'keyword'
                         icon:
                             type: 'keyword'
                         value:
@@ -49,8 +48,7 @@ fos_elastica:
                     include_in_root : true
                     properties:
                         name:
-                            type: 'text'
-                            analyzer : 'partial_analyzer'
+                            type: 'keyword'
                         icon:
                             type: 'keyword'
                         slug:
@@ -89,8 +87,7 @@ fos_elastica:
                     include_in_root : true
                     properties:
                         name:
-                            type: 'text'
-                            analyzer : 'partial_analyzer'
+                            type: 'keyword'
                         slug:
                             type: 'keyword'
         stuff:
@@ -128,8 +125,7 @@ fos_elastica:
                     include_in_root : true
                     properties:
                         name:
-                            type: 'text'
-                            analyzer : 'partial_analyzer'
+                            type: 'keyword'
                         icon:
                             type: 'keyword'
                         value:
@@ -139,8 +135,7 @@ fos_elastica:
                     include_in_root : true
                     properties:
                         name:
-                            type: 'text'
-                            analyzer : 'partial_analyzer'
+                            type: 'keyword'
                         icon:
                             type: 'keyword'
                         slug:
@@ -183,4 +178,3 @@ fos_elastica:
                         name:
                             type: 'text'
                             analyzer : 'partial_analyzer'
-
