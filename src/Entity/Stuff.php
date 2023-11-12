@@ -23,19 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         normalizationContext: ['groups' => ['stuff:item', 'stuff:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
     ),
     new GetCollection(
-        normalizationContext: ['groups' => ['stuff:search', 'rarity', 'type']],
-        provider: CollectionProvider::class,
-        stateOptions: new Options(index: 'stuff'),
-        extraProperties: [
-            'fields' => ['name^5', 'type.name'],
-            'sort_mapping' => [
-                'rarity' => 'rarity.value',
-                'level' => 'level'
-            ]
-        ],
-        filters: [FullTextFilter::class]
-    ),
-    new GetCollection(
         normalizationContext: ['groups' => ['slug']],
         uriTemplate: '/stuff/slugs',
         paginationItemsPerPage: 200

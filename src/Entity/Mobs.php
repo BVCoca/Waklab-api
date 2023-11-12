@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Controller\AggregateController;
 use App\Controller\SearchController;
 use App\Filter\FullTextFilter;
 use App\Repository\MobsRepository;
@@ -19,18 +20,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MobsRepository::class)]
 #[ApiResource(operations: [
-    new GetCollection(
-        normalizationContext: ['groups' => ['mob:search', 'family']],
-        provider: CollectionProvider::class,
-        stateOptions: new Options(index: 'mob'),
-        extraProperties: [
-            'fields' => ['name^5', 'family.name'],
-            'sort_mapping' => [
-                'level' => 'levelMin'
-            ]
-        ],
-        filters: [FullTextFilter::class]
-    ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
         uriTemplate: '/mobs/slugs',
@@ -45,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ),
     new Get(
         normalizationContext: ['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
-    ),
+    )
 ])]
 class Mobs
 {
