@@ -10,23 +10,24 @@ use Elastica\Query;
 use Elastica\Query\BoolQuery;
 use Elastica\Query\FunctionScore;
 use Elastica\Query\MatchQuery;
+use Elastica\Query\Range;
 use FOS\ElasticaBundle\Repository;
 
 class SearchRepository extends Repository
 {
-    public function search(string $q = null, array $rarity = [], array $type = [], array $family = [], string $sort_field = null, string $sort_order = null, string $model = null, int $page = 1, int $item_per_page = 20)
+    public function search(string $q = null, array $rarity = [], array $type = [], array $family = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null, int $page = 1, int $item_per_page = 20)
     {
-        $items = $this->findPaginated($this->getQuery($q, $rarity, $type, $family, $sort_field, $sort_order, $model));
+        $items = $this->findPaginated($this->getQuery($q, $rarity, $type, $family, $levelMin, $levelMax, $sort_field, $sort_order, $model));
         $items->setCurrentPage($page);
         $items->setMaxPerPage($item_per_page);
 
         return new PagerFantaToPaginator($items);
     }
 
-    public function aggregate(string $model, string $q = null, array $rarity = [], array $type = [], array $family = []) {
+    public function aggregate(string $model, string $q = null, array $rarity = [], array $type = [], array $family = [], int $levelMin = null, int $levelMax = null) {
 
         // Recherche
-        $query = $this->getQuery($q, $rarity, $type, $family);
+        $query = $this->getQuery(q : $q, rarity : $rarity, type : $type, family : $family, model : $model, levelMin : $levelMin, levelMax : $levelMax);
         $query->setSize(0);
 
         // Aggregation
@@ -97,7 +98,7 @@ class SearchRepository extends Repository
         return $this->createPaginatorAdapter($query)->getAggregations();
     }
 
-    private function getQuery(string $q = null, array $rarity = [], array $type = [], array $family = [], string $sort_field = null, string $sort_order = null, string $model = null) : Query {
+    private function getQuery(string $q = null, array $rarity = [], array $type = [], array $family = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null) : Query {
         $query = new Query();
 
         $boolQuery = new BoolQuery();
@@ -114,6 +115,25 @@ class SearchRepository extends Repository
             $random_score->setRandomScore($seed);
 
             $boolQuery->addShould($random_score);
+        }
+
+        // Niveau
+        if($levelMin || $levelMax) {
+            $rangeQuery = new Range();
+
+            $params = [];
+
+            if($levelMin) {
+                $params['gte'] = $levelMin;
+            }
+
+            if($levelMax) {
+                $params['lte'] = $levelMax;
+            }
+
+            $rangeQuery->addField('level', $params);
+
+            $boolQuery->addMust($rangeQuery);
         }
 
         // Rareté
