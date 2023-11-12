@@ -39,6 +39,8 @@ class SearchController extends AbstractController
             array_filter(explode("|", $request->query->get('rarity') ?? "")),
             array_filter(explode("|", $request->query->get('type') ?? "")),
             array_filter(explode("|", $request->query->get('family') ?? "")),
+            intval($request->query->get('levelMin')),
+            intval($request->query->get('levelMax')),
             $request->query->get('sort_field'),
             $request->query->get('sort_order'),
             $request->query->get('model'),
