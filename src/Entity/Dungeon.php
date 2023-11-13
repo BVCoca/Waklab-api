@@ -69,6 +69,9 @@ class Dungeon
     #[Groups(['dungeon:item'])]
     private ?Mobs $Boss = null;
 
+    #[ORM\ManyToOne(inversedBy: 'dungeons')]
+    private ?Subzone $subzone = null;
+
     public function __construct()
     {
         $this->Mobs = new ArrayCollection();
@@ -183,6 +186,18 @@ class Dungeon
     public function setBoss(?Mobs $Boss): static
     {
         $this->Boss = $Boss;
+
+        return $this;
+    }
+
+    public function getSubzone(): ?Subzone
+    {
+        return $this->subzone;
+    }
+
+    public function setSubzone(?Subzone $subzone): static
+    {
+        $this->subzone = $subzone;
 
         return $this;
     }
