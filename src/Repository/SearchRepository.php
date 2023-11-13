@@ -131,7 +131,7 @@ class SearchRepository extends Repository
                 $params['lte'] = $levelMax;
             }
 
-            $rangeQuery->addField('level', $params);
+            $rangeQuery->addField($model === 'mob' ? 'levelMin' : 'level', $params);
 
             $boolQuery->addMust($rangeQuery);
         }
