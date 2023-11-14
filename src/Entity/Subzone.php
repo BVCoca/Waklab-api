@@ -6,6 +6,7 @@ use App\Repository\SubzoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: SubzoneRepository::class)]
 class Subzone
@@ -19,6 +20,7 @@ class Subzone
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     #[ORM\Column]
@@ -30,7 +32,7 @@ class Subzone
     #[ORM\Column(length: 255)]
     private ?string $imageUrl = null;
 
-    #[ORM\ManyToOne(inversedBy: 'subzones')]
+    #[ORM\ManyToOne(inversedBy: 'subzones', cascade : ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Zone $Zone = null;
 

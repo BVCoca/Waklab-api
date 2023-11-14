@@ -1,7 +1,7 @@
 {
     "zones": [
       {
-        "image": "/testHomepageAssets/astrub.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/astrub.png",
         "levelMax": "35",
         "levelMin": "6",
         "name": "Astrub",
@@ -13,7 +13,7 @@
                 "name": "Chez la Mère Michou"
               }
             ],
-            "image": "/testHomepageAssets/cite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/cite.png",
             "levelMax": "12",
             "levelMin": "6",
             "mobsFamily": [
@@ -44,7 +44,7 @@
                 "name": "Larventura"
               }
             ],
-            "image": "/testHomepageAssets/egouts.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/egouts.png",
             "levelMax": "20",
             "levelMin": "6",
             "mobsFamily": [
@@ -67,7 +67,7 @@
                 "name": "Le Tofulailler"
               }
             ],
-            "image": "/testHomepageAssets/champs.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/champs.png",
             "levelMax": "20",
             "levelMin": "6",
             "mobsFamily": [
@@ -118,7 +118,7 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/plaines.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/plaines.png",
             "levelMax": "20",
             "levelMin": "6",
             "mobsFamily": [
@@ -161,7 +161,7 @@
                 "name": "Donjon des Abraknes"
               }
             ],
-            "image": "/testHomepageAssets/foret.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/foret.png",
             "levelMax": "35",
             "levelMin": "21",
             "mobsFamily": [
@@ -196,7 +196,7 @@
                 "name": "Piou Lahoupe"
               }
             ],
-            "image": "/testHomepageAssets/montagnes.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/montagnes.png",
             "levelMax": "35",
             "levelMin": "21",
             "mobsFamily": [
@@ -235,7 +235,7 @@
                 "name": "Le Caveau Relevé"
               }
             ],
-            "image": "/testHomepageAssets/cimetiere.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/cimetiere.png",
             "levelMax": "35",
             "levelMin": "21",
             "mobsFamily": [
@@ -258,7 +258,7 @@
                 "name": "Pâturages des Bouftous"
               }
             ],
-            "image": "/testHomepageAssets/tainela.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/tainela.png",
             "levelMax": "20",
             "levelMin": "12",
             "mobsFamily": [
@@ -285,7 +285,7 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/hameau.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/hameau.png",
             "levelMax": "20",
             "levelMin": "6",
             "mobsFamily": [],
@@ -313,7 +313,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/bonta.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/bonta.png",
         "levelMax": "140",
         "levelMin": "66",
         "name": "Bonta",
@@ -321,7 +321,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/bontaCite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaCite.png",
             "levelMax": "",
             "levelMin": "",
             "mobsFamily": [],
@@ -335,7 +335,7 @@
                 "name": "Truchière Abandonnée"
               }
             ],
-            "image": "/testHomepageAssets/bontaKara.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaKara.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
@@ -358,7 +358,7 @@
                 "name": "Domaine du Petit Groin"
               }
             ],
-            "image": "/testHomepageAssets/bontaCania.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaCania.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
@@ -401,7 +401,7 @@
                 "name": "Donjon Abraknyde"
               }
             ],
-            "image": "/testHomepageAssets/bontaTonkult.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaTonkult.png",
             "levelMax": "140",
             "levelMin": "126",
             "mobsFamily": [
@@ -444,7 +444,7 @@
                 "name": "Palais de Tsu"
               }
             ],
-            "image": "/testHomepageAssets/bontaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaMine.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
@@ -471,7 +471,7 @@
                 "name": "Donjon Encapuchonné"
               }
             ],
-            "image": "/testHomepageAssets/bontaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bontaMine.png",
             "levelMax": "170",
             "levelMin": "156",
             "mobsFamily": [
@@ -495,7 +495,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/brakmar.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/brakmar.png",
         "levelMax": "155",
         "levelMin": "81",
         "name": "Brâkmar",
@@ -507,7 +507,7 @@
                 "name": "Boufrog"
               }
             ],
-            "image": "/testHomepageAssets/brakmarCite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarCite.png",
             "levelMax": "",
             "levelMin": "",
             "mobsFamily": [],
@@ -521,7 +521,7 @@
                 "name": "Scarrière Abandonnée"
               }
             ],
-            "image": "/testHomepageAssets/brakmarPabong.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarPabong.png",
             "levelMax": "95",
             "levelMin": "81",
             "mobsFamily": [
@@ -556,7 +556,7 @@
                 "name": "Nécropoil de Morbax"
               }
             ],
-            "image": "/testHomepageAssets/brakmarSidimote.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarSidimote.png",
             "levelMax": "95",
             "levelMin": "81",
             "mobsFamily": [
@@ -583,7 +583,7 @@
                 "name": "Blopéra"
               }
             ],
-            "image": "/testHomepageAssets/brakmarMacheville.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarMacheville.png",
             "levelMax": "155",
             "levelMin": "141",
             "mobsFamily": [
@@ -622,12 +622,12 @@
                 "name": "Nécropoil de Morbax"
               }
             ],
-            "image": "/testHomepageAssets/brakmarMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarMine.png",
             "levelMax": "95",
             "levelMin": "81",
             "mobsFamily": [
               {
-                "name": "Chafers de la Mine"
+                "name": "Chafers"
               }
             ],
             "name": "Mine de Brâkmar - Galeries",
@@ -645,7 +645,7 @@
                 "name": "La Patapoutrerie"
               }
             ],
-            "image": "/testHomepageAssets/brakmarMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/brakmarMine.png",
             "levelMax": "170",
             "levelMin": "156",
             "mobsFamily": [
@@ -665,7 +665,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/amakna.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/amakna.png",
         "levelMax": "110",
         "levelMin": "36",
         "name": "Amakna",
@@ -673,7 +673,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/amaknaCite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaCite.png",
             "levelMax": "",
             "levelMin": "",
             "mobsFamily": [],
@@ -690,7 +690,7 @@
                 "name": "Les Champs Pourchan"
               }
             ],
-            "image": "/testHomepageAssets/amaknaChamps.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaChamps.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [
@@ -747,7 +747,7 @@
                 "name": "La Tour des MIss Moches"
               }
             ],
-            "image": "/testHomepageAssets/amaknaEmelka.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaEmelka.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [
@@ -778,7 +778,7 @@
                 "name": "Repaire des Magik Riktus"
               }
             ],
-            "image": "/testHomepageAssets/amaknaRiktus.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaRiktus.png",
             "levelMax": "110",
             "levelMin": "96",
             "mobsFamily": [
@@ -817,12 +817,12 @@
                 "name": "La Montagne Adezieu"
               }
             ],
-            "image": "/testHomepageAssets/amaknaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaMine.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [
               {
-                "name": "Craqueleurs de la Mine"
+                "name": "Craqueleurs"
               }
             ],
             "name": "Mine d'Amakna - Galeries",
@@ -844,12 +844,12 @@
                 "name": "Donjon Riktus Elite"
               }
             ],
-            "image": "/testHomepageAssets/amaknaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/amaknaMine.png",
             "levelMax": "170",
             "levelMin": "156",
             "mobsFamily": [
               {
-                "name": "Riktus Elite"
+                "name": "Riktus"
               }
             ],
             "name": "Mine d'Amakna - Tréfonds",
@@ -868,7 +868,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/sufokia.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/sufokia.png",
         "levelMax": "126",
         "levelMin": "51",
         "name": "Sufokia",
@@ -876,7 +876,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/sufokiaCite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sufokiaCite.png",
             "levelMax": "",
             "levelMin": "",
             "mobsFamily": [],
@@ -893,7 +893,7 @@
                 "name": "Kokokolantha"
               }
             ],
-            "image": "/testHomepageAssets/sufokiaDune.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sufokiaDune.png",
             "levelMax": "65",
             "levelMin": "51",
             "mobsFamily": [
@@ -943,7 +943,7 @@
                 "name": "Donjon Flaqueux"
               }
             ],
-            "image": "/testHomepageAssets/sufokiaMontagne.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sufokiaMontagne.png",
             "levelMax": "126",
             "levelMin": "111",
             "mobsFamily": [
@@ -990,7 +990,7 @@
                 "name": "La Pichine"
               }
             ],
-            "image": "/testHomepageAssets/sufokiaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sufokiaMine.png",
             "levelMax": "125",
             "levelMin": "111",
             "mobsFamily": [
@@ -1017,7 +1017,7 @@
                 "name": "Roub'Bar"
               }
             ],
-            "image": "/testHomepageAssets/sufokiaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sufokiaMine.png",
             "levelMax": "170",
             "levelMin": "156",
             "mobsFamily": [
@@ -1041,7 +1041,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/sberg.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/sberg.png",
         "levelMax": "125",
         "levelMin": "81",
         "name": "Ile Sberg",
@@ -1056,7 +1056,7 @@
                 "name": "Le Glaglacier Cornu"
               }
             ],
-            "image": "/testHomepageAssets/sberg.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sberg.png",
             "levelMax": "125",
             "levelMin": "81",
             "mobsFamily": [
@@ -1086,12 +1086,12 @@
                 "name": "Niche du Yech'Ti'Wawa"
               }
             ],
-            "image": "/testHomepageAssets/sbergVillage.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sbergVillage.png",
             "levelMax": "125",
             "levelMin": "111",
             "mobsFamily": [
               {
-                "name": "Mulmouths"
+                "name": "Mulmouth"
               },
               {
                 "name": "Chafers du Nord"
@@ -1120,7 +1120,7 @@
                 "name": "La Tour Gelée"
               }
             ],
-            "image": "/testHomepageAssets/sbergHarebourg.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sbergHarebourg.png",
             "levelMax": "125",
             "levelMin": "111",
             "mobsFamily": [
@@ -1144,7 +1144,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/amakna.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/amakna.png",
         "levelMax": "230",
         "levelMin": "1",
         "name": "Royaume Sadida",
@@ -1152,7 +1152,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/sadidaVillage.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaVillage.png",
             "levelMax": "230",
             "levelMin": "1",
             "mobsFamily": [],
@@ -1162,7 +1162,7 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/sadidaPalais.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaPalais.png",
             "levelMax": "230",
             "levelMin": "1",
             "mobsFamily": [],
@@ -1176,12 +1176,12 @@
                 "name": "Donjon Arakne"
               }
             ],
-            "image": "/testHomepageAssets/sadidaColline.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaColline.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
               {
-                "name": "Araknes"
+                "name": "Royaume Sadida"
               }
             ],
             "name": "Colline entoilée",
@@ -1210,12 +1210,12 @@
                 "name": "Antre du Meulou"
               }
             ],
-            "image": "/testHomepageAssets/sadidaForet.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaForet.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
               {
-                "name": "Mulous"
+                "name": "Royaume Sadida"
               }
             ],
             "name": "Clairière des Mulous",
@@ -1241,12 +1241,12 @@
                 "name": "Donjon Gerbouille"
               }
             ],
-            "image": "/testHomepageAssets/sadidaGerbouille.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaGerbouille.png",
             "levelMax": "185",
             "levelMin": "171",
             "mobsFamily": [
               {
-                "name": "Gerbouilles"
+                "name": "Royaume Sadida"
               }
             ],
             "name": "Galleries des Gerbouilles",
@@ -1272,12 +1272,12 @@
                 "name": "Usine Hibourg"
               }
             ],
-            "image": "/testHomepageAssets/sadidaForet.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sadidaForet.png",
             "levelMax": "200",
             "levelMin": "186",
             "mobsFamily": [
               {
-                "name": "Hibourgs"
+                "name": "Royaume Sadida"
               }
             ],
             "name": "Forêt Déforestée",
@@ -1292,7 +1292,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/amakna.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/amakna.png",
         "levelMax": "215",
         "levelMin": "96",
         "name": "Royaume Chuchoku",
@@ -1304,12 +1304,12 @@
                 "name": "Chuchobase"
               }
             ],
-            "image": "/testHomepageAssets/chuchokuChuchoplaine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/chuchokuChuchoplaine.png",
             "levelMax": "110",
             "levelMin": "96",
             "mobsFamily": [
               {
-                "name": "Chuchoteurs"
+                "name": "Royaume Chuchoku"
               }
             ],
             "name": "Chuchoplaine",
@@ -1331,7 +1331,7 @@
                 "name": "Donjon Carapattes"
               }
             ],
-            "image": "/testHomepageAssets/chuchokuGrampar.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/chuchokuGrampar.png",
             "levelMax": "215",
             "levelMin": "201",
             "mobsFamily": [
@@ -1358,7 +1358,7 @@
                 "name": "Donjon Plantigardes"
               }
             ],
-            "image": "/testHomepageAssets/chuchokuToundra.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/chuchokuToundra.png",
             "levelMax": "215",
             "levelMin": "201",
             "mobsFamily": [
@@ -1385,7 +1385,7 @@
                 "name": "Donjon Mansots"
               }
             ],
-            "image": "/testHomepageAssets/chuchokuBanquise.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/chuchokuBanquise.png",
             "levelMax": "215",
             "levelMin": "201",
             "mobsFamily": [
@@ -1409,7 +1409,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/kelba.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/kelba.png",
         "levelMax": "80",
         "levelMin": "66",
         "name": "Kelba",
@@ -1421,7 +1421,7 @@
                 "name": "La Corbeau-Cave"
               }
             ],
-            "image": "/testHomepageAssets/kelbaLandes.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/kelbaLandes.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
@@ -1452,12 +1452,12 @@
                 "name": "Pic du Corbeau Noir"
               }
             ],
-            "image": "/testHomepageAssets/kelbaPics.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/kelbaPics.png",
             "levelMax": "80",
             "levelMin": "66",
             "mobsFamily": [
               {
-                "name": "Croapules"
+                "name": "Pics de Kelba"
               }
             ],
             "name": "Pics de Kelba",
@@ -1480,7 +1480,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/pandala.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/pandala.png",
         "levelMax": "230",
         "levelMin": "1",
         "name": "Vallée de la Pandalousie",
@@ -1488,7 +1488,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/pandalaPort.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaPort.png",
             "levelMax": "",
             "levelMin": "",
             "mobsFamily": [],
@@ -1511,12 +1511,12 @@
                 "name": "Cité Interdite"
               }
             ],
-            "image": "/testHomepageAssets/pandalaVillage.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaVillage.png",
             "levelMax": "185",
             "levelMin": "171",
             "mobsFamily": [
               {
-                "name": "Pandissidans"
+                "name": "Pandalousie"
               }
             ],
             "name": "Village des Pandissidans",
@@ -1529,12 +1529,12 @@
                 "name": "Source du Mal"
               }
             ],
-            "image": "/testHomepageAssets/pandalaMarais.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaMarais.png",
             "levelMax": "155",
             "levelMin": "141",
             "mobsFamily": [
               {
-                "name": "Plantalas"
+                "name": "Pandalousie"
               }
             ],
             "name": "Marais Salé",
@@ -1552,12 +1552,12 @@
                 "name": "Tombeau de Pandala"
               }
             ],
-            "image": "/testHomepageAssets/pandalaCimetiere.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaCimetiere.png",
             "levelMax": "200",
             "levelMin": "186",
             "mobsFamily": [
               {
-                "name": "Fantômes de Pandala"
+                "name": "Pandalousie"
               }
             ],
             "name": "Cimetière",
@@ -1575,12 +1575,12 @@
                 "name": "Canyon des Fléopards"
               }
             ],
-            "image": "/testHomepageAssets/pandalaForet.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaForet.png",
             "levelMax": "200",
             "levelMin": "186",
             "mobsFamily": [
               {
-                "name": "Fléopards"
+                "name": "Pandalousie"
               }
             ],
             "name": "Forêt Calcinée",
@@ -1589,7 +1589,7 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/pandalaSommet.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaSommet.png",
             "levelMax": "230",
             "levelMin": "1",
             "mobsFamily": [],
@@ -1604,7 +1604,7 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/pandalaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/pandalaMine.png",
             "levelMax": "230",
             "levelMin": "1",
             "mobsFamily": [],
@@ -1624,7 +1624,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/saharach.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/saharach.png",
         "levelMax": "140",
         "levelMin": "111",
         "name": "Saharach",
@@ -1636,12 +1636,12 @@
                 "name": "Donjon Cacterre"
               }
             ],
-            "image": "/testHomepageAssets/saharach.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/saharach.png",
             "levelMax": "125",
             "levelMin": "111",
             "mobsFamily": [
               {
-                "name": "Cacterres"
+                "name": "Saharach"
               }
             ],
             "name": "Désert de Saharach",
@@ -1675,12 +1675,12 @@
                 "name": "Donjon Noirespore"
               }
             ],
-            "image": "/testHomepageAssets/saharachFungopee.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/saharachFungopee.png",
             "levelMax": "140",
             "levelMin": "126",
             "mobsFamily": [
               {
-                "name": "Fungus"
+                "name": "Saharach"
               }
             ],
             "name": "La Fungopée",
@@ -1711,7 +1711,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/wabbit.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/wabbit.png",
         "levelMax": "155",
         "levelMin": "126",
         "name": "Ile des Wabbits",
@@ -1726,12 +1726,12 @@
                 "name": "Temple de l'Empeleul Lenald"
               }
             ],
-            "image": "/testHomepageAssets/wabbitCalotte.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/wabbitCalotte.png",
             "levelMax": "140",
             "levelMin": "126",
             "mobsFamily": [
               {
-                "name": "Black Wabbits"
+                "name": "Île des Wabbits"
               }
             ],
             "name": "Glosse Calotte",
@@ -1757,12 +1757,12 @@
           },
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/wabbitFowtewesse.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/wabbitFowtewesse.png",
             "levelMax": "155",
             "levelMin": "141",
             "mobsFamily": [
               {
-                "name": "Gawdes Wabbits"
+                "name": "Île des Wabbits"
               }
             ],
             "name": "Fowtewesse du Wa",
@@ -1795,12 +1795,12 @@
                 "name": "Donjon Wabbit"
               }
             ],
-            "image": "/testHomepageAssets/wabbitSouterrains.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/wabbitSouterrains.png",
             "levelMax": "155",
             "levelMin": "126",
             "mobsFamily": [
               {
-                "name": "Wabbits"
+                "name": "Île des Wabbits"
               }
             ],
             "name": "Soutewwains Mowbides",
@@ -1819,7 +1819,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/moon.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/moon.png",
         "levelMax": "185",
         "levelMin": "171",
         "name": "Moon",
@@ -1834,15 +1834,12 @@
                 "name": "Donjon des Tropikes"
               }
             ],
-            "image": "/testHomepageAssets/moon.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/moon.png",
             "levelMax": "185",
             "levelMin": "171",
             "mobsFamily": [
               {
-                "name": "Tropikokos"
-              },
-              {
-                "name": "Crocodailles"
+                "name": "Île de Moon"
               }
             ],
             "name": "Plage de Moon",
@@ -1887,12 +1884,12 @@
                 "name": "Cime du Grand Totem"
               }
             ],
-            "image": "/testHomepageAssets/moon.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/moon.png",
             "levelMax": "185",
             "levelMin": "171",
             "mobsFamily": [
               {
-                "name": "Kannibouls"
+                "name": "Île de Moon"
               }
             ],
             "name": "Jungle de Moon",
@@ -1926,12 +1923,12 @@
                 "name": "Donjon des Kannivores"
               }
             ],
-            "image": "/testHomepageAssets/moonSousterrains.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/moonSousterrains.png",
             "levelMax": "185",
             "levelMin": "171",
             "mobsFamily": [
               {
-                "name": "Kannivores"
+                "name": "Île de Moon"
               }
             ],
             "name": "Sous Terrains de l'Île de Moon",
@@ -1954,7 +1951,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/sauvage.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/sauvage.png",
         "levelMax": "65",
         "levelMin": "51",
         "name": "Domaine de Sauvage",
@@ -1969,7 +1966,7 @@
                 "name": "Antre d'Excarnus"
               }
             ],
-            "image": "/testHomepageAssets/sauvage.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/sauvage.png",
             "levelMax": "65",
             "levelMin": "51",
             "mobsFamily": [
@@ -2004,7 +2001,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/katrepat.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/katrepat.png",
         "levelMax": "95",
         "levelMin": "81",
         "name": "Katrepat",
@@ -2025,7 +2022,7 @@
                 "name": "Ombrage"
               }
             ],
-            "image": "/testHomepageAssets/katrepat.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/katrepat.png",
             "levelMax": "95",
             "levelMin": "81",
             "mobsFamily": [
@@ -2056,7 +2053,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/ereboria.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/ereboria.png",
         "levelMax": "230",
         "levelMin": "36",
         "name": "Ereboria, l'Île Maudite",
@@ -2064,7 +2061,7 @@
         "subzones": [
           {
             "dungeons": [],
-            "image": "/testHomepageAssets/ereboriaPort.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaPort.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [],
@@ -2083,7 +2080,7 @@
                 "name": "Donjon Equipage du Poulpe"
               }
             ],
-            "image": "/testHomepageAssets/ereboriaPirates.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaPirates.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [
@@ -2110,7 +2107,7 @@
                 "name": "Donjon des Morts-Brûlés"
               }
             ],
-            "image": "/testHomepageAssets/ereboriaMaudite.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaMaudite.png",
             "levelMax": "50",
             "levelMin": "36",
             "mobsFamily": [
@@ -2133,7 +2130,7 @@
                 "name": "Donjon Mateaux-Aigris"
               }
             ],
-            "image": "/testHomepageAssets/ereboriaCaverne.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaCaverne.png",
             "levelMax": "65",
             "levelMin": "51",
             "mobsFamily": [
@@ -2151,7 +2148,7 @@
                 "name": "Donjon Steamers"
               }
             ],
-            "image": "/testHomepageAssets/ereboriaMine.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaMine.png",
             "levelMax": "230",
             "levelMin": "216",
             "mobsFamily": [
@@ -2169,7 +2166,7 @@
                 "name": "Donjon Poisseux Abyssaux"
               }
             ],
-            "image": "/testHomepageAssets/ereboriaPrison.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/ereboriaPrison.png",
             "levelMax": "230",
             "levelMin": "216",
             "mobsFamily": [
@@ -2184,7 +2181,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/bilbyza.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/bilbyza.png",
         "levelMax": "110",
         "levelMin": "81",
         "name": "Bilbyza",
@@ -2199,7 +2196,7 @@
                 "name": "L'Arène Dansante"
               }
             ],
-            "image": "/testHomepageAssets/bilbyza.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bilbyza.png",
             "levelMax": "110",
             "levelMin": "81",
             "mobsFamily": [
@@ -2236,7 +2233,7 @@
                 "name": "Donjon Gelée"
               }
             ],
-            "image": "/testHomepageAssets/bilbyzaAntichambre.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/bilbyzaAntichambre.png",
             "levelMax": "110",
             "levelMin": "96",
             "mobsFamily": [],
@@ -2247,7 +2244,7 @@
         ]
       },
       {
-        "image": "/testHomepageAssets/moines.png",
+        "image": "'https://api.waklaboratory.fr/images/zone/moines.png",
         "levelMax": "95",
         "levelMin": "81",
         "name": "Ile aux Moines",
@@ -2265,7 +2262,7 @@
                 "name": "Le Vignoble Ignoble"
               }
             ],
-            "image": "/testHomepageAssets/moines.png",
+            "image": "'https://api.waklaboratory.fr/images/zone/moines.png",
             "levelMax": "95",
             "levelMin": "81",
             "mobsFamily": [
