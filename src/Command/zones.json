@@ -441,7 +441,7 @@
           {
             "dungeons": [
               {
-                "name": "Palais de Tsu"
+                "name": "Palais du Tsu"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/bontaMine.png",
@@ -744,7 +744,7 @@
                 "name": "La Montagne Adezieu"
               },
               {
-                "name": "La Tour des MIss Moches"
+                "name": "Tour des Miss Moches"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/amaknaEmelka.png",
@@ -1014,7 +1014,7 @@
           {
             "dungeons": [
               {
-                "name": "Roub'Bar"
+                "name": "Roub’Bar"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/sufokiaMine.png",
@@ -1050,7 +1050,7 @@
           {
             "dungeons": [
               {
-                "name": "Le Pot d'Hagën Glass"
+                "name": "Le Pot d’Hagën Glass"
               },
               {
                 "name": "Le Glaglacier Cornu"
@@ -1083,7 +1083,7 @@
           {
             "dungeons": [
               {
-                "name": "Niche du Yech'Ti'Wawa"
+                "name": "Niche du Yech’Ti’Wawa"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/sbergVillage.png",
@@ -1720,10 +1720,10 @@
           {
             "dungeons": [
               {
-                "name": "Donjon des Black Wabbit"
+                "name": "Donjon Black Wabbit"
               },
               {
-                "name": "Temple de l'Empeleul Lenald"
+                "name": "Temple de l’Empeleul Lenald"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/wabbitCalotte.png",
@@ -2104,7 +2104,7 @@
           {
             "dungeons": [
               {
-                "name": "Donjon des Morts-Brûlés"
+                "name": "Donjon Morts-Brûlés"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/ereboriaMaudite.png",
@@ -2127,7 +2127,7 @@
           {
             "dungeons": [
               {
-                "name": "Donjon Mateaux-Aigris"
+                "name": "Donjon Marteaux-Aigris"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/ereboriaCaverne.png",
@@ -2193,7 +2193,7 @@
                 "name": "Le Hammamamoule"
               },
               {
-                "name": "L'Arène Dansante"
+                "name": "L’Arène Dansante"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/bilbyza.png",
@@ -2259,7 +2259,7 @@
                 "name": "Sliptorium"
               },
               {
-                "name": "Le Vignoble Ignoble"
+                "name": "Vignoble Ignoble"
               }
             ],
             "image": "'https://api.waklaboratory.fr/images/zone/moines.png",

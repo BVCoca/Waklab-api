@@ -69,7 +69,7 @@ class Dungeon
     #[Groups(['dungeon:item'])]
     private ?Mobs $Boss = null;
 
-    #[ORM\ManyToOne(inversedBy: 'dungeons')]
+    #[ORM\ManyToOne(inversedBy: 'dungeons', cascade : ['persist'])]
     private ?Subzone $subzone = null;
 
     public function __construct()

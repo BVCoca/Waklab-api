@@ -73,6 +73,17 @@ class GenerateZone extends Command
                     }
 
                     // Ajout des dungeons
+                    foreach($s['dungeons'] as $d) {
+                        $dungeon = $this->DungeonRepository->findOneBy([
+                            'name' => $d['name']
+                        ]);
+
+                        if(!isset($dungeon)) {
+                            $output->writeln((sprintf("Zone %s : Donjon %s non trouvée", $subzone->getName(), $d['name'])));
+                        } else {
+                            $subzone->addDungeon($dungeon);
+                        }
+                    }
 
                     $zone->addSubzone($subzone);
                     $this->entityManager->persist($subzone);
