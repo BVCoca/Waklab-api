@@ -66,7 +66,7 @@ class GenerateZone extends Command
                         ]);
 
                         if(!isset($family)) {
-                            throw new Exception(sprintf("Zone %s : Famille %s non trouvée", $subzone->getName(), $f['name']));
+                            $output->writeln(sprintf("Zone %s : Famille %s non trouvée", $subzone->getName(), $f['name']));
                         } else {
                             $subzone->addMob($family);
                         }
@@ -82,6 +82,19 @@ class GenerateZone extends Command
                             $output->writeln((sprintf("Zone %s : Donjon %s non trouvée", $subzone->getName(), $d['name'])));
                         } else {
                             $subzone->addDungeon($dungeon);
+                        }
+                    }
+
+                    // Ajout des ressources
+                    foreach($s['resourcesJobs'] as $r) {
+                        $resource = $this->ResourceRepository->findOneBy([
+                            'name' => $r['name']
+                        ]);
+
+                        if(!isset($resource)) {
+                            $output->writeln(sprintf("Zone %s : Ressource %s non trouvée", $subzone->getName(), $r['name']));
+                        } else {
+                            $subzone->addResource($resource);
                         }
                     }
 
