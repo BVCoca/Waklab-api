@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SubzoneRepository::class)]
 class Subzone
@@ -17,23 +18,29 @@ class Subzone
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['subzone'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
+    #[Groups(['subzone'])]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Groups(['subzone'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
+    #[Groups(['subzone'])]
     private ?int $levelMax = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['subzone'])]
     private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'subzones', cascade : ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['subzone'])]
     private ?Zone $Zone = null;
 
     #[ORM\ManyToMany(targetEntity: Resource::class, inversedBy: 'subzones')]

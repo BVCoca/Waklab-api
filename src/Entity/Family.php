@@ -30,6 +30,7 @@ class Family
     private Collection $Mobs;
 
     #[ORM\ManyToMany(targetEntity: Subzone::class, mappedBy: 'mobs')]
+    #[Groups('subzone')]
     private Collection $subzones;
 
     public function __construct()

@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Elasticsearch\State\CollectionProvider;
+
 use ApiPlatform\Metadata\Get;
 use App\Repository\DungeonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,14 +12,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
-use App\Filter\FullTextFilter;
 
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity']],
+        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity', 'subzone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
@@ -70,6 +68,7 @@ class Dungeon
     private ?Mobs $Boss = null;
 
     #[ORM\ManyToOne(inversedBy: 'dungeons', cascade : ['persist'])]
+    #[Groups(['subzone'])]
     private ?Subzone $subzone = null;
 
     public function __construct()

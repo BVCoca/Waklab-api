@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
+        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family', 'subzone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
@@ -84,6 +84,7 @@ class Resource
     private ?Sublimation $sublimation = null;
 
     #[ORM\ManyToMany(targetEntity: Subzone::class, mappedBy: 'resources')]
+    #[Groups('subzone')]
     private Collection $subzones;
 
     public function __construct()
