@@ -8,48 +8,67 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: SubzoneRepository::class)]
+#[ApiResource(operations: [
+    new Get(
+        normalizationContext: ['groups' => ['subzone:item', 'resource:search', 'mob:search', 'dungeon:search', 'type', 'rarity', 'family']],
+    ),
+    new GetCollection(
+        normalizationContext: ['groups' => ['slug']],
+        uriTemplate: '/subzone/slugs',
+        paginationItemsPerPage: 200
+    ),
+])]
 class Subzone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'subzone:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[ApiProperty(identifier: true)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'slug', 'subzone:item'])]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'subzone:item'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'subzone:item'])]
     private ?int $levelMax = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'subzone:item'])]
     private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'subzones', cascade : ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['subzone'])]
+    #[Groups(['subzone', 'subzone:item'])]
     private ?Zone $Zone = null;
 
     #[ORM\ManyToMany(targetEntity: Resource::class, inversedBy: 'subzones')]
+    #[Groups(['subzone:item'])]
     private Collection $resources;
 
     #[ORM\ManyToMany(targetEntity: Family::class, inversedBy: 'subzones')]
+    #[Groups(['subzone:item'])]
     private Collection $mobs;
 
     #[ORM\OneToMany(mappedBy: 'subzone', targetEntity: Dungeon::class)]
+    #[Groups(['subzone:item'])]
     private Collection $dungeons;
 
     public function __construct()

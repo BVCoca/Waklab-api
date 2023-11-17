@@ -18,12 +18,12 @@ class Zone
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['subzone'])]
+    #[Groups(['zone', 'subzone:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['subzone'])]
+    #[Groups(['zone', 'subzone:item'])]
     private ?string $slug = null;
 
     #[ORM\Column]
@@ -33,6 +33,7 @@ class Zone
     private ?int $levelMax = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['zone', 'subzone:item'])]
     private ?string $imageUrl = null;
 
     #[ORM\OneToMany(mappedBy: 'Zone', targetEntity: Subzone::class, orphanRemoval: true)]
