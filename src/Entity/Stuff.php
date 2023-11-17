@@ -2,13 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Elasticsearch\State\CollectionProvider;
-use ApiPlatform\Elasticsearch\State\Options;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use App\Filter\FullTextFilter;
 use App\Repository\StuffRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -8,35 +8,54 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
+#[ApiResource(operations: [
+    new Get(
+        normalizationContext: ['groups' => ['zone:item', 'subzone', 'dungeon:search', 'type', 'rarity', 'family']],
+    ),
+    new GetCollection(
+        normalizationContext: ['groups' => ['slug']],
+        uriTemplate: '/zone/slugs',
+        paginationItemsPerPage: 200
+    ),
+])]
 class Zone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['zone', 'subzone:item'])]
+    #[Groups(['zone', 'zone:item'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['zone', 'subzone:item'])]
+    #[Groups(['zone', 'zone:item', 'slug'])]
+    #[ApiProperty(identifier: true)]
     private ?string $slug = null;
 
     #[ORM\Column]
+    #[Groups(['zone:item'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
+    #[Groups(['zone:item'])]
     private ?int $levelMax = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['zone', 'subzone:item'])]
+    #[Groups(['zone:item'])]
     private ?string $imageUrl = null;
 
     #[ORM\OneToMany(mappedBy: 'Zone', targetEntity: Subzone::class, orphanRemoval: true)]
+    #[Groups(['zone:item'])]
     private Collection $subzones;
 
     public function __construct()

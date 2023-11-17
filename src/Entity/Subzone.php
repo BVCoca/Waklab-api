@@ -16,7 +16,7 @@ use ApiPlatform\Metadata\GetCollection;
 #[ORM\Entity(repositoryClass: SubzoneRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['subzone:item', 'resource:search', 'mob:search', 'dungeon:search', 'type', 'rarity', 'family']],
+        normalizationContext: ['groups' => ['subzone:item', 'resource:search', 'mob:search', 'dungeon:search', 'type', 'rarity', 'family', 'zone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
