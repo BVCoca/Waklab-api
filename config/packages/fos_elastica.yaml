@@ -53,6 +53,14 @@ fos_elastica:
                             type: 'keyword'
                         slug:
                             type: 'keyword'
+                subzones:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'keyword'
+                        slug:
+                            type: 'keyword'
         mob:
             persistence:
                 driver: orm
@@ -90,6 +98,14 @@ fos_elastica:
                             type: 'keyword'
                         slug:
                             type: 'keyword'
+                        subzones:
+                            type: 'nested'
+                            include_in_root : true
+                            properties:
+                                name:
+                                    type: 'keyword'
+                                slug:
+                                    type: 'keyword'
         stuff:
             persistence:
                 driver: orm
@@ -178,3 +194,46 @@ fos_elastica:
                         name:
                             type: 'text'
                             analyzer : 'partial_analyzer'
+                subzone:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'keyword'
+                        slug:
+                            type: 'keyword'
+        subzone:
+            persistence:
+                driver: orm
+                model: App\Entity\Subzone
+                provider: ~
+                finder: ~
+            settings:
+                analysis:
+                    analyzer:
+                        partial_analyzer:
+                            tokenizer: 'partial'
+                            filter : ['lowercase','asciifolding']
+                    tokenizer:
+                        partial:
+                            type: 'ngram'
+                            min_gram: 3
+                            max_gram: 4
+            properties:
+                slug:
+                    type: 'keyword'
+                name:
+                    type: 'text'
+                    analyzer : 'partial_analyzer'
+                levelMin:
+                    type: 'integer'
+                levelMax:
+                    type: 'integer'
+                imageUrl:
+                    type: 'keyword'
+                zone:
+                    type: 'nested'
+                    include_in_root : true
+                    properties:
+                        name:
+                            type: 'keyword'

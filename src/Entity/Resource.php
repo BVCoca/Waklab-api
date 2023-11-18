@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family']],
+        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family', 'subzone', 'zone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
@@ -83,11 +83,16 @@ class Resource
     #[Groups(['resource:item'])]
     private ?Sublimation $sublimation = null;
 
+    #[ORM\ManyToMany(targetEntity: Subzone::class, mappedBy: 'resources')]
+    #[Groups('subzone')]
+    private Collection $subzones;
+
     public function __construct()
     {
         $this->resourceDrops = new ArrayCollection();
         $this->recipes = new ArrayCollection();
         $this->recipeIngredients = new ArrayCollection();
+        $this->subzones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -309,6 +314,33 @@ class Resource
     public function setSublimation(?Sublimation $sublimation)
     {
         $this->sublimation = $sublimation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subzone>
+     */
+    public function getSubzones(): Collection
+    {
+        return $this->subzones;
+    }
+
+    public function addSubzone(Subzone $subzone): static
+    {
+        if (!$this->subzones->contains($subzone)) {
+            $this->subzones->add($subzone);
+            $subzone->addResource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubzone(Subzone $subzone): static
+    {
+        if ($this->subzones->removeElement($subzone)) {
+            $subzone->removeResource($this);
+        }
 
         return $this;
     }

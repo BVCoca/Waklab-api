@@ -27,11 +27,17 @@ class Family
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'family', targetEntity: Mobs::class, orphanRemoval: true)]
+    #[Groups('subzone:item')]
     private Collection $Mobs;
+
+    #[ORM\ManyToMany(targetEntity: Subzone::class, mappedBy: 'mobs')]
+    #[Groups('subzone')]
+    private Collection $subzones;
 
     public function __construct()
     {
         $this->Mobs = new ArrayCollection();
+        $this->subzones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,6 +94,33 @@ class Family
             if ($mobs->getFamily() === $this) {
                 $mobs->setFamily(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Subzone>
+     */
+    public function getSubzones(): Collection
+    {
+        return $this->subzones;
+    }
+
+    public function addSubzone(Subzone $subzone): static
+    {
+        if (!$this->subzones->contains($subzone)) {
+            $this->subzones->add($subzone);
+            $subzone->addMob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubzone(Subzone $subzone): static
+    {
+        if ($this->subzones->removeElement($subzone)) {
+            $subzone->removeMob($this);
         }
 
         return $this;

@@ -29,7 +29,7 @@ class AggregateController extends AbstractController
         $this->multiIndex = $multiIndex;
     }
 
-    #[Route(name:"api_aggregate", path:"/api/{model}/aggregate", methods:"GET", requirements: ['model' => 'mob|stuff|resource|dungeon'])]
+    #[Route(name:"api_aggregate", path:"/api/{model}/aggregate", methods:"GET", requirements: ['model' => 'mob|stuff|resource|dungeon|subzone'])]
     public function __invoke(Request $request, string $model)
     {
 

@@ -29,11 +29,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         name: 'search_all',
         uriTemplate: '/search',
         controller: SearchController::class,
-        normalizationContext: ['groups' => ['mob:search', 'stuff:search', 'resource:search', 'dungeon:search', 'family', 'rarity', 'type']],
+        normalizationContext: ['groups' => ['mob:search', 'stuff:search', 'resource:search', 'dungeon:search', 'subzone:search', 'family', 'rarity', 'type', 'zone']],
         filters: [FullTextFilter::class]
     ),
     new Get(
-        normalizationContext: ['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family']],
+        normalizationContext: ['groups' => ['mob:item', 'mob:drops', 'rarity', 'type', 'family', 'subzone', 'zone']],
     )
 ])]
 class Mobs
