@@ -17,7 +17,7 @@ use ApiPlatform\Metadata\ApiProperty;
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity', 'subzone']],
+        normalizationContext: ['groups' => ['dungeon:item', 'mob:drops', 'family', 'type', 'rarity', 'subzone', 'zone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
