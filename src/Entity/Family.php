@@ -27,6 +27,7 @@ class Family
     private ?string $slug = null;
 
     #[ORM\OneToMany(mappedBy: 'family', targetEntity: Mobs::class, orphanRemoval: true)]
+    #[Groups('subzone:item')]
     private Collection $Mobs;
 
     #[ORM\ManyToMany(targetEntity: Subzone::class, mappedBy: 'mobs')]

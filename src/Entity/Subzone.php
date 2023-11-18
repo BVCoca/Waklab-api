@@ -16,7 +16,7 @@ use ApiPlatform\Metadata\GetCollection;
 #[ORM\Entity(repositoryClass: SubzoneRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['subzone:item', 'resource:search', 'mob:search', 'dungeon:search', 'type', 'rarity', 'family', 'zone']],
+        normalizationContext: ['groups' => ['subzone:item', 'resource:search', 'dungeon:search', 'mob:search', 'type', 'rarity', 'zone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],
@@ -33,30 +33,30 @@ class Subzone
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['subzone', 'subzone:item'])]
+    #[Groups(['subzone', 'subzone:item', 'subzone:search'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[ApiProperty(identifier: true)]
     #[Gedmo\Slug(fields: ['name'])]
-    #[Groups(['subzone', 'slug', 'subzone:item'])]
+    #[Groups(['subzone', 'slug', 'subzone:item', 'subzone:search'])]
     private ?string $slug = null;
 
     #[ORM\Column]
-    #[Groups(['subzone', 'subzone:item'])]
+    #[Groups(['subzone', 'subzone:item', 'subzone:search'])]
     private ?int $levelMin = null;
 
     #[ORM\Column]
-    #[Groups(['subzone', 'subzone:item'])]
+    #[Groups(['subzone', 'subzone:item', 'subzone:search'])]
     private ?int $levelMax = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['subzone', 'subzone:item'])]
+    #[Groups(['subzone', 'subzone:item', 'subzone:search'])]
     private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'subzones', cascade : ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['subzone', 'subzone:item'])]
+    #[Groups(['subzone', 'subzone:item', 'subzone:search'])]
     private ?Zone $Zone = null;
 
     #[ORM\ManyToMany(targetEntity: Resource::class, inversedBy: 'subzones')]

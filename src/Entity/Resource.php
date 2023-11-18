@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 #[ApiResource(operations: [
     new Get(
-        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family', 'subzone']],
+        normalizationContext: ['groups' => ['resource:item', 'resource:drops', 'rarity', 'recipes', 'recipeIngredients', 'type', 'job', 'family', 'subzone', 'zone']],
     ),
     new GetCollection(
         normalizationContext: ['groups' => ['slug']],

@@ -34,12 +34,12 @@ class SearchRepository extends Repository
 
         // Niveau
         $minLevel = new \Elastica\Aggregation\Min("minLevel");
-        $minLevel->setField($model !== "mob" ? "level" : "levelMin");
+        $minLevel->setField( !in_array($model, ["mob", "subzone"]) ? "level" : "levelMin");
 
         $query->addAggregation($minLevel);
 
         $maxLevel = new \Elastica\Aggregation\Max("maxLevel");
-        $maxLevel->setField($model !== "mob" ? "level" : "levelMin");
+        $maxLevel->setField(!in_array($model, ["mob", "subzone"]) ? "level" : "levelMin");
 
         $query->addAggregation($maxLevel);
 
