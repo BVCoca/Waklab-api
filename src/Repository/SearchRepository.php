@@ -131,7 +131,7 @@ class SearchRepository extends Repository
                 $params['lte'] = $levelMax;
             }
 
-            $rangeQuery->addField($model === 'mob' ? 'levelMin' : 'level', $params);
+            $rangeQuery->addField(in_array($model, ["mob", "subzone"]) ? 'levelMin' : 'level', $params);
 
             $boolQuery->addMust($rangeQuery);
         }
@@ -175,7 +175,7 @@ class SearchRepository extends Repository
         // Tri
         if(isset($sort_field) && isset($sort_order)) {
 
-            if($sort_field === "level" && $model === "mob") {
+            if($sort_field === "level" && in_array($model, ["mob", "subzone"])) {
                 $sort_field = "levelMin";
             }
 
