@@ -20,11 +20,11 @@ class StuffCaracteristic
 
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('stuff:item')]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?Caracteristic $caracteristic = null;
 
     #[ORM\Column]
-    #[Groups('stuff:item')]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?int $value = null;
 
     public function getId(): ?int
