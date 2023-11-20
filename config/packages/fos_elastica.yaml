@@ -156,6 +156,19 @@ fos_elastica:
                             type: 'keyword'
                         slug:
                             type: 'keyword'
+                stuffCaracteristics:
+                    type: 'nested'
+                    properties:
+                        caracteristic:
+                            type: 'nested'
+                            include_in_root: true
+                            properties :
+                                id:
+                                    type: 'keyword'
+                                name:
+                                    type: 'keyword'
+                                icon:
+                                    type: 'keyword'
         dungeon:
             persistence:
                 driver: orm

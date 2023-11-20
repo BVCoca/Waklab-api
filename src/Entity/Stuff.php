@@ -66,7 +66,7 @@ class Stuff
     private ?TypeStuff $type = null;
 
     #[ORM\OneToMany(mappedBy: 'stuff', targetEntity: StuffCaracteristic::class, cascade: ['persist'])]
-    #[Groups('stuff:item')]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?Collection $stuffCaracteristics;
 
     #[ORM\Column(length: 255, nullable: true)]

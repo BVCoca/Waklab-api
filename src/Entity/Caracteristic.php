@@ -12,14 +12,15 @@ class Caracteristic
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('stuff:item')]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups('stuff:item')]
+    #[Groups(['stuff:item', 'caracteristic'])]
     private ?string $icon = null;
 
     public function getId(): ?int
