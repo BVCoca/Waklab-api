@@ -25,6 +25,7 @@ class EmblemScraper extends Scraper
     public function getEntity(array $data = [], array &$scraped_data = [])
     {
         $emblem = new Stuff();
+        $emblem->setEncyclopediaId($data['id']);
         $emblem->setName($data['name'] ?? 'Sans nom');
         $emblem->setImageUrl($data['image']);
         $emblem->setLevel($data['level'][0][0]);

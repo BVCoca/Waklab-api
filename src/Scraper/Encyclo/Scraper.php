@@ -119,6 +119,8 @@ abstract class Scraper implements ScraperInterface {
                 return;
             }
 
+            $id = intval(substr($slug, 1, strpos($slug, '-')));
+
             $name = $node->filter('td:nth-child(2) > .ak-linker > a')->text();
             $image = $node->filter('.ak-linker img')->attr('src');
             preg_match_all('/\d+/i', $node->filter('.item-level')->innerText(), $level_match);
@@ -131,6 +133,7 @@ abstract class Scraper implements ScraperInterface {
             $type_img = $node->filter('.item-type > img');
 
             return [
+                'id' => $id,
                 'slug' => $slug,
                 'name' => $name,
                 'image' => $image,

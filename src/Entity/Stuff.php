@@ -105,6 +105,9 @@ class Stuff
     #[Groups('recipeIngredients')]
     private ?Collection $recipeIngredients;
 
+    #[ORM\Column]
+    private ?int $encyclopediaId = null;
+
     public function __construct()
     {
         $this->stuffCaracteristics = new ArrayCollection();
@@ -437,5 +440,17 @@ class Stuff
         $this->setEffectType(null);
         $this->setEffectValue(null);
         $this->setCriticalEffectValue(null);
+    }
+
+    public function getEncyclopediaId(): ?int
+    {
+        return $this->encyclopediaId;
+    }
+
+    public function setEncyclopediaId(int $encyclopediaId): static
+    {
+        $this->encyclopediaId = $encyclopediaId;
+
+        return $this;
     }
 }
