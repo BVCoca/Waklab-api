@@ -25,6 +25,7 @@ class WeaponScraper extends Scraper
     public function getEntity(array $data = [], array &$scraped_data = [])
     {
         $weapon = new Stuff();
+        $weapon->setEncyclopediaId($data['id']);
         $weapon->setName($data['name'] ?? 'Sans nom');
         $weapon->setImageUrl($data['image']);
         $weapon->setLevel($data['level'][0][0]);

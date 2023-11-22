@@ -25,6 +25,7 @@ class ArmorScraper extends Scraper
     public function getEntity(array $data = [], array &$scraped_data = [])
     {
         $armor = new Stuff();
+        $armor->setEncyclopediaId($data['id']);
         $armor->setName($data['name'] ?? 'Sans nom');
         $armor->setImageUrl($data['image']);
         $armor->setLevel($data['level'][0][0]);
