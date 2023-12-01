@@ -15,9 +15,9 @@ use FOS\ElasticaBundle\Repository;
 
 class SearchRepository extends Repository
 {
-    public function search(string $q = null, array $rarity = [], array $type = [], array $family = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null, int $page = 1, int $item_per_page = 20)
+    public function search(string $q = null, array $rarity = [], array $type = [], array $family = [], array $encyclopediaId = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null, int $page = 1, int $item_per_page = 20)
     {
-        $items = $this->findPaginated($this->getQuery($q, $rarity, $type, $family, $levelMin, $levelMax, $sort_field, $sort_order, $model));
+        $items = $this->findPaginated($this->getQuery($q, $rarity, $type, $family,  $encyclopediaId, $levelMin, $levelMax, $sort_field, $sort_order, $model));
         $items->setCurrentPage($page);
         $items->setMaxPerPage($item_per_page);
 
@@ -98,7 +98,7 @@ class SearchRepository extends Repository
         return $this->createPaginatorAdapter($query)->getAggregations();
     }
 
-    private function getQuery(string $q = null, array $rarity = [], array $type = [], array $family = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null) : Query {
+    private function getQuery(string $q = null, array $rarity = [], array $type = [], array $family = [], array $encyclopediaId = [], int $levelMin = null, int $levelMax = null, string $sort_field = null, string $sort_order = null, string $model = null) : Query {
         $query = new Query();
 
         $boolQuery = new BoolQuery();
@@ -167,6 +167,17 @@ class SearchRepository extends Repository
             }
 
             $boolQuery->addMust($familyQuery);
+        }
+
+        // Encyclopedia Id
+        if(!empty($encyclopediaId)) {
+            $encyclopediaIdQuery = new BoolQuery();
+
+            foreach($encyclopediaId as $i) {
+                $encyclopediaIdQuery->addShould(new MatchQuery("encyclopediaId", $i));
+            }
+
+            $boolQuery->addMust($encyclopediaIdQuery);
         }
 
         // Fin recherche

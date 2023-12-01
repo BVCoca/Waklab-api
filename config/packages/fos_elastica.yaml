@@ -136,6 +136,8 @@ fos_elastica:
                     type: 'integer'
                 imageUrl:
                     type: 'keyword'
+                encyclopediaId:
+                    type: 'keyword'
                 rarity:
                     type: 'nested'
                     include_in_root : true
