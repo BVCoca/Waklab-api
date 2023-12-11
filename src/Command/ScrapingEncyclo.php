@@ -5,8 +5,10 @@ namespace App\Command;
 use App\Scraper\Encyclo\ArmorScraper;
 use App\Scraper\Encyclo\CaracteristicScraper;
 use App\Scraper\Encyclo\EmblemScraper;
+use App\Scraper\Encyclo\FamiliarScraper;
 use App\Scraper\Encyclo\JobScraper;
 use App\Scraper\Encyclo\MobScraper;
+use App\Scraper\Encyclo\MountScraper;
 use App\Scraper\Encyclo\RarityScraper;
 use App\Scraper\Encyclo\ResourceScraper;
 use App\Scraper\Encyclo\WeaponScraper;
@@ -42,6 +44,8 @@ class ScrapingEncyclo extends Command
             'emblem' => new EmblemScraper($this->entityManager, $output),
             'weapon' => new WeaponScraper($this->entityManager, $output),
             'armor' => new ArmorScraper($this->entityManager, $output),
+            'familiar' => new FamiliarScraper($this->entityManager, $output),
+            'mount' => new MountScraper($this->entityManager, $output)
         ];
 
         // On nettoie les données
