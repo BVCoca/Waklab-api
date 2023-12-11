@@ -15,8 +15,8 @@ use Symfony\Component\DomCrawler\Crawler;
 abstract class Scraper implements ScraperInterface {
     protected HttpBrowser $client;
     protected EntityManagerInterface $entityManager;
-    private OutputInterface $output;
-    private int $page_limit;
+    protected OutputInterface $output;
+    protected int $page_limit;
 
     public function __construct(EntityManagerInterface $entityManager, OutputInterface $output, ?int $page_limit = 999)
     {
