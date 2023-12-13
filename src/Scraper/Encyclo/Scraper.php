@@ -53,7 +53,7 @@ abstract class Scraper implements ScraperInterface {
      */
     public function fetchAllSlugs(array &$scraped_data) {
         // Nombre de mobs et nombre de pages
-        $crawler = $this->client->request('GET', $this->getUrl());
+        $crawler = $this->client->request('GET', $this->getUrl() . '?sort=3A');
 
         $count_pages = intval($crawler->filter('.ak-pagination.hidden-xs > nav > ul > li:nth-child(8) > a')->innerText());
 
